@@ -1,0 +1,2 @@
+[console_scripts]
+run_simulation = kamaji.simulation:main

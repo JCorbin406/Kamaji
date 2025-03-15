@@ -1,0 +1,13 @@
+name: kamaji  # Name of the conda environment
+channels:
+  - conda-forge  # Channel for community-maintained packages
+  - defaults     # Default Conda channel
+dependencies:
+  - python=3.8  # Set the Python version (change this if you need a different version)
+  - numpy       # For numerical computations
+  - scipy       # For scientific computing (ODE solvers, etc.)
+  - pyyaml      # For reading and writing YAML files (simulation config)
+  - matplotlib  # For plotting and visualization
+  - pip         # To install Python packages via pip
+  - pip:
+      - pytest   # For testing the simulation environment
