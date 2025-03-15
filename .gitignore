@@ -1,0 +1,21 @@
+# Python bytecode files
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+env/
+*.env/
+
+# Conda environments
+*.conda/
+
+# Distribution/Packaging
+*.egg-info/
+dist/
+build/
+
+# IDEs and text editors
+.vscode/
+.idea/
+*.swp
