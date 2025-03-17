@@ -1,13 +1,28 @@
-name: kamaji  # Name of the conda environment
+name: kamaji
 channels:
-  - conda-forge  # Channel for community-maintained packages
-  - defaults     # Default Conda channel
+  - conda-forge
 dependencies:
-  - python=3.8  # Set the Python version (change this if you need a different version)
-  - numpy       # For numerical computations
-  - scipy       # For scientific computing (ODE solvers, etc.)
-  - pyyaml      # For reading and writing YAML files (simulation config)
-  - matplotlib  # For plotting and visualization
-  - pip         # To install Python packages via pip
+  - python          # Match your current version
+  - numpy                 # Numerical computations
+  - scipy                 # Scientific computing
+  - matplotlib            # Plotting
+  - pyyaml                # YAML support
+  - plotly                # Interactive plotting
+  - pandas                # Data manipulation
+  - pyqtgraph             # Real-time plotting
+  - h5py                  # HDF5 file support
+  - pyopengl              # OpenGL bindings
+  - transitions           # State machines
+  - tqdm                  # Progress bars
+  - mkdocs-material       # Documentation
+  - mkdocstrings          # Auto-docs for Python
+  - numba                 # JIT compilation
+  - qpsolvers             # Quadratic programming
+  - jupyter               # Jupyter notebooks
+  - ipykernel             # Jupyter kernel
+  - sympy                 # Symbolic math
+  - cvxopt                # Convex optimization
+  - pytest                # Testing
+  - pip                   # For editable install
   - pip:
-      - pytest   # For testing the simulation environment
+      - -e .              # Install Kamaji in editable mode

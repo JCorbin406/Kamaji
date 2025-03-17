@@ -1,0 +1,60 @@
+simulation:
+  duration: 100.0  # Duration of the simulation in seconds
+  time_step: 0.1  # Time step for each simulation update
+  logging_enabled: true  # Whether to log the simulation data
+  output_directory: "sim_output"  # Directory to save the results
+  
+agents:
+  - id: agent_1
+    type: "agent"  # Agent type (e.g., unicycle, drone, car)
+    initial_state:
+      position: [-2.0, 0.0]  # Initial position (x, y)
+      velocity: [0.0, 0.0]  # Initial velocity (vx, vy)
+    dynamics_model: "single_integrator_2D"  # Function for the dynamics model
+    controller:
+      type: PID
+      targets:
+        - state: x_position
+          goal: 2.0
+          gains:
+            P: 1.0
+            I: 0.1
+            D: 0.01
+        - state: y_position
+          goal: 0.0
+          gains:
+            P: 1.0
+            I: 0.1
+            D: 0.01
+
+environment:
+  obstacles:
+    - id: obstacle_1
+      type: "circle"
+      position: [0.0, 0.0]
+      radius: 1.0
+    # - id: obstacle_2
+    #   type: "sphere"
+    #   position: [5.0, 5.0, 2.5]
+    #   radius: 1.0
+    # - id: obstacle_3
+    #   type: "box"
+    #   position: [12.0, 15.0, 0.0]
+    #   dimensions: [2.0, 2.0, 3.0]
+  gravity: [0.0, 0.0, 0.0]
+    
+      
+  # terrain:
+  #   type: "flat"  # Type of terrain (e.g., flat, hilly)
+  #   parameters:
+  #     - slope: 0.05  # Slope of the terrain (if applicable)
+      
+# control:
+#   safety_margin: 2.0  # Safety margin between agents
+#   collision_avoidance_enabled: true
+#   collision_detection_method: "simple"  # e.g., "simple", "advanced"
+
+logging:
+  enabled: true
+  log_format: "csv"
+  log_interval: 10  # Log every 10 time steps

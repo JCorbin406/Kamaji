@@ -1,6 +1,21 @@
-[build-system]
-requires = [
-    "setuptools>=64",
-    "wheel"
+[project]
+name = "kamaji"
+version = "0.1"
+description = "Simulation for multi-agent dynamics."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+  {name = "Johnathan Corbin", email = "jcorbin33@gatech.edu"}
 ]
+# Dependencies managed by environment.yml, so leave this minimal or empty
+dependencies = []
+
+[build-system]
+requires = ["setuptools", "setuptools_scm[toml]"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+version_scheme = "no-guess-dev"
+
+[tool.setuptools.packages.find]
+include = ["kamaji"]

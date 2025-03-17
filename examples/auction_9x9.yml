@@ -1,0 +1,56 @@
+simulation:
+  duration: 100.0  # Duration of the simulation in seconds
+  time_step: 0.1  # Time step for each simulation update
+  logging_enabled: true  # Whether to log the simulation data
+  output_directory: "sim_output"  # Directory to save the results
+  
+agents:
+  - id: agent_1
+    type: "unicycle"  # Agent type (e.g., unicycle, drone, car)
+    initial_state:
+      position: [0.0, 0.0, 0.0]  # Initial position (x, y, z)
+      velocity: [0.0, 0.0, 0.0]  # Initial velocity (vx, vy, vz)
+      orientation: [0.0, 0.0, 0.0]  # Initial orientation (roll, pitch, yaw)
+    dynamics_model: "unicycle_dynamics"  # Function for the dynamics model
+    controller:
+      type: "PID"  # Controller type (e.g., PID, custom)
+      parameters:
+        k_p: 1.0
+        k_i: 0.1
+        k_d: 0.05
+  - id: agent_2
+    type: "drone"
+    initial_state:
+      position: [10.0, 10.0, 5.0]
+      velocity: [0.0, 0.0, 0.0]
+      orientation: [0.0, 0.0, 0.0]
+    dynamics_model: "drone_dynamics"
+    controller:
+      type: "LQR"
+      parameters:
+        Q: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
+        R: [[1, 0], [0, 1]]
+
+environment:
+  obstacles:
+    - type: "sphere"
+      position: [5.0, 5.0, 2.5]
+      radius: 1.0
+    - type: "box"
+      position: [12.0, 15.0, 0.0]
+      dimensions: [2.0, 2.0, 3.0]
+      
+  terrain:
+    type: "flat"  # Type of terrain (e.g., flat, hilly)
+    parameters:
+      - slope: 0.05  # Slope of the terrain (if applicable)
+      
+control:
+  safety_margin: 2.0  # Safety margin between agents
+  collision_avoidance_enabled: true
+  collision_detection_method: "simple"  # e.g., "simple", "advanced"
+
+logging:
+  enabled: true
+  log_format: "csv"
+  log_interval: 10  # Log every 10 time steps

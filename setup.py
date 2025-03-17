@@ -13,7 +13,7 @@ setup(
     ],
     include_package_data=True,
     package_data={
-        'kamaji': ['examples/*.py', 'docs/*.md'],
+        'kamaji': ['kamaji/*', 'examples/*.py', 'docs/*.md'],
     },
     entry_points={
         'console_scripts': [
@@ -21,3 +21,4 @@ setup(
         ],
     },
 )
+
