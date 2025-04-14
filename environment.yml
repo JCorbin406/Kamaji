@@ -2,7 +2,7 @@ name: kamaji
 channels:
   - conda-forge
 dependencies:
-  - python          # Match your current version
+  - python                # Match your current version
   - numpy                 # Numerical computations
   - scipy                 # Scientific computing
   - matplotlib            # Plotting
@@ -22,6 +22,7 @@ dependencies:
   - ipykernel             # Jupyter kernel
   - sympy                 # Symbolic math
   - cvxopt                # Convex optimization
+  - cvxpy                 # Convex optimization
   - pytest                # Testing
   - pip                   # For editable install
   - pip:

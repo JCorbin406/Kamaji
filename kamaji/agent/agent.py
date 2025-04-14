@@ -1,5 +1,6 @@
 # agent.py
 from typing import Callable, List, Optional, Tuple
+import pandas as pd
 
 import numpy as np
 from numba import njit
@@ -8,41 +9,50 @@ from sympy import Matrix, diff, init_printing, simplify, sqrt, symbols
 
 import kamaji.tools.ode_solvers as ode  # Importing the RK4_step function from the external file
 # from kamaji.controllers.path_follower import PathFollower
-from kamaji.controllers.controllers import *
+from kamaji.controllers.controllers_old import *
 from kamaji.dynamics.dynamics import *
-
+from kamaji.controllers.controllers import *
 
 class Agent:
-    def __init__(self, initial_state: np.ndarray, dynamics_model: str, control_model: Optional[str] = None,
-                 path: Optional[list[dict]] = None, dt: Optional[float] = 0.01, **kwargs) -> None:
-        """
-        Initializes the Agent with a specified dynamics model and initial state.
-
-        Args:
-            initial_state (np.ndarray): The initial state of the agent.
-            dynamics_model (str): A string corresponding to the desired dynamics model.
-            control_model (Optional[str]): If specified, a string corresponding to the desired control model.
-            path (Optional[str]): If specified, a list of the complete setpoints that define the path for the agent.
-                The agent will start at the first setpoint and step to the last, remaining there if the sim continues.
-            dt (Optional[float]): The step time for the simulation, in seconds. By default, 0.01 seconds.
-        """
+    def __init__(self, agent_config, t = 0.0, dt = 0.01, **kwargs):
         # Assign kwargs to instance attributes
         for key, value in kwargs.items():
             setattr(self, key, value)
-        self.dt = dt
-        # Assign a dynamics model to the agent
-        self.dynamics_model = Dynamics
-        self.assign_dynamics(initial_state, dynamics_model)
-        # Assign a controller and path to the agent
-        self.control_model = None
-        self.path = []
-        self.path_index = 0
-        self.assign_controller(control_model, path)
-        # Initialize state and control history
-        self._state_history = np.array([initial_state])
-        self._control_history = np.array([0] * self.dynamics_model.num_control_inputs)
 
-    def assign_dynamics(self, initial_state: np.ndarray, dynamics_model: str) -> None:
+        # Assign configuration parameters
+        self._agent_config = agent_config
+
+        # Set the simulation timestep for the dynamics updates
+        self._dt = dt
+        # Assign the agent's ID number
+        self._id = agent_config['id']
+        # Grab the list of state variable names
+        self._state_list = list(agent_config['initial_state'].keys())
+        # Set the current agent state as the initial states from the config
+        self._state = agent_config['initial_state']
+        # Create a dataframe to hold the state history - name the columns with the state variable names
+        self._state_history = pd.DataFrame(columns=['time'] + self._state_list)
+        # Assign the initial state to the state history
+        self._state_history.loc[len(self._state_history)] = {'time': t} | self._state
+
+        # Determine number of control inputs from controller config (assumes fixed-length control vector)
+        num_controls = agent_config.get('num_controls', None)
+        if num_controls is None and 'controller' in agent_config:
+            # If not explicitly defined, try to infer from controller spec
+            controller_type = agent_config['controller']['type']
+            if controller_type == 'PID':
+                num_controls = len(agent_config['controller']['specs'])
+            else:
+                num_controls = 1  # fallback
+        self._control_list = [f'u{i}' for i in range(num_controls)]
+        # Initialize control history DataFrame
+        self._control_history = pd.DataFrame(columns=['time'] + self._control_list)
+
+        # Assign the agent's dynamics model and controller
+        self.assign_dynamics()
+        self.assign_controller()
+
+    def assign_dynamics(self) -> None:
         """
         Assign a dynamics model to the agent based on a given string. 
 
@@ -53,204 +63,146 @@ class Agent:
         Raises:
             NotImplementedError: _description_
         """
-        if dynamics_model == "unicycle":
-            self.dynamics_model = Unicycle(initial_state)
-        elif dynamics_model == "cruise":
-            self.dynamics_model = CruiseControl(initial_state)
-        elif dynamics_model == "Quad6DOF":
-            self.dynamics_model = Quad6DOF(initial_state)
-        elif dynamics_model == "Plane3DOF":
-            self.dynamics_model = Plane3DOF(initial_state)
-        elif dynamics_model == "Tilt6DOF":
-            self.dynamics_model = Tiltrotor6DOF(initial_state)
+
+        dynamics_model = self._agent_config['dynamics_model']
+
+        if dynamics_model == "Unicycle":
+            self.dynamics_model = Unicycle(self._dt)
+        elif dynamics_model == "CruiseControl":
+            self.dynamics_model = CruiseControl(self._dt)
         elif dynamics_model == "SingleIntegrator1DOF":
-            self.dynamics_model = SingleIntegrator1DOF(initial_state)
+            self.dynamics_model = SingleIntegrator1DOF(self._dt)
         elif dynamics_model == "SingleIntegrator2DOF":
-            self.dynamics_model = SingleIntegrator2DOF(initial_state)
+            self.dynamics_model = SingleIntegrator2DOF(self._dt)
         elif dynamics_model == "DoubleIntegrator1DOF":
-            self.dynamics_model = DoubleIntegrator1DOF(initial_state)
+            self.dynamics_model = DoubleIntegrator1DOF(self._dt)
         elif dynamics_model == "SingleIntegrator3DOF":
-            self.dynamics_model = SingleIntegrator3DOF(initial_state)
+            self.dynamics_model = SingleIntegrator3DOF(self._dt)
         elif dynamics_model == "DoubleIntegrator2DOF":
-            self.dynamics_model = DoubleIntegrator2DOF(initial_state)
+            self.dynamics_model = DoubleIntegrator2DOF(self._dt)
         elif dynamics_model == "DoubleIntegrator3DOF":
-            self.dynamics_model = DoubleIntegrator3DOF(initial_state)
+            self.dynamics_model = DoubleIntegrator3DOF(self._dt)
         else:
             raise NotImplementedError(f"{dynamics_model} not a valid dynamics model option")
 
-    def assign_controller(self, controller: str, path: list[dict]) -> None:
+    def assign_controller(self) -> None:
         """
-        Assign a controller and path to the agent.
+        Assign a controller to the agent.
 
         Args:
-            controller (str): A string corresponding to the desired controller.
-            path (list[dict]): A list of setpoints for the controller to folow.
+            controller_config
 
         Raises:
             NotImplementedError: _description_
         """
-        if path is None and controller is None:
-            self.control_model = None
-        elif path is None:
-            raise ValueError('At least an initial setpoint must be added to path with control model enabled.')
+
+        controller = self._agent_config['controller']
+
+        controller_type = controller['type']
+
+        if controller_type == "PathFollower":
+            try:
+                self.control_model = PathFollower(self.path)
+            except AttributeError:
+                raise ValueError("PathFollower requires a path to be set.")
+        elif controller_type == "PID":
+            try:
+                pid_specs = controller['specs']
+                state_names = [s['state'] for s in pid_specs]
+                goals = [s['goal'] for s in pid_specs]
+                Kp = [s['gains']['Kp'] for s in pid_specs]
+                Ki = [s['gains']['Ki'] for s in pid_specs]
+                Kd = [s['gains']['Kd'] for s in pid_specs]
+                self.control_model = PID(state_names, goals, Kp, Ki, Kd, dt=self._dt)
+            except AttributeError:
+                raise ValueError("PID requires gains to be set.")
         else:
-            self.path = path
-            # If there is only one setpoint in the path, it is assumed that the path will be updated dynamically,
-            # so the controller should always pull from the latest value.
-            if len(self.path) == 1:
-                self.path_index = -1
-            # Assign controller
-            if controller == "PID":
-                pass
-                # self.control_model = pid_control.PIDControl()
-            elif controller == "Geometric":
-                self.control_model = GeometricController(self.path[0])
-            elif controller == "PathFollower":
-                path = np.array([item['pos'] for item in path])
-                self.control_model = PathFollower(self.path[0], path, self.gains, self.t_go, self.dt)
-            elif controller == "PathFollowerDyn":
-                path_points = path[0]["path"]
-                gains = path[0]["gains"]
-                t_go = path[0]["t_go"]
-                obstacles = path[0]["obstacles"]
-                self.control_model = PathFollowerDyn(path[0], path_points, gains, t_go, self.dt)
-            elif controller == "PathFollowerDyn2D":
-                path_points = path[0]["path"]
-                gains = path[0]["gains"]
-                t_go = path[0]["t_go"]
-                obstacles = path[0]["obstacles"]
-                self.control_model = PathFollowerDyn2D(path[0], path_points, gains, t_go, self.dt)
-            else:
-                raise NotImplementedError(f"{controller} not a valid controller option")
+            raise NotImplementedError(f"{controller} not a valid controller option")
 
-    def update_path(self, setpoint: dict) -> None:
+    def compute_control(self, t) -> np.ndarray:
         """
-        Updates the path for the agent to follow. Appends the setpoint to the total path.
-
-        Args:
-            setpoint (dict): The setpoint to add to the path.
-        """
-        self.path.append(setpoint)
-
-    def reset(self, initial_state: np.ndarray) -> None:
-        """
-        Resets the agent's state and clears the history.
-
-        Args:
-            initial_state (np.ndarray): The new initial state of the agent.
-        """
-        self.dynamics_model.set_state(initial_state)
-        self._state_history = np.array([initial_state])  # Reset state history with new initial state
-        # self._control_history = np.zeros((0, len(initial_state)))  # Reset control history
-
-    def control_step(self, t: float, dt: float, update_path=True) -> None:
-        """
-        Manually calculates the next control input for the agent.
+        Compute the new control signal using the agent's controller.
 
         Args:
             t (float): The current time of the simulation.
-            dt (float): The time step size for the simulation.
+
+        Returns:
+            np.ndarray: The computed control input.
         """
-        # Update path setpoint in controller and get new control input
-        if self.control_model is not None:
-            self.control_model.set_setpoint(self.path[self.path_index])
-            control_input = self.control_model.update(t, self.dynamics_model.state)
-            if update_path:
-                if self.path_index == -1 or self.path_index == len(self.path)-1:
-                    self.path_index = -1
-                else:
-                    self.path_index += 1
-        else:
-            try:
-                control_input = self.u
-            except AttributeError:
-                control_input = np.array([0] * self.dynamics_model.num_control_inputs)
+        if not hasattr(self, 'control_model'):
+            raise AttributeError("Agent does not have a controller assigned.")
+
+        current_state = self._state
+
+        control_input = self.control_model.update(t, current_state)
 
         return control_input
+    
+    def compute_dynamics(self, t, control_input) -> np.ndarray:
+        """
+        Compute the new state of the agent using the dynamics model.
 
+        Returns:
+            np.ndarray: The new state of the agent.
+        """
+        if not hasattr(self, 'dynamics_model'):
+            raise AttributeError("Agent does not have a dynamics model assigned.")
 
-    def step(self, t: float, dt: float, control_input) -> None:
+        current_state = self._state
+
+        # Update the state using the dynamics model
+        deriv = self.dynamics_model.dynamics(t, current_state, control_input)
+
+        return deriv
+
+    def step(self, t: float, control_input: np.ndarray) -> None:
         """
         Advances the state of the agent by one time step using RK4 integration.
 
         Args:
-            t (float): The current time of the simulation.
-            dt (float): The time step size for the simulation.
+            t (float): Current simulation time.
+            control_input (np.ndarray): Control input to apply at this timestep.
         """
-        # Update path setpoint in controller and get new control input
-        # control_input = self.control_step(t, dt, update_path=True)
+        # Store state keys in order for conversion
+        self._state_order = list(self._state.keys())
+        
+        # Convert current state dict to vector
+        state_vec = np.array([self._state[key] for key in self._state_order])
 
-        # Update to new state
-        _, new_state = ode.rk4_step(self.dynamics_model.dynamics, t, self.dynamics_model.state, control_input, dt)
-        self.dynamics_model.set_state(new_state)
+        # Define a local wrapper function compatible with rk4_step
+        def compute_dynamics(t_local: float, y: np.ndarray, u: np.ndarray) -> np.ndarray:
+            state_dict = {key: y[i] for i, key in enumerate(self._state_order)}
+            return self.dynamics_model.dynamics(t_local, state_dict, u)
 
-        # Append new state and control input to state history
-        self._state_history = np.vstack([self._state_history, new_state])  # Append new state
-        self._control_history = np.vstack([self._control_history, control_input])  # Append control input
+        # RK4 integration step
+        _, new_state_vec = ode.rk4_step(compute_dynamics, t, state_vec, control_input, self._dt)
 
-    def control_nom(self, x):
-        K = 1000.0
-        return K * (24 - x[1])
+        # Convert new state vector back to dict
+        new_state_dict = {key: new_state_vec[i] for i, key in enumerate(self._state_order)}
 
-    def control_safe(self, x):
-        # https://github.com/Berk-Tosun/cbf-cartpole/blob/master/acc.py
-        u_nom = self.control_nom(x)
+        # Update internal state and history
+        self._state = new_state_dict
+        self._state_history.loc[len(self._state_history)] = {'time': t} | self._state
 
-        m = 1650
-        T_h = 1.8
-        v_0 = 14
-        c_d = 0.3
-        g = 9.81
+        # Log control input
+        control_row = {'time': t}
+        control_row.update({f'u{i}': control_input[i] for i in range(len(control_input))})
+        self._control_history.loc[len(self._control_history)] = control_row
 
-        alpha = 0.1
 
-        f0 = 0.1
-        f1 = 5
-        f2 = 0.25
+    def set_valuation(self, valuation_fn: Callable) -> None:
+        self.valuation_fn = valuation_fn
 
-        F_r = f0 + f1 * x[1] + f2 * x[1] ** 2
+    def set_marginal_valuation(self, marginal_valuation_fn: Callable) -> None:
+        self.marginal_valuation_fn = marginal_valuation_fn
 
-        p = np.array([1.])
-        q = np.array([-u_nom])
+    def valuation(self, x):
+        """Evaluate this agent's valuation at allocation x."""
+        return self.valuation_fn(x)
 
-        term = 1 / m * (T_h + (x[1] - v_0) / (c_d * g))
-        _g = np.array([term])
-        _h = np.array([term * F_r + (v_0 - x[1]) + alpha * self.h(x)])
-
-        u_filtered = solve_qp(p, q, _g, _h, solver="cvxopt")
-
-        if u_filtered is not None:
-            u_filtered = u_filtered.item()  # Ensure u_filtered is a scalar
-
-        # cbf_t.append(cbf_cstr(x, u_filtered))
-        # h_t.append(h(x))
-        # u_nom_t.append(u_nom)
-        # u_filtered_t.append(u_filtered)
-
-        return np.array([u_filtered])
-
-    def control_safe_di(self, x, u_nom):
-        p = np.array([1.])
-        q = np.array([-u_nom])
-
-        u_filtered = solve_qp(p, q, _g, _h, solver="cvxopt")
-
-        if u_filtered is not None:
-            u_filtered = u_filtered.item()  # Ensure u_filtered is a scalar
-
-        # cbf_t.append(cbf_cstr(x, u_filtered))
-        # h_t.append(h(x))
-        # u_nom_t.append(u_nom)
-        # u_filtered_t.append(u_filtered)
-
-        return np.array([u_filtered])
-
-    def h(self, x):
-        T_h = 1.8
-        v_0 = 14
-        c_d = 0.3
-        g = 9.81
-        return x[2] - T_h * x[1] - 1 / 2 * (x[1] - v_0) ** 2 / (c_d * g)
+    def marginal_valuation(self, x):
+        """Evaluate this agent's marginal valuation at allocation x."""
+        return self.marginal_valuation_fn(x)
 
     @property
     def state(self) -> np.ndarray:
@@ -260,7 +212,7 @@ class Agent:
         Returns:
             np.ndarray: The current state of the agent.
         """
-        return self.dynamics_model.state
+        return self._state
 
     @property
     def state_log(self) -> np.ndarray:
