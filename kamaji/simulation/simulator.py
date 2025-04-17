@@ -133,14 +133,25 @@ class Simulator:
         if not isinstance(agent_config['controller'], dict):
             raise TypeError("controller must be a dictionary.")
 
-        # 3. Validate controller contents
-        if 'type' not in agent_config['controller']:
-            raise ValueError("Controller must include a 'type' field.")
-        if 'specs' not in agent_config['controller']:
-            raise ValueError("Controller must include a 'specs' field.")
-        if not isinstance(agent_config['controller']['specs'], list):
-            raise TypeError("Controller 'specs' must be a list.")
-        
+        controller_block = agent_config['controller']
+
+        # 3. NEW: Support per-channel or legacy controllers
+        if 'type' in controller_block and 'specs' in controller_block:
+            # Single controller (legacy format)
+            if not isinstance(controller_block['specs'], list):
+                raise TypeError("Controller 'specs' must be a list.")
+        else:
+            # New format: one controller per control channel
+            for ctrl_name, ctrl_conf in controller_block.items():
+                if not isinstance(ctrl_conf, dict):
+                    raise TypeError(f"Controller for '{ctrl_name}' must be a dict.")
+                if 'type' not in ctrl_conf:
+                    raise ValueError(f"Controller '{ctrl_name}' must include a 'type' field.")
+                if 'specs' not in ctrl_conf:
+                    raise ValueError(f"Controller '{ctrl_name}' must include a 'specs' field.")
+                if not isinstance(ctrl_conf['specs'], list):
+                    raise TypeError(f"Controller '{ctrl_name}' 'specs' must be a list.")
+
         # 4. Generate ID if needed
         if agent_id is None:
             base = "agent"
@@ -148,11 +159,11 @@ class Simulator:
             while f"{base}_{i}" in self.agent_ids:
                 i += 1
             agent_id = f"{base}_{i}"
-        
+
         # 5. Check for ID reuse
         if agent_id in self.agent_ids:
             raise ValueError(f"Agent ID '{agent_id}' already exists.")
-        
+
         # 6. Add agent to active agents
         agent_config['id'] = agent_id
         try:
@@ -160,6 +171,7 @@ class Simulator:
         except Exception as e:
             raise RuntimeError(f"Failed to initialize Agent '{agent_id}': {e}")
         self.agent_ids.add(agent_id)
+
         if self.verbose:
             print(f"[Simulator] Agent '{agent_id}' added.")
 

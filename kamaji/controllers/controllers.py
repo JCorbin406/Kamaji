@@ -27,7 +27,7 @@ class Controls(ABC):
 
 class PID(Controls):
     def __init__(self, state_names, goals, Kp, Ki, Kd, dt=0.01,
-                 lower_limit=None, upper_limit=None):
+                 lower_limit=None, upper_limit=None, derivative_smoothing=0.1):
         super().__init__()
         self.state_names = state_names
         self.goals = np.array(goals)
@@ -37,6 +37,8 @@ class PID(Controls):
         self.dt = dt
         self.integral = np.zeros(len(Kp))
         self.prev_error = np.zeros(len(Kp))
+        self.derivative = np.zeros(len(Kp))
+        self.alpha = derivative_smoothing  # smoothing factor for derivative
         self.lower_limit = lower_limit
         self.upper_limit = upper_limit
 
@@ -44,20 +46,25 @@ class PID(Controls):
         current_state = np.array([state_dict[name] for name in self.state_names])
         error = self.goals - current_state
         self.integral += error * self.dt
-        derivative = (error - self.prev_error) / self.dt
+        self.integral = np.clip(self.integral, -10, 10)  # prevent windup
+
+        # Smooth derivative to reduce noise
+        raw_derivative = (error - self.prev_error) / self.dt
+        self.derivative = self.alpha * raw_derivative + (1 - self.alpha) * self.derivative
         self.prev_error = error
 
-        control = self.Kp * error + self.Ki * self.integral + self.Kd * derivative
+        control = self.Kp * error + self.Ki * self.integral + self.Kd * self.derivative
 
         if self.lower_limit is not None or self.upper_limit is not None:
-            lower = -np.inf if self.lower_limit is None else np.array(self.lower_limit)
-            upper = np.inf if self.upper_limit is None else np.array(self.upper_limit)
+            lower = -np.inf if self.lower_limit is None else np.full_like(control, self.lower_limit)
+            upper = np.inf if self.upper_limit is None else np.full_like(control, self.upper_limit)
             control = np.clip(control, lower, upper)
 
         return control
 
     def set_goal(self, new_goals: list) -> None:
         self.goals = np.array(new_goals)
+
 
 class Constant(Controls):
     def __init__(self, control: np.ndarray):

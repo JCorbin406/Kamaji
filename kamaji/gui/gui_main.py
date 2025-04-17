@@ -47,12 +47,20 @@ class PIDBlock(QWidget):
         self.ki_input = QLineEdit("0.0")
         self.kd_input = QLineEdit("0.0")
 
+        # Safe loading without popups
         if spec:
-            self.state_input.setCurrentText(spec.get("state", state_options[0] if state_options else "position_x"))
+            self.state_input.setCurrentText(str(spec.get("state", state_options[0] if state_options else "position_x")))
             self.goal_input.setText(str(spec.get("goal", 0.0)))
-            self.kp_input.setText(str(spec.get("kp", 1.0)))
-            self.ki_input.setText(str(spec.get("ki", 0.0)))
-            self.kd_input.setText(str(spec.get("kd", 0.0)))
+            # Handle both flat or nested gain formats
+            if "kp" in spec:
+                self.kp_input.setText(str(spec.get("kp", 1.0)))
+                self.ki_input.setText(str(spec.get("ki", 0.0)))
+                self.kd_input.setText(str(spec.get("kd", 0.0)))
+            elif "gains" in spec:
+                gains = spec.get("gains", {})
+                self.kp_input.setText(str(gains.get("Kp", 1.0)))
+                self.ki_input.setText(str(gains.get("Ki", 0.0)))
+                self.kd_input.setText(str(gains.get("Kd", 0.0)))
 
         self.layout.addRow("State", self.state_input)
         self.layout.addRow("Goal", self.goal_input)
@@ -61,12 +69,23 @@ class PIDBlock(QWidget):
         self.layout.addRow("Kd", self.kd_input)
         self.setLayout(self.layout)
 
+    def to_dict(self):
+        return {
+            "state": self.state_input.currentText(),
+            "goal": float(self.goal_input.text()),
+            "kp": float(self.kp_input.text()),
+            "ki": float(self.ki_input.text()),
+            "kd": float(self.kd_input.text())
+        }
+
+
 class AgentEditor(QWidget):
     def __init__(self, agent_id: str, config: Optional[dict] = None):
         super().__init__()
         self.agent_id = agent_id
         self.state_inputs = {}
         self.control_editors = {}
+        self.loading = False  # ✅ Prevent popups
 
         self.layout = QVBoxLayout()
         self.form = QFormLayout()
@@ -85,18 +104,29 @@ class AgentEditor(QWidget):
         self.dynamics_box = QComboBox()
         self.dynamics_box.addItems(self.dynamics_map.keys())
         self.dynamics_box.currentTextChanged.connect(self.rebuild_fields)
-
         self.form.addRow("Dynamics Model:", self.dynamics_box)
+
         self.state_fields_layout = QFormLayout()
         self.form.addRow(QLabel("Initial State:"), QWidget())
         self.form.addRow(self.state_fields_layout)
         self.layout.addLayout(self.form)
 
+        # ✅ Wrap control layout in scroll area
         self.control_group = QGroupBox("Controllers per Control Channel")
         self.control_layout = QFormLayout()
-        self.control_group.setLayout(self.control_layout)
-        self.layout.addWidget(self.control_group)
 
+        control_container = QWidget()
+        control_container.setLayout(self.control_layout)
+
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setWidget(control_container)
+
+        group_layout = QVBoxLayout()
+        group_layout.addWidget(self.scroll_area)
+        self.control_group.setLayout(group_layout)
+
+        self.layout.addWidget(self.control_group)
         self.setLayout(self.layout)
 
         if config:
@@ -135,6 +165,7 @@ class AgentEditor(QWidget):
         for control in control_vars:
             ctrl_type = QComboBox()
             ctrl_type.addItems(["Constant", "PID"])
+
             const_val = QLineEdit("0.0")
             pid_widget = PIDBlock(state_options=state_vars)
             pid_widget.hide()
@@ -175,7 +206,10 @@ class AgentEditor(QWidget):
                 val = float(editor["constant_input"].text())
                 controller_dict[ctrl_name] = {"type": "Constant", "value": val}
             elif mode == "PID":
-                controller_dict[ctrl_name] = {"type": "PID", "specs": [editor["pid_block"].to_dict()]}
+                controller_dict[ctrl_name] = {
+                    "type": "PID",
+                    "specs": [editor["pid_block"].to_dict()]
+                }
 
         return {
             "type": "custom",
@@ -185,6 +219,7 @@ class AgentEditor(QWidget):
         }
 
     def load_from_spec(self, spec):
+        self.loading = True
         self.dynamics_box.setCurrentText(spec.get("dynamics_model", "SingleIntegrator2DOF"))
         self.rebuild_fields()
 
@@ -201,8 +236,14 @@ class AgentEditor(QWidget):
             if settings["type"] == "Constant":
                 editor["constant_input"].setText(str(settings["value"]))
             elif settings["type"] == "PID" and settings.get("specs"):
-                editor["pid_block"] = PIDBlock(settings["specs"][0])
+                editor["pid_block"].state_input.setCurrentText(settings["specs"][0].get("state", ""))
+                editor["pid_block"].goal_input.setText(str(settings["specs"][0].get("goal", 0.0)))
+                editor["pid_block"].kp_input.setText(str(settings["specs"][0].get("kp", 1.0)))
+                editor["pid_block"].ki_input.setText(str(settings["specs"][0].get("ki", 0.0)))
+                editor["pid_block"].kd_input.setText(str(settings["specs"][0].get("kd", 0.0)))
                 self.toggle_ctrl_widget(ctrl_name)
+        self.loading = False
+
 
 class AgentTab(QWidget):
     def __init__(self, main_window):
@@ -215,10 +256,10 @@ class AgentTab(QWidget):
         self.list_widget.currentItemChanged.connect(self.switch_agent)
 
         add_btn = QPushButton("Add Agent")
-        add_btn.clicked.connect(lambda: self.add_agent())  # ✅ Prevents passing in a bool
+        add_btn.clicked.connect(lambda: self.add_agent())
 
         remove_btn = QPushButton("Remove Agent")
-        remove_btn.clicked.connect(lambda: self.remove_selected_agent())  # optional clarity
+        remove_btn.clicked.connect(lambda: self.remove_selected_agent())
 
         sidebar = QVBoxLayout()
         sidebar.addWidget(QLabel("Agents"))
@@ -231,18 +272,18 @@ class AgentTab(QWidget):
         layout.addWidget(self.editor_stack)
         self.setLayout(layout)
 
-    def add_agent(self, aid=None, config=None):
+    def add_agent(self, aid: Optional[str] = None, config: Optional[dict] = None):
         if aid is None:
             base = "agent"
             i = 1
             while f"{base}_{i}" in self.agent_forms:
                 i += 1
-            aid = f"{base}_{i}"  # ✅ Always assign a string
+            aid = f"{base}_{i}"
 
-        # Confirm aid is a string
         if not isinstance(aid, str):
             raise TypeError(f"[AgentTab] Generated aid is not a string: {aid} ({type(aid)})")
 
+        from kamaji.gui.gui_main import AgentEditor  # ensure dynamic import avoids circular issues
         form = AgentEditor(aid, config)
         self.agent_forms[aid] = form
         self.editor_stack.addWidget(form)
@@ -262,11 +303,9 @@ class AgentTab(QWidget):
             return
         aid = current_item.text()
 
-        # Remove from list
         row = self.list_widget.row(current_item)
         self.list_widget.takeItem(row)
 
-        # Remove from stacked editor
         form = self.agent_forms.pop(aid)
         index = self.editor_stack.indexOf(form)
         if index != -1:
@@ -287,8 +326,13 @@ class AgentTab(QWidget):
 
         for aid, conf in config.get("agents", {}).items():
             if "dynamics_model" not in conf:
-                raise ValueError(f"Agent '{aid}' is missing a 'dynamics_model' field in the YAML config.")
-            self.add_agent(aid, conf)
+                print(f"[Warning] Skipping agent '{aid}' due to missing dynamics_model.")
+                continue
+            try:
+                self.add_agent(aid, conf)
+            except Exception as e:
+                print(f"[Warning] Failed to load agent '{aid}': {e}")
+
 
 
 class ConfigTab(QWidget):
