@@ -59,7 +59,13 @@ class PID(Controls):
     def set_goal(self, new_goals: list) -> None:
         self.goals = np.array(new_goals)
 
+class Constant(Controls):
+    def __init__(self, control: np.ndarray):
+        super().__init__()
+        self.control = np.array(control)
 
+    def update(self, t: float, state: np.ndarray) -> np.ndarray:
+        return self.control
     
 # class PathFollowerDyn(Controls):
 #     """

@@ -26,4 +26,5 @@ dependencies:
   - pytest                # Testing
   - pip                   # For editable install
   - pip:
+      - dearpygui         # GUI framework
       - -e .              # Install Kamaji in editable mode

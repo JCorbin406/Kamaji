@@ -9,7 +9,6 @@ from sympy import Matrix, diff, init_printing, simplify, sqrt, symbols
 
 import kamaji.tools.ode_solvers as ode  # Importing the RK4_step function from the external file
 # from kamaji.controllers.path_follower import PathFollower
-from kamaji.controllers.controllers_old import *
 from kamaji.dynamics.dynamics import *
 from kamaji.controllers.controllers import *
 
@@ -21,6 +20,8 @@ class Agent:
 
         # Assign configuration parameters
         self._agent_config = agent_config
+
+        self.manual_control_input = None  # Default is None
 
         # Set the simulation timestep for the dynamics updates
         self._dt = dt
@@ -51,6 +52,14 @@ class Agent:
         # Assign the agent's dynamics model and controller
         self.assign_dynamics()
         self.assign_controller()
+
+        # Validate that dynamics and control dimensions match
+        required_controls = self.dynamics_model.control_dimension()
+        if len(self._control_list) != required_controls:
+            raise ValueError(
+                f"[Agent: {self._id}] Control mismatch: dynamics model expects {required_controls} control inputs, "
+                f"but controller provides {len(self._control_list)}."
+            )
 
     def assign_dynamics(self) -> None:
         """
@@ -110,12 +119,18 @@ class Agent:
                 pid_specs = controller['specs']
                 state_names = [s['state'] for s in pid_specs]
                 goals = [s['goal'] for s in pid_specs]
-                Kp = [s['gains']['Kp'] for s in pid_specs]
-                Ki = [s['gains']['Ki'] for s in pid_specs]
-                Kd = [s['gains']['Kd'] for s in pid_specs]
+                # Kp = [s['gains']['Kp'] for s in pid_specs]
+                # Ki = [s['gains']['Ki'] for s in pid_specs]
+                # Kd = [s['gains']['Kd'] for s in pid_specs]
+                Kp = [s["kp"] if "kp" in s else s["gains"]["Kp"] for s in pid_specs]
+                Ki = [s["ki"] if "ki" in s else s["gains"]["Ki"] for s in pid_specs]
+                Kd = [s["kd"] if "kd" in s else s["gains"]["Kd"] for s in pid_specs]
                 self.control_model = PID(state_names, goals, Kp, Ki, Kd, dt=self._dt)
             except AttributeError:
                 raise ValueError("PID requires gains to be set.")
+        elif controller_type == "Constant":
+            const_signal = controller['vector']
+            self.control_model = Constant(const_signal)
         else:
             raise NotImplementedError(f"{controller} not a valid controller option")
 

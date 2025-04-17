@@ -3,16 +3,14 @@ from time import time
 from typing import Optional
 from tqdm import tqdm
 import numpy as np
-from sympy import symbols, sqrt, Matrix, simplify, diff, init_printing, lambdify
-import sympy as sp
-from qpsolvers import solve_qp
-
+from kamaji.plotting.simulation_plotter import SimulationPlotter
+from kamaji.logging.simulation_logger import SimulationLogger
 from kamaji.agent.agent import Agent
 
 
 # Add agent IDs, whatever number they were initialized in
 class Simulator:
-    def __init__(self, total_time: float, dt: float, agents: Optional[list[Agent]] = None) -> None:
+    def __init__(self, config = None) -> None:
         """
         Initializes a Simulation with a specified total time and step size.
 
@@ -21,124 +19,203 @@ class Simulator:
             dt (float): The step size of the simulation, in seconds.
             agents (Optional[list[Agent]]): Initial agents to add to the sim, if desired.
         """
-        if agents is None:
-            self.active_agents = []
-        else:
-            self.active_agents = agents
+        self._config = config
+        self._current_real_time = time()
+        self._elapsed_real_time = 0.0
+        self.sim_time = 0.0
+        self.active_agents = []
         self.inactive_agents = []
-        self.total_time = total_time
-        self.t = 0.0
-        self.dt = dt
+        self.agent_ids = set()
+        self.verbose = True # Default in case config is None
+        self.plot = SimulationPlotter(self)
+        
+        self.logging_params = config.get("logging", {})
+        self.logger = SimulationLogger(self)
 
-        """CBF Stuff"""
-        x1, x2, x3, y1, y2, y3, r, alpha, gamma = symbols('x1 x2 x3 y1 y2 y3 r alpha gamma')
-        # Define h(x) functions
-        h1 = sqrt((x1-x2)**2 + (y1-y2)**2) - r
-        h2 = sqrt((x1-x3)**2 + (y1-y3)**2) - r
-        h3 = sqrt((x2-x3)**2 + (y2-y3)**2) - r
-        h_funcs = [h1, h2, h3]
-        # Define f(x) and g(x) as matrices
-        f = Matrix([0, 0])
-        g = Matrix([
-            [1, 0],  # Position derivatives (p1, p2, p3) do not depend on control inputs
-            [0, 1]
-        ])
-        sum = 0
-        for idx, cbf in enumerate(h_funcs):
-            sum += sp.exp(-gamma*cbf)
-        h = -(1/gamma)*sum
-        state_vars1 = Matrix([x1, y1])
-        state_vars2 = Matrix([x2, y2])
-        state_vars3 = Matrix([x3, y3])
-        grad_h1 = h.diff(state_vars1).T
-        grad_h2 = h.diff(state_vars2).T
-        grad_h3 = h.diff(state_vars3).T
-        Lf1_h = grad_h1 * f
-        Lg1_h = grad_h1 * g
-        Lf2_h = grad_h2 * f
-        Lg2_h = grad_h2 * g
-        Lf3_h = grad_h3 * f
-        Lg3_h = grad_h3 * g
-        self.h_func = lambdify((x1, y1, x2, y2, x3, y3, r, gamma), h)
-        self.f_func = lambdify((), f)
-        self.g_func = lambdify((), g)
-        self.Lf1_h_func = lambdify((x1, y1, x2, y2, x3, y3, r, gamma), Lf1_h)
-        self.Lf2_h_func = lambdify((x1, y1, x2, y2, x3, y3, r, gamma), Lf2_h)
-        self.Lf3_h_func = lambdify((x1, y1, x2, y2, x3, y3, r, gamma), Lf3_h)
-        self.Lg1_h_func = lambdify((x1, y1, x2, y2, x3, y3, r, gamma), Lg1_h)
-        self.Lg2_h_func = lambdify((x1, y1, x2, y2, x3, y3, r, gamma), Lg2_h)
-        self.Lg3_h_func = lambdify((x1, y1, x2, y2, x3, y3, r, gamma), Lg3_h)
-        self.h1_func = lambdify((x1, y1, x2, y2, x3, y3, r), h1)
-        self.h2_func = lambdify((x1, y1, x2, y2, x3, y3, r), h2)
-        self.h3_func = lambdify((x1, y1, x2, y2, x3, y3, r), h3)
-        self.H_hist = []
-        self.h1_hist = []
-        self.h2_hist = []
-        self.h3_hist = []
+        if config is not None:
+            self.load_from_config(config)
+        else:
+            if self.verbose:
+                print("No config provided, using default values.")
 
-    def simulate(self) -> None:
+    def set_sim_params(self, sim_params=None):
         """
-        Runs the entire length of the simulation.
+        Set simulation parameters including time step, duration, and integrator.
+
+        Args:
+            sim_params (dict, optional): Dictionary containing keys 'time_step', 'duration', and 'integrator'.
+
+        Raises:
+            ValueError: If required keys are missing or invalid.
+            TypeError: If any value has the wrong type.
+        """
+        # Use defaults if none provided
+        if sim_params is None:
+            self.dt = 0.01
+            self.duration = 10.0
+            self.num_timesteps = int(self.duration / self.dt)
+            self.integrator = 'RK4'
+            self.verbose = True # Default if config is not used
+            return
+        
+        # Verbose flag: default to True
+        self.verbose = sim_params.get('verbose', True)
+
+        # Required keys
+        required = ['time_step', 'duration', 'integrator']
+        missing = [key for key in required if key not in sim_params]
+        if missing:
+            raise ValueError(f"Missing simulation parameters: {missing}")
+
+        # Type and value checks
+        time_step = sim_params['time_step']
+        duration = sim_params['duration']
+        integrator = sim_params['integrator']
+
+        if not isinstance(time_step, (float, int)) or time_step <= 0:
+            raise ValueError("'time_step' must be a positive number.")
+        if not isinstance(duration, (float, int)) or duration <= 0:
+            raise ValueError("'duration' must be a positive, nonzero number.")
+        if not isinstance(integrator, str):
+            raise TypeError("'integrator' must be a string.")
+
+        # Valid integrators (optional)
+        valid_integrators = {'RK4', 'Euler', 'RK2', 'RK45'}
+        if integrator not in valid_integrators:
+            raise ValueError(f"Unsupported integrator '{integrator}'. Valid options: {valid_integrators}")
+
+        # Assign values
+        self.dt = float(time_step)
+        self.duration = float(duration)
+        self.num_timesteps = max(1, int(self.duration / self.dt))
+        self.integrator = integrator
+    
+    def load_from_config(self, config):
+        self.set_sim_params(config.get('simulation', {}))
+        self.add_agents(config.get('agents', {}))
+        self.env_params = config.get('environment', {})
+        self.logging_params = config.get('logging', {})
+
+    def add_agents(self, agents) -> None:
+        """
+        Adds one or more agents to the simulation. Supports:
+        - a dict of agents (id → config)
+        - a tuple: (config, id)
+        - a single config dict (id auto-generated)
+        """
+        if isinstance(agents, dict):
+            # Case 1: multiple agents
+            if all(isinstance(v, dict) for v in agents.values()):
+                for agent_id, agent_config in agents.items():
+                    self._add_single_agent(agent_config, agent_id)
+            # Case 2: single agent config (ID auto-generated)
+            else:
+                self._add_single_agent(agents)
+        elif isinstance(agents, tuple):
+            if not isinstance(agents[0], dict) or not isinstance(agents[1], str):
+                raise TypeError("Expected (agent_config: dict, agent_id: str)")
+            self._add_single_agent(agents[0], agents[1])
+        else:
+            raise TypeError(
+                "Expected one of: dict of agents, (config, id) tuple, or single agent config dict."
+            )
+
+    def _add_single_agent(self, agent_config: dict, agent_id: Optional[str] = None):
+        # 1. Required fields
+        required_fields = ['type', 'initial_state', 'dynamics_model', 'controller']
+        missing = [k for k in required_fields if k not in agent_config]
+        if missing:
+            raise ValueError(f"Missing required fields in agent config: {missing}")
+
+        # 2. Validate types (optional but good for debugging)
+        if not isinstance(agent_config['initial_state'], dict):
+            raise TypeError("initial_state must be a dictionary.")
+        if not isinstance(agent_config['controller'], dict):
+            raise TypeError("controller must be a dictionary.")
+
+        # 3. Validate controller contents
+        if 'type' not in agent_config['controller']:
+            raise ValueError("Controller must include a 'type' field.")
+        if 'specs' not in agent_config['controller']:
+            raise ValueError("Controller must include a 'specs' field.")
+        if not isinstance(agent_config['controller']['specs'], list):
+            raise TypeError("Controller 'specs' must be a list.")
+        
+        # 4. Generate ID if needed
+        if agent_id is None:
+            base = "agent"
+            i = 1
+            while f"{base}_{i}" in self.agent_ids:
+                i += 1
+            agent_id = f"{base}_{i}"
+        
+        # 5. Check for ID reuse
+        if agent_id in self.agent_ids:
+            raise ValueError(f"Agent ID '{agent_id}' already exists.")
+        
+        # 6. Add agent to active agents
+        agent_config['id'] = agent_id
+        try:
+            self.active_agents.append(Agent(agent_config, self.sim_time, self.dt))
+        except Exception as e:
+            raise RuntimeError(f"Failed to initialize Agent '{agent_id}': {e}")
+        self.agent_ids.add(agent_id)
+        if self.verbose:
+            print(f"[Simulator] Agent '{agent_id}' added.")
+
+    def simulate(self, on_step=None) -> None:
+        """
+        Runs the simulation forward for all time steps.
+        
+        Args:
+            on_step (Callable[[Simulator, int], None], optional):
+                A user-supplied callback that runs before each step.
         """
         start_time = time()
-        time_steps = int(self.total_time / self.dt)
-        for _ in tqdm(range(time_steps)):
+        iter = tqdm(range(self.num_timesteps), desc="Simulating", unit="step") if self.verbose else range(self.num_timesteps)
+
+        for step_idx in iter:
+            if on_step:
+                on_step(self, step_idx)
             self.step()
-        sim_time = time() - start_time
-        print(f"Sim time: {sim_time:.6f}")
-        while len(self.active_agents) > 0:
-            self.inactive_agents.append(self.active_agents.pop())
+
+        self.sim_time = time() - start_time
+
+        self.inactive_agents.extend(self.active_agents)
+        self.active_agents.clear()
+
+        if self.logging_params.get("enabled", True):
+            if self.logging_params.get("format", "hdf5") == "hdf5":
+                self.logger.log_to_hdf5()
+
+        if self.verbose:
+            print(f"Sim time: {self.sim_time:.4f}")
 
     def step(self) -> None:
         """
         Steps the simulation forward by simulating all agents.
         """
-        """CBF Stuff"""
-        if True:
-            GAMMA = 100.0
-            radius = 2.0
-            controls = []
-            for a in self.active_agents:
-                controls += list(a.control_step(self.t, self.dt))
-            controls = np.array(controls)
-            controls.reshape(len(controls), 1)
-            q = -2*controls
-            P = 2*np.eye(6)
-            ax1, ay1 = self.active_agents[0].state[0], self.active_agents[0].state[1]
-            ax2, ay2 = self.active_agents[1].state[0], self.active_agents[1].state[1]
-            ax3, ay3 = self.active_agents[2].state[0], self.active_agents[2].state[1]
-            lg1h = self.Lg1_h_func(ax1, ay1, ax2, ay2, ax3, ay3, radius, GAMMA)
-            lg2h = self.Lg2_h_func(ax1, ay1, ax2, ay2, ax3, ay3, radius, GAMMA)
-            lg3h = self.Lg3_h_func(ax1, ay1, ax2, ay2, ax3, ay3, radius, GAMMA)
-            lf1h = self.Lf1_h_func(ax1, ay1, ax2, ay2, ax3, ay3, radius, GAMMA)
-            lf2h = self.Lf2_h_func(ax1, ay1, ax2, ay2, ax3, ay3, radius, GAMMA)
-            lf3h = self.Lf3_h_func(ax1, ay1, ax2, ay2, ax3, ay3, radius, GAMMA)
-            _G = -np.concatenate((lg1h, lg2h, lg3h), axis=1)
-            """ Add noise. """
-            # _G += 2 * np.random.rand(1, 6) - 1
-            _H = lf1h + lf2h + lf3h + 1.0*self.h_func(ax1, ay1, ax2, ay2, ax3, ay3, radius, GAMMA)
-            u_filtered = solve_qp(P, q, _G, _H, solver="cvxopt")
-            control_tuples = list(zip(u_filtered[::2], u_filtered[1::2]))
-            self.H_hist.append(self.h_func(ax1, ay1, ax2, ay2, ax3, ay3, radius, GAMMA).item())
-            self.h1_hist.append(self.h1_func(ax1, ay1, ax2, ay2, ax3, ay3, radius).item())
-            self.h2_hist.append(self.h2_func(ax1, ay1, ax2, ay2, ax3, ay3, radius).item())
-            self.h3_hist.append(self.h3_func(ax1, ay1, ax2, ay2, ax3, ay3, radius).item())
+        for idx, agent in enumerate(self.active_agents):
+            if agent.manual_control_input is not None:
+                control = agent.manual_control_input
+            else:
+                control = agent.compute_control(self.sim_time)
+            agent.step(self.sim_time, control)
 
-        for idx, a in enumerate(self.active_agents):
-            # control_input = a.control_step(self.t, self.dt)
-            control_input = control_tuples[idx]
-            a.step(self.t, self.dt, control_input)
-        self.t += self.dt
+    def clear_manual_control(self, agent_id: str) -> None:
+        for agent in self.active_agents:
+            if agent._id == agent_id:
+                agent.manual_control_input = None
+                return
 
-    def add_agent(self, agent: Agent) -> None:
-        """
-        Initializes a Simulation with a specified total time and step size.
-
-        Args:
-            t (float): The total time the simulation should run for, in seconds.
-            dt (float): The step size of the simulation, in seconds.
-        """
-        self.active_agents.append(agent)
+    def set_manual_control(self, agent_id: str, control: np.ndarray) -> None:
+        for agent in self.active_agents:
+            if agent._id == agent_id:
+                agent.manual_control_input = control
+                if self.verbose:
+                    print(f"[Simulator] Manual control set for agent '{agent_id}'.")
+                return
+        raise ValueError(f"Agent with ID '{agent_id}' not found.")
 
     def remove_agent(self, agent: Agent) -> bool:
         """
@@ -152,24 +229,5 @@ class Simulator:
             ValueError: _description_
         """
         if agent not in self.active_agents:
-            raise ValueError('Agent ' + str(agent) + ' is not an active Agent.')
+            raise ValueError('Agent ' + str(agent.id) + ' is not an active Agent.')
         self.inactive_agents.append(self.active_agents.pop(self.active_agents.index(agent)))
-        return True
-
-    def get_active_agents(self) -> list[Agent]:
-        """
-        Gives the list of active Agents.
-
-        Returns:
-            list[Agent]: The list of active Agents.
-        """
-        return self.active_agents
-
-    def get_inactive_agents(self) -> list[Agent]:
-        """
-        Gives the list of inactive Agents.
-
-        Returns:
-            list[Agent]: The list of inactive Agents.
-        """
-        return self.inactive_agents
