@@ -3,19 +3,19 @@ import matplotlib.pyplot as plt
 from scipy.optimize import minimize_scalar
 import random
 
-
 class Auction:
     def __init__(self, agents, Gamma, bids, alpha=0.99, rho_bar=2, rho=0.5, epsilon=1e-4):
-        """Initialize the auction environment.
+        """
+        Initialize the Auction class for decentralized divisible resource allocation.
 
         Args:
-            agents (List[Agent]): List of agent objects, each with their own valuation functions.
-            Gamma (float): Total amount of divisible resource.
-            bids (List[Tuple[float, float]]): Initial bids from agents in the form (β, d).
-            alpha (float): Smoothing parameter for demand updates.
-            rho_bar (float): Scaling factor used in constrained demand calculation.
-            rho (float): Parameter for demand smoothing.
-            epsilon (float): Convergence threshold.
+            agents (List[Agent]): List of Agent objects with valuation functions.
+            Gamma (float): Total amount of divisible resource to allocate.
+            bids (List[Tuple[float, float]]): Initial bids for each agent, in (β, d) format.
+            alpha (float): Smoothing parameter for computing constrained demand.
+            rho_bar (float): Upper bound on dynamic response term for constrained demand.
+            rho (float): Smoothing factor for current demand vs. allocation.
+            epsilon (float): Convergence threshold for bid updates.
         """
         self.agents = agents
         self.N = len(agents)
@@ -25,84 +25,100 @@ class Auction:
         self.rho = rho
         self.epsilon = epsilon
         self.bids = bids
-        self.history = []
-        self.history.append(self.bids.copy())
+        self.history = [self.bids.copy()]  # Log of all bids over time
 
     def valuation(self, n, x):
-        """Evaluate the valuation function for agent n at allocation x."""
+        """Returns the valuation u_n(x) of agent n at allocation x."""
         return self.agents[n].valuation(x)
 
     def marginal_valuation(self, n, x):
-        """Evaluate the marginal valuation function for agent n at allocation x."""
+        """Returns the marginal valuation u_n'(x) of agent n at allocation x."""
         return self.agents[n].marginal_valuation(x)
 
     def allocation(self, bids):
-        """Compute allocation based on sorted bid prices (descending).
+        """
+        Computes allocation vector from current bids using descending sort of β with random tie-breaking.
 
         Args:
-            bids (List[Tuple[float, float]]): Bids as (β, d) pairs.
+            bids (List[Tuple[float, float]]): Bids as list of (β, d) pairs.
 
         Returns:
-            np.ndarray: Allocated quantities to each agent.
+            np.ndarray: Allocated resource vector x for all agents.
         """
-        # beta_sorted = sorted([(i, b[0], b[1]) for i, b in enumerate(bids)], key=lambda x: (-x[1], x[0]))
-        
-        """Commenting out for debugging"""
-        # Add a random tie-breaker to each agent
         indexed_bids = [(i, b[0], b[1], random.random()) for i, b in enumerate(bids)]
-        # Sort by descending bid price β, then by random tiebreaker
         beta_sorted = sorted(indexed_bids, key=lambda x: (-x[1], x[3]))
 
-        """2nd attempt. Prior one works I believe"""
-        # indexed_bids = [(i, b[0], b[1]) for i, b in enumerate(bids)]
-        # beta_sorted = sorted(indexed_bids, key=lambda x: (-x[1], x[0]))  # tie-break by index
-
-        remaining = self.Gamma
         x = np.zeros(self.N)
+        remaining = self.Gamma
         for i, beta, d, _ in beta_sorted:
             x[i] = min(d, remaining)
             remaining -= x[i]
             if remaining <= 0:
                 break
-
-        # allocation_threshold = 1e-4  # or tighter if needed
-        # for i, beta, d, _ in beta_sorted:
-        #     if remaining < allocation_threshold:
-        #         break
-        #     x[i] = min(d, remaining)
-        #     remaining -= x[i]
-
         return x
 
     def payment(self, bids, n):
-        """Calculate payment for agent n using Clarke pivot rule."""
+        """
+        Computes VCG payment for agent n using Clarke pivot rule.
+
+        Args:
+            bids (List[Tuple[float, float]]): Current bids.
+            n (int): Agent index.
+
+        Returns:
+            float: Payment τ_n agent n must pay.
+        """
         b_without_n = bids.copy()
         b_without_n[n] = (bids[n][0], 0.0)
         x_without = self.allocation(b_without_n)
         return sum(bids[m][0] * (x_without[m] - self.x[m]) for m in range(self.N) if m != n)
 
     def payoff(self, n, bids):
-        """Calculate agent n's payoff under given bids."""
+        """
+        Computes payoff for agent n given current bids.
+
+        Args:
+            n (int): Agent index.
+            bids (List[Tuple[float, float]]): Bid profile.
+
+        Returns:
+            float: Payoff for agent n.
+        """
         x = self.allocation(bids)
         τ = self.payment(bids, n)
         return self.valuation(n, x[n]) - τ
 
     def constrained_demand(self, n, bids):
-        """Compute upper bound on demand for agent n based on dynamic constraints."""
+        """
+        Computes upper bound for agent n's demand based on dynamic constraints.
+
+        Args:
+            n (int): Agent index.
+            bids (List[Tuple[float, float]]): Bid profile.
+
+        Returns:
+            float: Constrained upper bound on agent n's demand.
+        """
         Γc = max(0, self.Gamma - sum(d for _, d in bids))
         βn, dn = bids[n]
         m = self.find_m(n, bids)
         dm = bids[m][1] if m is not None else 0
         βm = bids[m][0] if m is not None else 0
         Φ = max(0, (βn - βm + self.rho * (dn - self.x[n]) + 0.5 * self.rho_bar * Γc)) / self.rho_bar
-        c1 = dm + Γc
-        c2 = self.alpha * Φ
-        c3 = (2 / self.rho_bar) * βn
-        upper_bound = self.x[n] + min(c1, c2, c3)
+        upper_bound = self.x[n] + min(dm + Γc, self.alpha * Φ, (2 / self.rho_bar) * βn)
         return upper_bound
 
     def find_m(self, n, bids):
-        """Find the lowest-priced winning agent (excluding agent n)."""
+        """
+        Finds the lowest priced winning agent (other than agent n).
+
+        Args:
+            n (int): Agent index.
+            bids (List[Tuple[float, float]]): Bid profile.
+
+        Returns:
+            int: Index of agent m, or None if none found.
+        """
         lowest = float('inf')
         idx = None
         for i in range(self.N):
@@ -115,7 +131,16 @@ class Auction:
         return idx
 
     def best_response(self, n, bids):
-        """Compute agent n's best response (optimal β, d) given current bids."""
+        """
+        Computes agent n's best response by optimizing payoff w.r.t. demand.
+
+        Args:
+            n (int): Agent index.
+            bids (List[Tuple[float, float]]): Current bids.
+
+        Returns:
+            Tuple[float, float]: New bid (β, d) for agent n.
+        """
         upper = self.constrained_demand(n, bids)
         lower = self.x[n]
 
@@ -131,7 +156,12 @@ class Auction:
         return (β_best, best_d)
 
     def select_next_player(self):
-        """Determine the next agent to update its bid."""
+        """
+        Selects the next agent to update their bid based on allocation status.
+
+        Returns:
+            int: Index of next player.
+        """
         for i in range(self.N):
             β, d = self.bids[i]
             if self.x[i] < d and self.x[i] > 0:
@@ -143,10 +173,14 @@ class Auction:
         return max(range(self.N), key=lambda i: self.bids[i][0])
 
     def run(self, max_steps=10000):
-        """Run the auction until convergence or max_steps.
+        """
+        Runs the auction process until convergence or max iterations.
+
+        Args:
+            max_steps (int): Maximum allowed iterations.
 
         Returns:
-            Tuple[List[Tuple[float, float]], np.ndarray]: Final bids and allocations.
+            Tuple[List[Tuple[float, float]], np.ndarray]: Final bid profile and allocation.
         """
         k = 0
         update_log = []
@@ -164,69 +198,62 @@ class Auction:
                 all_updated = set(recent) == set(range(self.N))
                 delta = sum(abs(self.bids[i][1] - bids_old[i][1]) + abs(self.bids[i][0] - bids_old[i][0]) for i in range(self.N))
                 if all_updated and delta < self.epsilon:
-                    # print('Converged')
                     break
             k += 1
         return self.bids, self.allocation(self.bids)
-    
+
     def compute_payments(self):
-        """Compute Clarke pivot payments τ_i for each agent after final allocation."""
-        self.x = self.allocation(self.bids)  # Ensure allocation is fresh
-        payments = []
-        for n in range(self.N):
-            τ_n = self.payment(self.bids, n)
-            payments.append(τ_n)
-        return payments
+        """
+        Computes VCG payments for each agent after auction ends.
+
+        Returns:
+            List[float]: Payment τ_i for each agent.
+        """
+        self.x = self.allocation(self.bids)
+        return [self.payment(self.bids, n) for n in range(self.N)]
 
     def compute_payments_vcg(self):
         """
-        Compute Clarke-pivot (VCG-style) payments after the auction has converged.
+        Computes externality-based VCG-style payments by re-running auction without each agent.
 
         Returns:
-            List[float]: Payment τ_i for each agent i.
+            List[float]: Payments for each agent.
         """
-        self.x = self.allocation(self.bids)  # update self.x to current allocation
-        payments = []
-        for i in range(self.N):
-            x_without = self.run_without_agent(i)
-            externality = sum(
-                self.bids[j][0] * (x_without[j] - self.x[j])
-                for j in range(self.N) if j != i
-            )
-            payments.append(externality)
-        return payments
+        self.x = self.allocation(self.bids)
+        return [
+            sum(self.bids[j][0] * (self.run_without_agent(i)[j] - self.x[j]) for j in range(self.N) if j != i)
+            for i in range(self.N)
+        ]
 
     def reset(self, agents, bids):
         """
-        Reset the auction to a new set of agents and initial bids.
+        Resets the auction environment to a new configuration.
 
         Args:
-            agents (List[Agent]): New or original list of Agent objects.
-            bids (List[Tuple[float, float]]): Initial (β, d) bids for each agent.
+            agents (List[Agent]): New agent list.
+            bids (List[Tuple[float, float]]): New initial bids.
         """
         self.agents = agents
         self.N = len(agents)
         self.bids = bids.copy()
         self.history = [self.bids.copy()]
-        self.x = np.zeros(self.N)  # reset allocation
-
+        self.x = np.zeros(self.N)
 
     def run_without_agent(self, remove_index):
         """
-        Run the auction with agent `remove_index` removed.
-        Returns the full-length allocation (with 0 for the removed agent).
+        Runs auction without a specific agent, used for computing VCG payments.
+
+        Args:
+            remove_index (int): Index of agent to exclude.
+
+        Returns:
+            np.ndarray: Full allocation vector with zero at excluded index.
         """
-        # Subset of agents
         agents_wo = [a for i, a in enumerate(self.agents) if i != remove_index]
+        init_bids = [(a.marginal_valuation(1.0), 1.0) for a in agents_wo]
+        auction_wo = Auction(agents_wo, self.Gamma, init_bids)
+        _, alloc_wo = auction_wo.run()
 
-        # Initialize fresh marginal bids (not fixed, they'll update in run())
-        init_bids = [(agent.marginal_valuation(1.0), 1.0) for agent in agents_wo]
-
-        # Create and run new auction with subset
-        auction_wo = Auction(agents=agents_wo, Gamma=self.Gamma, bids=init_bids)
-        final_bids_wo, alloc_wo = auction_wo.run()
-
-        # Pad result back to original length
         full_alloc = np.zeros(self.N)
         j = 0
         for i in range(self.N):
@@ -236,13 +263,10 @@ class Auction:
             j += 1
         return full_alloc
 
-
     def plot_bid_demand_over_time(self):
-        """Visualize the evolution of demand bids over iterations."""
-        iterations = range(len(self.history))
+        """Plots demand bids over the course of the auction."""
         for i in range(self.N):
-            d_values = [step[i][1] for step in self.history]
-            plt.plot(iterations, d_values, label=f'Player {i+1}')
+            plt.plot([step[i][1] for step in self.history], label=f'Player {i+1}')
         plt.title('Bid Demand Over Iterations')
         plt.xlabel('Iteration')
         plt.ylabel('Demand (d)')
@@ -252,11 +276,9 @@ class Auction:
         plt.show()
 
     def plot_bid_price_over_time(self):
-        """Visualize the evolution of price bids over iterations."""
-        iterations = range(len(self.history))
+        """Plots price bids (β) over the course of the auction."""
         for i in range(self.N):
-            beta_values = [step[i][0] for step in self.history]
-            plt.plot(iterations, beta_values, label=f'Player {i+1}')
+            plt.plot([step[i][0] for step in self.history], label=f'Player {i+1}')
         plt.title('Bid Price Over Iterations')
         plt.xlabel('Iteration')
         plt.ylabel('Bid Price (β)')
@@ -265,26 +287,26 @@ class Auction:
         plt.tight_layout()
         plt.show()
 
-
 class Agent:
     def __init__(self, valuation_fn, marginal_valuation_fn, name="Agent"):
-        """Agent class for holding valuation and marginal valuation logic.
+        """
+        Agent model for auction-based resource allocation.
 
         Args:
-            valuation_fn (Callable[[float], float]): Valuation function u(x)
-            marginal_valuation_fn (Callable[[float], float]): Marginal valuation function u'(x)
-            name (str, optional): Agent identifier. Defaults to "Agent".
+            valuation_fn (Callable[[float], float]): u(x), the agent's valuation function.
+            marginal_valuation_fn (Callable[[float], float]): u'(x), marginal value of allocation.
+            name (str): Agent identifier.
         """
         self.valuation_fn = valuation_fn
         self.marginal_valuation_fn = marginal_valuation_fn
         self.name = name
 
     def valuation(self, x):
-        """Evaluate this agent's valuation at allocation x."""
+        """Returns agent's valuation at allocation x."""
         return self.valuation_fn(x)
 
     def marginal_valuation(self, x):
-        """Evaluate this agent's marginal valuation at allocation x."""
+        """Returns agent's marginal valuation at allocation x."""
         return self.marginal_valuation_fn(x)
 
 if __name__ == "__main__":

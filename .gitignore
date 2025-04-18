@@ -22,3 +22,7 @@ build/
 
 thesis/
 testing/
+site/ 
+.cache/
+
+.DS_Store

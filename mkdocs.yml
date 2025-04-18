@@ -1,0 +1,98 @@
+site_name: Kamaji Documentation
+site_url: https://JCorbin406.github.io/kamaji
+repo_url: https://github.com/JCorbin406/kamaji
+site_description: "Docs for the Kamaji multi-agent simulation environment."
+use_directory_urls: true
+
+nav:
+  - Home: index.md
+  - Quickstart: quickstart.md
+  - Concepts:
+      - Environment: concepts/environment.md
+      - Agents: concepts/agents.md
+  - Examples:
+      - Control Barrier Functions: examples/CBF.md
+      - Sequential Collsions: examples/sequential.md
+      - Auctions: examples/auction.md
+  - API Reference:
+      - Agent: api/agent.md
+      - Simulator: api/simulator.md
+      - Auction: api/auction.md
+
+plugins:
+  - search
+  - autorefs
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: ["."]
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+
+# Same as Ardupilot documentation.
+theme:
+  name: readthedocs
+  features:
+    - navigation.instant
+    - content.tabs.link
+
+# Less good - prefer cinder.
+# theme:
+#   name: windmill
+#   features:
+#     - navigation.instant
+#     - content.tabs.link
+
+# This one is good. 
+# theme:
+#   name: cinder
+#   features:
+#     - navigation.instant
+#     - content.tabs.link
+
+# Also a good one.
+# theme:
+#   name: terminal
+#   palette: dark
+#   features:
+#     - navigation.instant
+#     - content.tabs.link
+
+# Fun DOS theme.
+# theme:
+#   name: bootstrap386
+#   features:
+#     - navigation.instant
+#     - content.tabs.link
+
+# theme:
+#   name: alabaster
+#   features:
+#     - navigation.instant
+#     - content.tabs.link
+
+# theme:
+#   name: nature
+#   features:
+#     - navigation.instant
+#     - content.tabs.link
+
+# Github theme
+# theme:
+#   name: github
+#   features:
+#     - navigation.instant
+#     - content.tabs.link
+
+# Default mkdocs theme
+# theme:
+#   name: material
+#   palette:
+#     - scheme: default
+#       primary: 'indigo'
+#       accent: 'indigo'
+#   features:
+#     - navigation.instant

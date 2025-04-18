@@ -7,17 +7,28 @@ from kamaji.plotting.simulation_plotter import SimulationPlotter
 from kamaji.logging.simulation_logger import SimulationLogger
 from kamaji.agent.agent import Agent
 
-
-# Add agent IDs, whatever number they were initialized in
 class Simulator:
-    def __init__(self, config = None) -> None:
+    """
+    A class to manage and run multi-agent simulations with configurable dynamics,
+    control, and collision avoidance mechanisms. Includes support for agent tracking,
+    control input updates, manual overrides, logging, and visualization.
+
+    Attributes:
+        sim_time (float): Current simulation time.
+        active_agents (list): List of currently active agents.
+        inactive_agents (list): List of agents that have completed simulation.
+        agent_ids (set): Set of agent IDs in the simulation.
+        verbose (bool): Flag for printing debug/output information.
+        plot (SimulationPlotter): Visualization utility.
+        logger (SimulationLogger): Logging utility for simulation data.
+    """
+
+    def __init__(self, config=None) -> None:
         """
-        Initializes a Simulation with a specified total time and step size.
+        Initialize the simulation with optional configuration parameters.
 
         Args:
-            total_time (float): The total time the simulation should run for, in seconds
-            dt (float): The step size of the simulation, in seconds.
-            agents (Optional[list[Agent]]): Initial agents to add to the sim, if desired.
+            config (dict, optional): Dictionary containing simulation, agent, and logging parameters.
         """
         self._config = config
         self._current_real_time = time()
@@ -26,10 +37,9 @@ class Simulator:
         self.active_agents = []
         self.inactive_agents = []
         self.agent_ids = set()
-        self.verbose = True # Default in case config is None
+        self.verbose = True
         self.plot = SimulationPlotter(self)
-        
-        self.logging_params = config.get("logging", {})
+        self.logging_params = config.get("logging", {}) if config else {}
         self.logger = SimulationLogger(self)
 
         if config is not None:
@@ -40,34 +50,29 @@ class Simulator:
 
     def set_sim_params(self, sim_params=None):
         """
-        Set simulation parameters including time step, duration, and integrator.
+        Set core simulation parameters such as timestep, duration, and integration method.
 
         Args:
-            sim_params (dict, optional): Dictionary containing keys 'time_step', 'duration', and 'integrator'.
+            sim_params (dict, optional): Dictionary with keys 'time_step', 'duration', and 'integrator'.
 
         Raises:
-            ValueError: If required keys are missing or invalid.
-            TypeError: If any value has the wrong type.
+            ValueError: If required parameters are missing or invalid.
+            TypeError: If parameter types are incorrect.
         """
-        # Use defaults if none provided
         if sim_params is None:
             self.dt = 0.01
             self.duration = 10.0
             self.num_timesteps = int(self.duration / self.dt)
             self.integrator = 'RK4'
-            self.verbose = True # Default if config is not used
+            self.verbose = True
             return
-        
-        # Verbose flag: default to True
-        self.verbose = sim_params.get('verbose', True)
 
-        # Required keys
+        self.verbose = sim_params.get('verbose', True)
         required = ['time_step', 'duration', 'integrator']
         missing = [key for key in required if key not in sim_params]
         if missing:
             raise ValueError(f"Missing simulation parameters: {missing}")
 
-        # Type and value checks
         time_step = sim_params['time_step']
         duration = sim_params['duration']
         integrator = sim_params['integrator']
@@ -79,18 +84,22 @@ class Simulator:
         if not isinstance(integrator, str):
             raise TypeError("'integrator' must be a string.")
 
-        # Valid integrators (optional)
         valid_integrators = {'RK4', 'Euler', 'RK2', 'RK45'}
         if integrator not in valid_integrators:
             raise ValueError(f"Unsupported integrator '{integrator}'. Valid options: {valid_integrators}")
 
-        # Assign values
         self.dt = float(time_step)
         self.duration = float(duration)
         self.num_timesteps = max(1, int(self.duration / self.dt))
         self.integrator = integrator
-    
+
     def load_from_config(self, config):
+        """
+        Load simulation parameters, agent configuration, environment, and logging settings.
+
+        Args:
+            config (dict): YAML-style configuration dictionary.
+        """
         self.set_sim_params(config.get('simulation', {}))
         self.add_agents(config.get('agents', {}))
         self.env_params = config.get('environment', {})
@@ -98,17 +107,18 @@ class Simulator:
 
     def add_agents(self, agents) -> None:
         """
-        Adds one or more agents to the simulation. Supports:
-        - a dict of agents (id → config)
-        - a tuple: (config, id)
-        - a single config dict (id auto-generated)
+        Add one or more agents to the simulation.
+
+        Args:
+            agents (dict | tuple | dict): Dictionary of agents, (config, id) tuple, or a single config.
+
+        Raises:
+            TypeError: If format of input is not recognized.
         """
         if isinstance(agents, dict):
-            # Case 1: multiple agents
             if all(isinstance(v, dict) for v in agents.values()):
                 for agent_id, agent_config in agents.items():
                     self._add_single_agent(agent_config, agent_id)
-            # Case 2: single agent config (ID auto-generated)
             else:
                 self._add_single_agent(agents)
         elif isinstance(agents, tuple):
@@ -121,27 +131,32 @@ class Simulator:
             )
 
     def _add_single_agent(self, agent_config: dict, agent_id: Optional[str] = None):
-        # 1. Required fields
+        """
+        Add a single agent with the provided configuration and optional ID.
+
+        Args:
+            agent_config (dict): Configuration dictionary for the agent.
+            agent_id (str, optional): Explicit ID for the agent. Auto-generated if None.
+
+        Raises:
+            ValueError: If required fields are missing or types are invalid.
+            RuntimeError: If the agent fails to initialize.
+        """
         required_fields = ['type', 'initial_state', 'dynamics_model', 'controller']
         missing = [k for k in required_fields if k not in agent_config]
         if missing:
             raise ValueError(f"Missing required fields in agent config: {missing}")
 
-        # 2. Validate types (optional but good for debugging)
         if not isinstance(agent_config['initial_state'], dict):
             raise TypeError("initial_state must be a dictionary.")
         if not isinstance(agent_config['controller'], dict):
             raise TypeError("controller must be a dictionary.")
 
         controller_block = agent_config['controller']
-
-        # 3. NEW: Support per-channel or legacy controllers
         if 'type' in controller_block and 'specs' in controller_block:
-            # Single controller (legacy format)
             if not isinstance(controller_block['specs'], list):
                 raise TypeError("Controller 'specs' must be a list.")
         else:
-            # New format: one controller per control channel
             for ctrl_name, ctrl_conf in controller_block.items():
                 if not isinstance(ctrl_conf, dict):
                     raise TypeError(f"Controller for '{ctrl_name}' must be a dict.")
@@ -152,7 +167,6 @@ class Simulator:
                 if not isinstance(ctrl_conf['specs'], list):
                     raise TypeError(f"Controller '{ctrl_name}' 'specs' must be a list.")
 
-        # 4. Generate ID if needed
         if agent_id is None:
             base = "agent"
             i = 1
@@ -160,11 +174,9 @@ class Simulator:
                 i += 1
             agent_id = f"{base}_{i}"
 
-        # 5. Check for ID reuse
         if agent_id in self.agent_ids:
             raise ValueError(f"Agent ID '{agent_id}' already exists.")
 
-        # 6. Add agent to active agents
         agent_config['id'] = agent_id
         try:
             self.active_agents.append(Agent(agent_config, self.sim_time, self.dt))
@@ -177,22 +189,20 @@ class Simulator:
 
     def simulate(self, on_step=None) -> None:
         """
-        Runs the simulation forward for all time steps.
-        
+        Run the simulation loop for all time steps.
+
         Args:
-            on_step (Callable[[Simulator, int], None], optional):
-                A user-supplied callback that runs before each step.
+            on_step (Callable[[Simulator, int], None], optional): Callback executed before each step.
         """
         start_time = time()
-        iter = tqdm(range(self.num_timesteps), desc="Simulating", unit="step") if self.verbose else range(self.num_timesteps)
+        iterator = tqdm(range(self.num_timesteps), desc="Simulating", unit="step") if self.verbose else range(self.num_timesteps)
 
-        for step_idx in iter:
+        for step_idx in iterator:
             if on_step:
                 on_step(self, step_idx)
             self.step()
 
         self.sim_time = time() - start_time
-
         self.inactive_agents.extend(self.active_agents)
         self.active_agents.clear()
 
@@ -205,22 +215,35 @@ class Simulator:
 
     def step(self) -> None:
         """
-        Steps the simulation forward by simulating all agents.
+        Advance the simulation by one time step, updating agent states using control input.
         """
         for idx, agent in enumerate(self.active_agents):
-            if agent.manual_control_input is not None:
-                control = agent.manual_control_input
-            else:
-                control = agent.compute_control(self.sim_time)
+            control = agent.manual_control_input if agent.manual_control_input is not None else agent.compute_control(self.sim_time)
             agent.step(self.sim_time, control)
 
     def clear_manual_control(self, agent_id: str) -> None:
+        """
+        Clear any manually assigned control input for a specific agent.
+
+        Args:
+            agent_id (str): ID of the agent to clear manual control for.
+        """
         for agent in self.active_agents:
             if agent._id == agent_id:
                 agent.manual_control_input = None
                 return
 
     def set_manual_control(self, agent_id: str, control: np.ndarray) -> None:
+        """
+        Manually assign a control input to a specific agent.
+
+        Args:
+            agent_id (str): ID of the agent.
+            control (np.ndarray): Manual control input.
+
+        Raises:
+            ValueError: If the agent ID is not found.
+        """
         for agent in self.active_agents:
             if agent._id == agent_id:
                 agent.manual_control_input = control
@@ -231,15 +254,18 @@ class Simulator:
 
     def remove_agent(self, agent: Agent) -> bool:
         """
-        Removes an Agent from the active Agents and moves it to the inactive Agents.
-        If the agent does not exist in the active Agent list, an error will be thrown.
+        Remove an agent from the active list and move to the inactive list.
 
         Args:
-            agent (Agent): The Agent to make inactive.
+            agent (Agent): The agent to be removed.
+
+        Returns:
+            bool: True if removal was successful.
 
         Raises:
-            ValueError: _description_
+            ValueError: If the agent is not in the active list.
         """
         if agent not in self.active_agents:
-            raise ValueError('Agent ' + str(agent.id) + ' is not an active Agent.')
+            raise ValueError(f"Agent {agent.id} is not an active Agent.")
         self.inactive_agents.append(self.active_agents.pop(self.active_agents.index(agent)))
+        return True
