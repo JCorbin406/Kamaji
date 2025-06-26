@@ -12,6 +12,8 @@ class Agent:
         for key, value in kwargs.items():
             setattr(self, key, value)
 
+        self.budget = 1
+
         self._agent_config = agent_config
         self.manual_control_input = None
         self._dt = dt
@@ -54,20 +56,57 @@ class Agent:
             raise NotImplementedError(f"{model_name} is not a valid dynamics model.")
         self.dynamics_model = model_map[model_name](self._dt)
 
+    # def assign_controller(self):
+    #     controller_cfg = self._agent_config.get("controller", {})
+    #     if not isinstance(controller_cfg, dict):
+    #         raise ValueError("Controller must be a dictionary of control channels with 'type' fields.")
+
+    #     self.control_model = {}
+
+    #     for ctrl_name, ctrl_data in controller_cfg.items():
+    #         ctrl_type = ctrl_data["type"]
+    #         if ctrl_type == "Constant":
+    #             val = ctrl_data["value"]
+    #             self.control_model[ctrl_name] = lambda t, state, v=val: v
+    #         elif ctrl_type == "PID":
+    #             spec = ctrl_data.get("specs", [])[0]
+    #             self.control_model[ctrl_name] = PID(
+    #                 [spec["state"]],
+    #                 [spec["goal"]],
+    #                 [spec["kp"]],
+    #                 [spec["ki"]],
+    #                 [spec["kd"]],
+    #                 dt=self._dt
+    #             )
+    #         else:
+    #             raise ValueError(f"Unknown controller type '{ctrl_type}' for {ctrl_name}")
+    
     def assign_controller(self):
         controller_cfg = self._agent_config.get("controller", {})
         if not isinstance(controller_cfg, dict):
-            raise ValueError("Controller must be a dictionary of control channels with 'type' fields.")
+            raise ValueError("Controller must be a dictionary of control channels with 'type' and 'specs'.")
 
         self.control_model = {}
 
         for ctrl_name, ctrl_data in controller_cfg.items():
             ctrl_type = ctrl_data["type"]
+            specs = ctrl_data.get("specs", [])
+
+            if not isinstance(specs, list) or len(specs) != 1:
+                raise ValueError(f"[Agent: {self._id}] Controller '{ctrl_name}' must have a single-item specs list.")
+
+            spec = specs[0]
+
             if ctrl_type == "Constant":
-                val = ctrl_data["value"]
+                if "value" not in spec:
+                    raise ValueError(f"Constant controller for '{ctrl_name}' must specify 'value'")
+                val = spec["value"]
                 self.control_model[ctrl_name] = lambda t, state, v=val: v
+
             elif ctrl_type == "PID":
-                spec = ctrl_data.get("specs", [])[0]
+                required_keys = ["state", "goal", "kp", "ki", "kd"]
+                if not all(k in spec for k in required_keys):
+                    raise ValueError(f"PID controller for '{ctrl_name}' must contain {required_keys}")
                 self.control_model[ctrl_name] = PID(
                     [spec["state"]],
                     [spec["goal"]],
@@ -78,6 +117,7 @@ class Agent:
                 )
             else:
                 raise ValueError(f"Unknown controller type '{ctrl_type}' for {ctrl_name}")
+
 
     def compute_control(self, t) -> np.ndarray:
         """

@@ -1,19 +1,30 @@
 site_name: Kamaji Documentation
 site_url: https://JCorbin406.github.io/kamaji
 repo_url: https://github.com/JCorbin406/kamaji
-site_description: "Docs for the Kamaji multi-agent simulation environment."
+site_description: "Documentation for the Kamaji multi-agent simulation environment."
 use_directory_urls: true
 
 nav:
   - Home: index.md
-  - Quickstart: quickstart.md
+  - Getting Started:
+    # - Overview: index.md
+    - Installation: started/installation.md
+    - Quickstart: started/quickstart.md
+    - Examples: started/examples.md
+  # - Installation: installation.md
+  # - Quickstart: quickstart.md
+  # - Examples: examples.md
   - Concepts:
-      - Environment: concepts/environment.md
-      - Agents: concepts/agents.md
-  - Examples:
-      - Control Barrier Functions: examples/CBF.md
-      - Sequential Collsions: examples/sequential.md
-      - Auctions: examples/auction.md
+    - Configuration Files: concepts/configuration.md
+    - Agents: concepts/agents.md
+    - Simulator: concepts/simulator.md
+    - Controls: concepts/controls.md
+    - Dynamics: concepts/dynamics.md
+    - Control Barrier Functions: concepts/cbf.md
+    - Auctions: concepts/auctions.md
+  - Configuration: configuration.md
+  - Methods: methods.md
+  - About: about.md
   - API Reference:
       - Agent: api/agent.md
       - Simulator: api/simulator.md
@@ -31,13 +42,36 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.arithmatex
+  - pymdownx.inlinehilite
+  - pymdownx.highlight
+  - pymdownx.snippets
+  - pymdownx.keys
+  - pymdownx.tasklist
+  - pymdownx.emoji
+  - pymdownx.arithmatex
 
-# Same as Ardupilot documentation.
+extra_javascript:
+  - js/mathjax_config.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+# extra_javascript:
+#   - https://polyfill.io/v3/polyfill.min.js?features=es6
+#   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+# Same as Ardupilot/ROS documentation.
 theme:
   name: readthedocs
-  features:
-    - navigation.instant
-    - content.tabs.link
+  logo: img/KamajiLogo.png
+  include_homepage_in_sidebar: False
+  collapse_navigation: False
+  titles_only: False
+  sticky_navigation: True
+
+
+  # features:
+  #   - navigation.instant
+  #   - content.tabs.link
 
 # Less good - prefer cinder.
 # theme:

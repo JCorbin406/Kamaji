@@ -1,0 +1,125 @@
+simulation:
+  description: "Core simulation parameters."
+  seed: 42
+  duration: 15.0
+  time_step: 0.1
+  logging_enabled: true
+  integrator: "RK4"
+  verbose: False
+
+agents:
+  agent_1:
+    type: "agent"
+    initial_state:
+      position_x: 0.0
+      position_y: 0.2
+    dynamics_model: "SingleIntegrator2DOF"
+    controller:
+      velocity_x:
+        type: Constant
+        specs:
+          - value: 1.0
+      velocity_y:
+        type: PID
+        specs:
+          - state: position_y
+            goal: 0.2
+            kp: 1.0
+            ki: 0.0
+            kd: 0.0
+
+  agent_2:
+    type: "agent"
+    initial_state:
+      position_x: 5.0
+      position_y: -0.2
+    dynamics_model: "SingleIntegrator2DOF"
+    controller:
+      velocity_x:
+        type: Constant
+        specs:
+          - value: -1.0
+      velocity_y:
+        type: PID
+        specs:
+          - state: position_y
+            goal: -0.2
+            kp: 1.0
+            ki: 0.0
+            kd: 0.0
+
+  agent_3:
+    type: "agent"
+    initial_state:
+      position_x: 10.0
+      position_y: -0.2
+    dynamics_model: "SingleIntegrator2DOF"
+    controller:
+      velocity_x:
+        type: Constant
+        specs:
+          - value: -1.0
+      velocity_y:
+        type: PID
+        specs:
+          - state: position_y
+            goal: -0.2
+            kp: 1.0
+            ki: 0.0
+            kd: 0.0
+
+  agent_4:
+    type: "agent"
+    initial_state:
+      position_x: 15.0
+      position_y: -0.2
+    dynamics_model: "SingleIntegrator2DOF"
+    controller:
+      velocity_x:
+        type: Constant
+        specs:
+          - value: -1.0
+      velocity_y:
+        type: PID
+        specs:
+          - state: position_y
+            goal: -0.2
+            kp: 1.0
+            ki: 0.0
+            kd: 0.0
+
+  agent_5:
+    type: "agent"
+    initial_state:
+      position_x: 20.0
+      position_y: -0.2
+    dynamics_model: "SingleIntegrator2DOF"
+    controller:
+      velocity_x:
+        type: Constant
+        specs:
+          - value: -1.0
+      velocity_y:
+        type: PID
+        specs:
+          - state: position_y
+            goal: -0.2
+            kp: 1.0
+            ki: 0.0
+            kd: 0.0
+
+environment:
+  obstacles:
+    - id: obstacle_1
+      type: "circle"
+      position: [0.0, 0.0]
+      radius: 1.0
+  gravity: [0.0, 0.0, 0.0]
+
+logging:
+  enabled: true
+  format: "hdf5"
+  output_directory: "thesis/logs"
+  filename: "sim_dev"
+  compress: false
+  verbose: true

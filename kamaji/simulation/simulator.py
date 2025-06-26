@@ -41,12 +41,22 @@ class Simulator:
         self.plot = SimulationPlotter(self)
         self.logging_params = config.get("logging", {}) if config else {}
         self.logger = SimulationLogger(self)
+        self.cbf_system = None  # Will be set later, if needed
 
         if config is not None:
             self.load_from_config(config)
         else:
             if self.verbose:
                 print("No config provided, using default values.")
+
+    def set_cbf_system(self, cbf_system):
+        """
+        Set an external CBF system to be used during simulation.
+
+        Args:
+            cbf_system (CBFSystem): A configured CBFSystem instance.
+        """
+        self.cbf_system = cbf_system
 
     def set_sim_params(self, sim_params=None):
         """
@@ -153,19 +163,18 @@ class Simulator:
             raise TypeError("controller must be a dictionary.")
 
         controller_block = agent_config['controller']
-        if 'type' in controller_block and 'specs' in controller_block:
-            if not isinstance(controller_block['specs'], list):
-                raise TypeError("Controller 'specs' must be a list.")
-        else:
-            for ctrl_name, ctrl_conf in controller_block.items():
-                if not isinstance(ctrl_conf, dict):
-                    raise TypeError(f"Controller for '{ctrl_name}' must be a dict.")
-                if 'type' not in ctrl_conf:
-                    raise ValueError(f"Controller '{ctrl_name}' must include a 'type' field.")
-                if 'specs' not in ctrl_conf:
-                    raise ValueError(f"Controller '{ctrl_name}' must include a 'specs' field.")
-                if not isinstance(ctrl_conf['specs'], list):
-                    raise TypeError(f"Controller '{ctrl_name}' 'specs' must be a list.")
+        if not isinstance(controller_block, dict):
+            raise TypeError("Controller block must be a dictionary of control channels.")
+
+        for ctrl_name, ctrl_conf in controller_block.items():
+            if not isinstance(ctrl_conf, dict):
+                raise TypeError(f"Controller for '{ctrl_name}' must be a dict.")
+            if "type" not in ctrl_conf:
+                raise ValueError(f"Controller '{ctrl_name}' must include a 'type' field.")
+            if "specs" not in ctrl_conf:
+                raise ValueError(f"Controller '{ctrl_name}' must include a 'specs' field.")
+            if not isinstance(ctrl_conf["specs"], list):
+                raise TypeError(f"Controller '{ctrl_name}' 'specs' must be a list.")
 
         if agent_id is None:
             base = "agent"
@@ -217,9 +226,34 @@ class Simulator:
         """
         Advance the simulation by one time step, updating agent states using control input.
         """
+        state_values = {}
+        all_controls = []
+        control_dims = []
+
+        # 1. Gather state values and nominal control for each agent
         for idx, agent in enumerate(self.active_agents):
+            state_values[f"x{idx}"] = agent.state["position_x"]
+            state_values[f"y{idx}"] = agent.state["position_y"]
+
             control = agent.manual_control_input if agent.manual_control_input is not None else agent.compute_control(self.sim_time)
-            agent.step(self.sim_time, control)
+            all_controls.append(control)
+            control_dims.append(len(control))
+
+        u_nom = np.concatenate(all_controls)
+
+        # 2. Filter full control vector using CBF system if available
+        if self.cbf_system is not None:
+            u_filtered = self.cbf_system.filter_controls(state_values, u_nom, mode="all")
+        else:
+            u_filtered = u_nom
+
+        # 3. Slice filtered controls back to each agent and step them
+        idx = 0
+        for agent, dim in zip(self.active_agents, control_dims):
+            agent_control = u_filtered[idx:idx+dim]
+            agent.step(self.sim_time, agent_control)
+            idx += dim
+
 
     def clear_manual_control(self, agent_id: str) -> None:
         """

@@ -146,14 +146,124 @@ class Auction:
 
         def neg_payoff(d):
             β = self.marginal_valuation(n, d)
+            # true_beta = self.marginal_valuation(n, d)
+            # budget = self.agents[n].budget
+
+            # if budget <= 0:
+            #     scaled_beta = 0.0
+            # else:
+            #     scaling = budget / (budget + 1e-3)
+            #     scaled_beta = scaling * true_beta
+
+
+            # Scaling factor — adjust if you want soft capping
+            # scaling = budget / (budget + 1e-6)  # avoid divide-by-zero
+            # In your budget-weighted bid scaling:
+            # Instead of soft scaling, use aggressive squashing:
+            # scaling = self.agents[n].budget / (self.agents[n].budget + 0.01)
+            # scaled_beta = scaling * true_beta
+            # effective_beta = scaling * true_beta
+
             temp_bids = bids.copy()
             temp_bids[n] = (β, d)
+            # temp_bids[n] = (scaled_beta, d)
             return -self.payoff(n, temp_bids)
 
         res = minimize_scalar(neg_payoff, bounds=(lower, upper), method='bounded')
         best_d = res.x
         β_best = self.marginal_valuation(n, best_d)
         return (β_best, best_d)
+
+    # def best_response(self, n, bids):
+    #     """
+    #     Computes agent n's best response by optimizing payoff with respect to demand,
+    #     using budget-aware bid scaling.
+
+    #     Args:
+    #         n (int): Agent index.
+    #         bids (List[Tuple[float, float]]): Current bid profile.
+
+    #     Returns:
+    #         Tuple[float, float]: New bid (β, d) for agent n.
+    #     """
+    #     upper = self.constrained_demand(n, bids)
+    #     lower = self.x[n]
+
+    #     budget = self.agents[n].budget
+
+    #     # If agent is broke, skip optimization and return (0, 0)
+    #     if budget <= 0:
+    #         return (0.0, 0.0)
+
+    #     def neg_payoff(d):
+    #         true_beta = self.marginal_valuation(n, d)
+    #         scaling = budget / (budget + 1e-3)  # aggressive scaling
+    #         scaled_beta = scaling * true_beta
+
+    #         temp_bids = bids.copy()
+    #         temp_bids[n] = (scaled_beta, d)
+
+    #         return -self.payoff(n, temp_bids)
+
+    #     res = minimize_scalar(neg_payoff, bounds=(lower, upper), method='bounded')
+    #     best_d = res.x
+
+    #     # Recompute scaled bid for this d
+    #     true_beta = self.marginal_valuation(n, best_d)
+    #     scaling = budget / (budget + 1e-3)
+    #     scaled_beta = scaling * true_beta
+
+    #     return (scaled_beta, best_d)
+
+    def compute_payments_from_delta(self, S):
+        """
+        Computes VCG payments based on the avoidance effort (Delta) using each agent's
+        actual valuation function.
+
+        Args:
+            S (float): Total safety correction required (i.e., safety deficit).
+
+        Returns:
+            List[float]: VCG payments based on Delta externality.
+        """
+        # Step 1: Final credit allocation (after auction)
+        c = np.array([bid[1] for bid in self.bids])
+        Delta = (1 - c) * S / np.sum(1 - c)
+        print(f"Δ: {[round(d, 4) for d in Delta]}")
+        print("Valuations of others with agent present:",
+            [round(agent.valuation(d), 4) for i, (agent, d) in enumerate(zip(self.agents, Delta)) if i != 0])
+
+        # Then repeat with agent 1 removed (Δ_wo_1)
+
+        N = self.N
+
+        payments = []
+        for i in range(N):
+            # Step 2: Recompute allocation with agent i set to full credit (no burden)
+            c_mod = c.copy()
+            c_mod[i] = 1.0
+
+            denom = np.sum(1 - c_mod)
+            if denom == 0:
+                Delta_wo_i = np.zeros(N)
+            else:
+                Delta_wo_i = (1 - c_mod) * S / denom
+
+            # Step 3: Use agent-provided valuation functions to compute disutility
+            welfare_wo_i = sum(
+                -self.agents[j].valuation(Delta_wo_i[j])
+                for j in range(N) if j != i
+            )
+            welfare_with_i = sum(
+                -self.agents[j].valuation(Delta[j])
+                for j in range(N) if j != i
+            )
+
+            # Step 4: VCG payment is the externality agent i imposes
+            tau_i = welfare_wo_i - welfare_with_i
+            payments.append(tau_i)
+
+        return payments
 
     def select_next_player(self):
         """
@@ -202,15 +312,78 @@ class Auction:
             k += 1
         return self.bids, self.allocation(self.bids)
 
+    # def compute_payments(self):
+    #     """
+    #     Computes VCG payments for each agent after auction ends.
+
+    #     Returns:
+    #         List[float]: Payment τ_i for each agent.
+    #     """
+    #     self.x = self.allocation(self.bids)
+    #     return [self.payment(self.bids, n) for n in range(self.N)]
+
+    # def compute_payments(self):
+    #     self.x = self.allocation(self.bids)
+    #     payments = []
+
+    #     for n in range(self.N):
+    #         bids_wo_n = self.bids.copy()
+    #         bids_wo_n[n] = (self.bids[n][0], 0.0)
+    #         x_wo_n = self.allocation(bids_wo_n)
+
+    #         print(f"\nAgent {n} removal:")
+    #         for m in range(self.N):
+    #             if m != n:
+    #                 print(f"  Agent {m}: x_with = {self.x[m]:.4f}, x_wo_n = {x_wo_n[m]:.4f}")
+
+    #         payment = sum(self.bids[m][0] * (x_wo_n[m] - self.x[m]) for m in range(self.N) if m != n)
+    #         print(f"  Payment τ_{n} = {payment:.4f}")
+    #         payments.append(payment)
+
+    #     return payments
+
     def compute_payments(self):
         """
-        Computes VCG payments for each agent after auction ends.
-
-        Returns:
-            List[float]: Payment τ_i for each agent.
+        Computes VCG payments for each agent using Clarke pivot rule with full reallocation.
+        Assumes agents will reoptimize demand if another agent exits, so all Γ is consumed.
         """
         self.x = self.allocation(self.bids)
-        return [self.payment(self.bids, n) for n in range(self.N)]
+        payments = []
+
+        for n in range(self.N):
+            # 1. Remove agent n from allocation
+            bids_wo_n = self.bids.copy()
+            bids_wo_n[n] = (self.bids[n][0], 0.0)
+
+            # 2. Redistribute Γ among remaining agents proportionally to their marginal value
+            total_beta = sum(b[0] for i, b in enumerate(bids_wo_n) if i != n)
+            if total_beta == 0:
+                # No one else wants anything — payment is 0
+                payments.append(0.0)
+                continue
+
+            # 3. New demand: distribute Gamma proportionally to β
+            new_bids = []
+            for i, (beta, _) in enumerate(bids_wo_n):
+                if i == n:
+                    new_bids.append((beta, 0.0))
+                else:
+                    new_demand = self.Gamma * (beta / total_beta)
+                    new_bids.append((beta, new_demand))
+
+            # 4. Compute new allocation
+            x_wo_n = self.allocation(new_bids)
+
+            # 5. Compute externality (benefit to others)
+            externality = sum(
+                self.bids[m][0] * (x_wo_n[m] - self.x[m]) for m in range(self.N) if m != n
+            )
+            payments.append(externality)
+
+        return payments
+
+
+
 
     def compute_payments_vcg(self):
         """

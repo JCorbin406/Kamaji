@@ -25,6 +25,7 @@ dependencies:
   - cvxpy                 # Convex optimization
   - pytest                # Testing
   - pip                   # For editable install
+  - networkx              # Graphs and networks
   - pip:
       - dearpygui         # GUI framework
       - -e .              # Install Kamaji in editable mode
