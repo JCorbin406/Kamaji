@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://jcorbin406.github.io/Kamaji/started/examples/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Examples - Kamaji Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Examples";
+        var mkdocs_page_input_path = "started/examples.md";
+        var mkdocs_page_url = "/Kamaji/started/examples/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../..">
+          <img src="../../img/KamajiLogo.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../installation/#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../installation/#step-1-clone-the-repository">Step 1: Clone the Repository</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../installation/#step-2-create-the-conda-environment">Step 2: Create the Conda Environment</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../installation/#21-create-the-environment">2.1 Create the Environment</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../installation/#22-activate-the-environment">2.2 Activate the Environment</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../installation/#step-3-install-the-kamaji-package">Step 3: Install the Kamaji Package</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../installation/#step-4-verify-installation">Step 4: Verify Installation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../installation/#step-5-running-kamaji">Step 5: Running Kamaji</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../installation/#step-6-deactivate-the-environment">Step 6: Deactivate the Environment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../installation/#step-7-updating-the-environment">Step 7: Updating the Environment</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quickstart</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../quickstart/#run-your-first-simulation">Run Your First Simulation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../quickstart/#what-it-does">What It Does</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../quickstart/#relevant-files">Relevant Files</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Examples</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#basic-simulation">Basic Simulation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pid-controlled-navigation">PID-Controlled Navigation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#auction-based-collision-avoidance">Auction-Based Collision Avoidance</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#urban-air-mobility-scenario-3d">Urban Air Mobility Scenario (3D)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#symbolic-cbf-based-collision-avoidance">Symbolic CBF-Based Collision Avoidance</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#key-steps">Key Steps</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-make_cbf_system-works">How make_cbf_system() Works</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#breakdown">Breakdown</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#highlight-symbolic-cbf-definition">Highlight: Symbolic CBF Definition</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#visualization">Visualization</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Concepts</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../concepts/configuration/">Configuration Files</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/configuration/#structure">Structure</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/configuration/#key-fields">Key Fields</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../concepts/agents/">Agents</a>
+    <ul>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../concepts/simulator/">Simulator</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../concepts/controls/">Controls</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../concepts/dynamics/">Dynamics</a>
+                  </li>
+                  <li class="toctree-l1"><a class="" href="../../concepts/cbf.md">Control Barrier Functions</a>
+                  </li>
+                  <li class="toctree-l1"><a class="" href="../../concepts/auctions.md">Auctions</a>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="" href="../../configuration.md">Configuration</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../methods/">Methods</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#control-barrier-functions-cbfs">🛡 Control Barrier Functions (CBFs)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#auction-based-fairness">Auction-Based Fairness</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#nominal-control-correction">Nominal Control &amp; Correction</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#applications">Applications</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#development">Development</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#how-to-contribute">How to Contribute</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#code-guidelines">Code Guidelines</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#license">License</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#contact">Contact</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#bug-reports-and-questions">Bug Reports and Questions</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#citation">Citation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#related-publications">Related Publications</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#how-to-include-this-in-latex">How to Include This in LaTeX</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/agent/">Agent</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.compute_control">compute_control</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/simulator/">Simulator</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.__init__">__init__</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.add_agents">add_agents</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.clear_manual_control">clear_manual_control</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.load_from_config">load_from_config</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.remove_agent">remove_agent</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.set_cbf_system">set_cbf_system</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.set_manual_control">set_manual_control</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.set_sim_params">set_sim_params</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.simulate">simulate</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.step">step</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/auction/">Auction</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.__init__">__init__</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.allocation">allocation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.best_response">best_response</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.compute_payments">compute_payments</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.compute_payments_from_delta">compute_payments_from_delta</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.compute_payments_vcg">compute_payments_vcg</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.constrained_demand">constrained_demand</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.find_m">find_m</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.marginal_valuation">marginal_valuation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.payment">payment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.payoff">payoff</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.plot_bid_demand_over_time">plot_bid_demand_over_time</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.plot_bid_price_over_time">plot_bid_price_over_time</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.reset">reset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.run">run</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.run_without_agent">run_without_agent</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.select_next_player">select_next_player</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.valuation">valuation</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Kamaji Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Getting Started</li>
+      <li class="breadcrumb-item active">Examples</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/JCorbin406/kamaji/edit/master/docs/started/examples.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="examples">Examples</h1>
+<p>Kamaji includes several examples to showcase key features and use cases.</p>
+<hr />
+<h2 id="basic-simulation">Basic Simulation</h2>
+<p><strong>File</strong>: <code>examples/basic_simulation.py</code><br />
+Simulates multiple agents with simple dynamics in a 2D space.</p>
+<hr />
+<h2 id="pid-controlled-navigation">PID-Controlled Navigation</h2>
+<p><strong>File</strong>: <code>examples/pid_controller_demo.py</code><br />
+Shows how PID controllers can be used to follow a trajectory.</p>
+<hr />
+<h2 id="auction-based-collision-avoidance">Auction-Based Collision Avoidance</h2>
+<p><strong>File</strong>: <code>examples/auction_based_cbf.py</code><br />
+Demonstrates multi-agent safety enforcement via auction-based allocation of control effort.</p>
+<hr />
+<h2 id="urban-air-mobility-scenario-3d">Urban Air Mobility Scenario (3D)</h2>
+<p><strong>File</strong>: <code>examples/uam_formation.py</code><br />
+Simulates a UAM scenario with 3D coordinated agents using geometric controllers.</p>
+<hr />
+<h2 id="symbolic-cbf-based-collision-avoidance">Symbolic CBF-Based Collision Avoidance</h2>
+<p><strong>File</strong>: <code>examples/cbf_simulation.py</code><br />
+Uses a symbolic Control Barrier Function (CBF) system to enforce pairwise collision avoidance between agents based on a minimum separation distance.<br />
+Agents are defined through a YAML configuration, and the CBF constraints are applied via a runtime-constructed symbolic filter.</p>
+<p>This simulation uses the example YAML file <code>examples\configs\cbf_simulation.yml</code>.</p>
+<hr />
+<h3 id="key-steps">Key Steps</h3>
+<ol>
+<li>Define symbolic CBFs between all agent pairs using <code>make_cbf_system()</code></li>
+<li>Load the YAML configuration to initialize agents and their controllers</li>
+<li>Inject the CBF system using <code>sim.set_cbf_system(...)</code></li>
+<li>Run the simulation and visualize trajectories with guaranteed minimum separation</li>
+</ol>
+<hr />
+<h3 id="how-make_cbf_system-works">How <code>make_cbf_system()</code> Works</h3>
+<p>The <code>make_cbf_system()</code> function constructs a symbolic representation of <strong>pairwise separation constraints</strong> between agents using SymPy. The constraints are shaped like:</p>
+<p>\[ h_{ij}(x) = \lVert p_i - p_j \rVert^2 - r^2 \]</p>
+<p>This ensures each pair of agents maintains a distance of at least <code>r</code>.</p>
+<h4 id="breakdown">Breakdown</h4>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Symbol Assignment</strong></td>
+<td>Creates symbolic position variables \(x_i, y_i\) for each agent</td>
+</tr>
+<tr>
+<td><strong>2. Global Dynamics Setup</strong></td>
+<td>Constructs zero drift <code>f</code> and identity matrix <code>g</code> assuming single-integrator agents</td>
+</tr>
+<tr>
+<td><strong>3. Pairwise CBF Creation</strong></td>
+<td>Defines one constraint \(h_{ij}\) for each agent pair using Euclidean distance</td>
+</tr>
+<tr>
+<td><strong>4. Matrix Slicing</strong></td>
+<td>Extracts the relevant rows from <code>f</code> and <code>g</code> for each CBF</td>
+</tr>
+<tr>
+<td><strong>5. CBFSystem Population</strong></td>
+<td>Adds each symbolic CBF to the system with <code>cbf_sys.add_cbf(...)</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="highlight-symbolic-cbf-definition">Highlight: Symbolic CBF Definition</h3>
+<div class="highlight"><pre><span></span><code><span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">xi</span> <span class="o">-</span> <span class="n">xj</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">yi</span> <span class="o">-</span> <span class="n">yj</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">cbf_sys</span><span class="o">.</span><span class="n">add_cbf</span><span class="p">(</span>
+    <span class="n">cbf_id</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;cbf_</span><span class="si">{</span><span class="n">agent_i</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">agent_j</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+    <span class="n">agents</span><span class="o">=</span><span class="p">[</span><span class="n">agent_i</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="n">agent_j</span><span class="o">.</span><span class="n">_id</span><span class="p">],</span>
+    <span class="n">state_vars</span><span class="o">=</span><span class="p">[</span><span class="n">xi</span><span class="p">,</span> <span class="n">yi</span><span class="p">,</span> <span class="n">xj</span><span class="p">,</span> <span class="n">yj</span><span class="p">],</span>
+    <span class="n">h_expr</span><span class="o">=</span><span class="n">h</span><span class="p">,</span>
+    <span class="n">f_expr</span><span class="o">=</span><span class="n">f_sub</span><span class="p">,</span>
+    <span class="n">g_expr</span><span class="o">=</span><span class="n">g_sub</span><span class="p">,</span>
+    <span class="n">alpha_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">h</span><span class="p">:</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">h</span>
+<span class="p">)</span>
+</code></pre></div>
+<hr />
+<h2 id="visualization">Visualization</h2>
+<p>Many examples support real-time visualization via matplotlib or the PyQt GUI:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>kamaji/gui/gui_main.py
+</code></pre></div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../quickstart/" class="btn btn-neutral float-left" title="Quickstart"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../concepts/configuration/" class="btn btn-neutral float-right" title="Configuration Files">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/JCorbin406/kamaji" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../quickstart/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../concepts/configuration/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../js/mathjax_config.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
