@@ -14,8 +14,8 @@ dependencies:
   - pyopengl              # OpenGL bindings
   - transitions           # State machines
   - tqdm                  # Progress bars
-  - mkdocs-material       # Documentation
-  - mkdocstrings          # Auto-docs for Python
+  - mkdocs-material       # Documentation theme
+  - pymdown-extensions    # <--- ADDED: Required for arithmatex/math/superfences
   - numba                 # JIT compilation
   - qpsolvers             # Quadratic programming
   - jupyter               # Jupyter notebooks
@@ -27,5 +27,6 @@ dependencies:
   - pip                   # For editable install
   - networkx              # Graphs and networks
   - pip:
-      - dearpygui         # GUI framework
-      - -e .              # Install Kamaji in editable mode
+      - dearpygui             # GUI framework
+      - mkdocstrings[python]  # <--- MOVED/FIXED: Solves "No module named mkdocstrings_handlers"
+      - -e .                  # Install Kamaji in editable mode

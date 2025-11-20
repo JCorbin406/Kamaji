@@ -67,7 +67,7 @@ python kamaji/gui/gui_main.py
 
 ---
 
-## 👥 Authors & Acknowledgments
+## Authors & Acknowledgments
 
 Created and maintained by [Johnathan (Jack) Corbin](https://github.com/JCorbin406)  
 With guidance from Georgia Tech's robotics and control faculty.

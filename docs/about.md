@@ -6,35 +6,35 @@ This section of the documentation provides key project information for contribut
 
 ---
 
-## 📘 Development
+## Development
 
 Learn how to set up a development environment, contribute to the codebase, and follow best practices:
 
-➡️ [Development Guide](development.md)
+[Development Guide](development.md)
 
 ---
 
-## 📄 License
+## License
 
 Kamaji is distributed under the MIT License. For more details about usage rights and legal terms:
 
-➡️ [View License](license.md)
+[View License](license.md)
 
 ---
 
-## 📫 Contact
+## Contact
 
 Have questions, ideas, or want to report a bug? Here's how to reach us:
 
-➡️ [Contact Page](contact.md)
+[Contact Page](contact.md)
 
 ---
 
-## 📝 Citation
+## Citation
 
 If you use Kamaji in your research, please cite our work:
 
-➡️ [Citation Instructions](citation.md)
+[Citation Instructions](citation.md)
 
 ---
 
@@ -83,8 +83,8 @@ We’d love to hear from you! Whether you have questions, feature requests, bug 
 **Project Maintainer**  
 Johnathan (Jack) Corbin  
 PhD Student, Georgia Institute of Technology  
-📧 Email: jcorbin33@gatech.edu  
-🌐 GitHub: [@JCorbin406](https://github.com/JCorbin406)
+Email: jcorbin33@gatech.edu  
+GitHub: [@JCorbin406](https://github.com/JCorbin406)
 
 ---
 

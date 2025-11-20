@@ -10,6 +10,14 @@ authors = [
 # Dependencies managed by environment.yml, so leave this minimal or empty
 dependencies = []
 
+[project.optional-dependencies]
+doc = [
+    "mkdocs",
+    "mkdocstrings[python]", # The fix for your error
+    "pymdown-extensions",   # Required for your pymdownx.* extensions
+    # "mkdocs-material",    # Uncomment this if/when you switch to the Material theme
+]
+
 [build-system]
 requires = ["setuptools", "setuptools_scm[toml]"]
 build-backend = "setuptools.build_meta"

@@ -4,7 +4,7 @@ Kamaji supports YAML-based configuration files to define agents, environments, a
 
 ---
 
-## 🧱 Structure
+## Structure
 
 A basic configuration file (`config.yaml`) may include:
 
@@ -32,7 +32,7 @@ agents:
 
 ---
 
-## 🧠 Key Fields
+## Key Fields
 
 - `dynamics_model`: Must match a class from `kamaji.dynamics`
 - `controller.type`: `"Constant"` or `"PID"`

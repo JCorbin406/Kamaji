@@ -30,7 +30,7 @@ This creates a new Conda environment (typically named `kamaji`) with all depende
 conda activate kamaji
 ```
 
-> 🪟 On Windows, use **Anaconda Prompt** or install Git Bash for bash-style commands.
+> On Windows, use **Anaconda Prompt** or install Git Bash for bash-style commands.
 
 ---
 

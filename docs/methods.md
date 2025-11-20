@@ -14,7 +14,7 @@ Kamaji uses Zeroing Control Barrier Functions to enforce safety constraints:
 
 ---
 
-## 💰 Auction-Based Fairness
+## Auction-Based Fairness
 
 Agents bid to reduce their safety burden using an internal credit mechanism:
 
@@ -24,7 +24,7 @@ Agents bid to reduce their safety burden using an internal credit mechanism:
 
 ---
 
-## 🧠 Nominal Control & Correction
+## Nominal Control & Correction
 
 Each agent has:
 - A **nominal controller** (e.g., PID, geometric)
@@ -34,7 +34,7 @@ Correction only activates if safety constraints are violated.
 
 ---
 
-## 🔬 Applications
+## Applications
 
 - Urban Air Mobility (UAM)
 - Formation control
