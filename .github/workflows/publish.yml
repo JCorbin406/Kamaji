@@ -1,0 +1,30 @@
+name: Publish Kamaji Docs
+
+on:
+  push:
+    branches:
+      - main  # Make sure this matches your default branch name
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          # Installs the Kamaji package so mkdocstrings can import it
+          pip install -e .
+
+      - name: Deploy to GitHub Pages
+        run: mkdocs gh-deploy --force

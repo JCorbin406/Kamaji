@@ -1,5 +1,11 @@
+# Project Dependencies
 numpy
 scipy
 matplotlib
 pytest
 pyyaml
+
+# Documentation Tools
+mkdocs
+mkdocstrings[python]
+pymdown-extensions
