@@ -1,5 +1,5 @@
 site_name: Kamaji Documentation
-site_url: https://JCorbin406.github.io/kamaji
+site_url: https://jcorbin406.github.io/Kamaji/
 repo_url: https://github.com/JCorbin406/kamaji
 site_description: "Documentation for the Kamaji multi-agent simulation environment."
 use_directory_urls: true
