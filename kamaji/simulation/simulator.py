@@ -6,6 +6,8 @@ import numpy as np
 from kamaji.plotting.simulation_plotter import SimulationPlotter
 from kamaji.logging.simulation_logger import SimulationLogger
 from kamaji.agent.agent import Agent
+from kamaji.simulation.gym_env import WrapperEnv
+
 
 class Simulator:
     """
@@ -42,6 +44,7 @@ class Simulator:
         self.logging_params = config.get("logging", {}) if config else {}
         self.logger = SimulationLogger(self)
         self.cbf_system = None  # Will be set later, if needed
+        self.gym_envs = None
 
         if config is not None:
             self.load_from_config(config)
@@ -101,7 +104,24 @@ class Simulator:
         self.dt = float(time_step)
         self.duration = float(duration)
         self.num_timesteps = max(1, int(self.duration / self.dt))
+        print(self.num_timesteps)
         self.integrator = integrator
+
+
+    def create_gym_envs(self, agent_ids: list[str], reward_fns: list[callable], termination_fns: list[callable], truncation_fns: list[callable]) -> None:
+        """
+        Create Gym environments for each active agent in the simulation.
+        """
+        assert len(reward_fns) == len(agent_ids), "Each agent for which a gym environment will be created must have a corresponding reward function."
+        self.gym_envs =  {}
+        for id in agent_ids:
+            agent = next((a for a in self.active_agents if a._id == id), None)
+            if agent is None:
+                raise ValueError(f"Agent with ID '{id}' not found among active agents.")
+            env = WrapperEnv(self, agent, reward_fns[agent_ids.index(id)], termination_fns[agent_ids.index(id)], truncation_fns[agent_ids.index(id)])
+            agent.assign_gym_env(env)
+            self.gym_envs[agent._id] = env
+
 
     def load_from_config(self, config):
         """
@@ -212,6 +232,10 @@ class Simulator:
             self.step()
 
         self.sim_time = time() - start_time
+
+        for agent in self.active_agents:
+            print(f"[Simulator] Agent '{agent._id}' final state: {agent.state}")
+
         self.inactive_agents.extend(self.active_agents)
         self.active_agents.clear()
 
@@ -222,23 +246,29 @@ class Simulator:
         if self.verbose:
             print(f"Sim time: {self.sim_time:.4f}")
 
-    def step(self) -> None:
+    def step(self, action: Optional[tuple] = None) -> None:
         """
         Advance the simulation by one time step, updating agent states using control input.
+        If called by a gym environment, uses the provided action for the specified agent.
         """
         state_values = {}
         all_controls = []
         control_dims = []
 
         # 1. Gather state values and nominal control for each agent
+        forced_actions = {}
+        for agent in self.active_agents:
+            forced_actions[agent._id] = None
+            if action and agent._id == action[0]:
+                forced_actions[agent._id] = action[1]
         for idx, agent in enumerate(self.active_agents):
             state_values[f"x{idx}"] = agent.state["position_x"]
             state_values[f"y{idx}"] = agent.state["position_y"]
 
-            control = agent.manual_control_input if agent.manual_control_input is not None else agent.compute_control(self.sim_time)
+            control = agent.manual_control_input if agent.manual_control_input is not None else agent.compute_control(self.sim_time, forced_actions[agent._id])
             all_controls.append(control)
             control_dims.append(len(control))
-
+        
         u_nom = np.concatenate(all_controls)
 
         # 2. Filter full control vector using CBF system if available
@@ -251,8 +281,33 @@ class Simulator:
         idx = 0
         for agent, dim in zip(self.active_agents, control_dims):
             agent_control = u_filtered[idx:idx+dim]
-            agent.step(self.sim_time, agent_control)
+            agent.step(self.sim_time, agent_control, log=(action is None))
             idx += dim
+
+        # 4. Gather updated state values and update internal gym environments
+        environment_state = {}
+        for agent in self.active_agents:
+            environment_state[agent._id] = agent.state
+        for gym_env in self.gym_envs.values():
+            gym_env.update_state(environment_state)
+
+
+    def train_agent_controller(self, agent_id: str, training_steps: int = 10000) -> None:
+        """
+        Train the RL controller of a specific agent for a given number of steps.
+
+        Args:
+            agent_id (str): ID of the agent to train.
+            training_steps (int): Number of training steps to perform.
+        """
+        for agent in self.active_agents:
+            if agent._id == agent_id:
+                if agent.trainable:
+                    agent.sarl_policy.model.learn(total_timesteps=training_steps)
+                    return
+                else:
+                    raise ValueError(f"Agent '{agent_id}' does not have an RL policy as a controller.")
+        raise ValueError(f"Agent with ID '{agent_id}' not found among active agents.")
 
 
     def clear_manual_control(self, agent_id: str) -> None:
@@ -303,3 +358,18 @@ class Simulator:
             raise ValueError(f"Agent {agent.id} is not an active Agent.")
         self.inactive_agents.append(self.active_agents.pop(self.active_agents.index(agent)))
         return True
+
+    def reset(self) -> None:
+        """
+        Reset the simulation to its initial state, clearing all agents and time.
+        """
+        self.sim_time = 0.0
+        self.active_agents += self.inactive_agents
+        self.inactive_agents = []
+        for agent in self.active_agents:
+            agent.reset()
+        environment_state = {}
+        for agent in self.active_agents:
+            environment_state[agent._id] = agent.state
+        for env in self.gym_envs.values():
+            env.update_state(environment_state)

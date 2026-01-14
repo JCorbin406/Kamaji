@@ -1,7 +1,7 @@
 from typing import Callable
 import pandas as pd
 import numpy as np
-
+from typing import Optional
 import kamaji.tools.ode_solvers as ode
 from kamaji.dynamics.dynamics import *
 from kamaji.controllers.controllers import *
@@ -18,6 +18,9 @@ class Agent:
         self.manual_control_input = None
         self._dt = dt
         self._id = agent_config['id']
+        self.trainable = False
+        self.sarl_info = {}
+        self.sarl_policy = None
 
         self._state = agent_config['initial_state']
         self._state_list = list(self._state.keys())
@@ -56,31 +59,6 @@ class Agent:
             raise NotImplementedError(f"{model_name} is not a valid dynamics model.")
         self.dynamics_model = model_map[model_name](self._dt)
 
-    # def assign_controller(self):
-    #     controller_cfg = self._agent_config.get("controller", {})
-    #     if not isinstance(controller_cfg, dict):
-    #         raise ValueError("Controller must be a dictionary of control channels with 'type' fields.")
-
-    #     self.control_model = {}
-
-    #     for ctrl_name, ctrl_data in controller_cfg.items():
-    #         ctrl_type = ctrl_data["type"]
-    #         if ctrl_type == "Constant":
-    #             val = ctrl_data["value"]
-    #             self.control_model[ctrl_name] = lambda t, state, v=val: v
-    #         elif ctrl_type == "PID":
-    #             spec = ctrl_data.get("specs", [])[0]
-    #             self.control_model[ctrl_name] = PID(
-    #                 [spec["state"]],
-    #                 [spec["goal"]],
-    #                 [spec["kp"]],
-    #                 [spec["ki"]],
-    #                 [spec["kd"]],
-    #                 dt=self._dt
-    #             )
-    #         else:
-    #             raise ValueError(f"Unknown controller type '{ctrl_type}' for {ctrl_name}")
-    
     def assign_controller(self):
         controller_cfg = self._agent_config.get("controller", {})
         if not isinstance(controller_cfg, dict):
@@ -88,6 +66,9 @@ class Agent:
 
         self.control_model = {}
 
+        SARL_state_features = set()
+        SARL_action_outputs = set()
+        SARL_models = set()
         for ctrl_name, ctrl_data in controller_cfg.items():
             ctrl_type = ctrl_data["type"]
             specs = ctrl_data.get("specs", [])
@@ -115,16 +96,48 @@ class Agent:
                     [spec["kd"]],
                     dt=self._dt
                 )
+            elif ctrl_type == "SARLPolicy":
+                required_keys = ["state_features", "model"]
+                if not all(k in spec for k in required_keys):
+                    raise ValueError(f"SARL controller for '{ctrl_name}' must contain {required_keys}")
+                for feature in spec["state_features"]:
+                    SARL_state_features.add(feature)
+                SARL_models.add(spec["model"])
+                SARL_action_outputs.add(ctrl_name)
             else:
                 raise ValueError(f"Unknown controller type '{ctrl_type}' for {ctrl_name}")
+            
+        if len(SARL_models) > 0:
+            if len(SARL_models) != 1:
+                raise ValueError(f"Only one SARL model can be specified per agent. Found: {SARL_models}")
+            self.sarl_policy = SARLPolicy(
+                state_inputs=list(SARL_state_features),
+                action_outputs=list(SARL_action_outputs),
+                model_name=spec["model"]
+            )
+            for ctrl_name in SARL_action_outputs:
+                self.control_model[ctrl_name] = self.sarl_policy
+            self.trainable = True
+            self.sarl_info = {
+                "state_features": list(SARL_state_features),
+                "action_outputs": list(SARL_action_outputs)
+            }
 
 
-    def compute_control(self, t) -> np.ndarray:
+    def assign_gym_env(self, env: gym.Env):
+        if self.sarl_policy is None:
+            raise ValueError(f"[Agent: {self._id}] Cannot assign gym env without SARL controller. Either no SARL controller is defined, or controller has not yet been assigned.")
+        self.sarl_policy.init_model(env)
+
+
+    def compute_control(self, t, rl_action: Optional[np.ndarray] = None) -> np.ndarray:
         """
         Compute the full control vector by combining per-channel control outputs.
+        If RL-based action is provided, it overrides the corresponding control channels. Should be used when training an RL agent.
 
         Args:
             t (float): Current simulation time.
+            rl_action (np.ndarray, optional): RL action 
 
         Returns:
             np.ndarray: Control vector of shape (n_controls,)
@@ -136,9 +149,33 @@ class Agent:
             control_channels = sorted(self.control_model.keys())
             control_vector = []
 
+            # Get SARL model if exists
+            hasSARL = False
+            SARL_model = None
+            for channel in control_channels:
+                if isinstance(self.control_model[channel], SARLPolicy):
+                    hasSARL = True
+                    SARL_model = self.control_model[channel]
+                    break
+            
+            # predict SARL actions if needed
+            if rl_action is not None and not hasSARL:
+                raise ValueError("RL actions provided but no SARL controller found.")
+            if hasSARL:
+                SARL_state = np.array([current_state[feature] for feature in self.sarl_info["state_features"]])
+                # Use provided rl_action rather than direct model prediction, allowing for proper handling of actions during training
+                if rl_action is not None:
+                    SARL_pred = rl_action
+                else:
+                    SARL_pred = SARL_model.update(SARL_state)
+                SARL_control_channels = dict(zip(SARL_model.action_outputs, SARL_pred))
+                
             for channel in control_channels:
                 controller = self.control_model[channel]
-                val = controller.update(t, current_state) if hasattr(controller, "update") else controller(t, current_state)
+                if isinstance(controller, SARLPolicy):
+                    val = SARL_control_channels[channel]
+                else:
+                    val = controller.update(t, current_state) if hasattr(controller, "update") else controller(t, current_state)
                 if isinstance(val, (list, tuple, np.ndarray)):
                     control_vector.extend(np.asarray(val).flatten())
                 else:
@@ -153,28 +190,36 @@ class Agent:
     def compute_dynamics(self, t, control_input: np.ndarray) -> np.ndarray:
         return self.dynamics_model.dynamics(t, self._state, control_input)
 
-    def step(self, t: float, control_input: np.ndarray) -> None:
-        self._state_order = list(self._state.keys())
-        state_vec = np.array([self._state[k] for k in self._state_order])
+    def step(self, t: float, control_input: np.ndarray, log=True) -> None:
+        self.dynamics_state_order = list(self.dynamics_model.state_variables())
+        dynamics_state_vec = np.array([self._state[k] for k in self.dynamics_state_order])
 
         def compute_dynamics(t_local, y, u):
-            return self.dynamics_model.dynamics(t_local, {k: y[i] for i, k in enumerate(self._state_order)}, u)
+            return self.dynamics_model.dynamics(t_local, {k: y[i] for i, k in enumerate(self.dynamics_state_order)}, u)
 
-        _, new_state_vec = ode.rk4_step(compute_dynamics, t, state_vec, control_input, self._dt)
-        new_state_dict = {k: new_state_vec[i] for i, k in enumerate(self._state_order)}
+        _, new_state_vec = ode.rk4_step(compute_dynamics, t, dynamics_state_vec, control_input, self._dt)
+        dynamics_new_state_dict = {k: new_state_vec[i] for i, k in enumerate(self.dynamics_state_order)}
+        new_state_dict = self._state.copy()
+        new_state_dict.update(dynamics_new_state_dict)
 
         self._state = new_state_dict
-        self._state_history.loc[len(self._state_history)] = {'time': t} | self._state
+        if log:
+            self._state_history.loc[len(self._state_history)] = {'time': t} | self._state
 
         control_row = {'time': t}
         control_row.update({name: control_input[i] for i, name in enumerate(self._control_list)})
-        self._control_history.loc[len(self._control_history)] = control_row
+        if log:
+            self._control_history.loc[len(self._control_history)] = control_row
 
     def set_valuation(self, fn: Callable): self.valuation_fn = fn
     def set_marginal_valuation(self, fn: Callable): self.marginal_valuation_fn = fn
     def valuation(self, x): return self.valuation_fn(x)
     def marginal_valuation(self, x): return self.marginal_valuation_fn(x)
 
+    def reset(self, t=0.0):
+        self._state = self._agent_config['initial_state']
+
+    
     @property
     def state(self): return self._state
     @property

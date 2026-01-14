@@ -5,7 +5,7 @@ simulation:
   time_step: 0.1
   logging_enabled: true
   integrator: "RK4"
-  verbose: False
+  verbose: True
 
 agents:
   agent_1:
