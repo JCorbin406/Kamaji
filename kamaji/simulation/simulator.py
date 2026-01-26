@@ -110,7 +110,21 @@ class Simulator:
 
     def create_gym_envs(self, agent_ids: list[str], reward_fns: list[callable], termination_fns: list[callable], truncation_fns: list[callable]) -> None:
         """
-        Create Gym environments for each active agent in the simulation.
+        Create and assign Gym-style environments for selected agents.
+
+        Each agent receives its own WrapperEnv, allowing independent
+        reward, termination, and truncation logic while sharing the
+        same underlying simulator state.
+
+        Args:
+            agent_ids (list[str]): IDs of agents to wrap with Gym environments.
+            reward_fns (list[callable]): Reward functions (one per agent). Should return a float reward.
+            termination_fns (list[callable]): Termination functions (one per agent). Should return (terminated: bool, reward_term: float|None), where reward_term is an optional term added to the step's reward upon termination.
+            truncation_fns (list[callable]): Episode truncation conditions. Should return (truncated: bool).
+
+        Raises:
+            AssertionError: If reward functions are not provided for all agents.
+            ValueError: If an agent ID does not exist.
         """
         assert len(reward_fns) == len(agent_ids), "Each agent for which a gym environment will be created must have a corresponding reward function."
         self.gym_envs =  {}
@@ -250,6 +264,12 @@ class Simulator:
         """
         Advance the simulation by one time step, updating agent states using control input.
         If called by a gym environment, uses the provided action for the specified agent.
+
+        Args:
+            action (tuple, optional): Tuple of (agent_id: str, control: np.ndarray). If None, all agents use their nominal control computations.
+
+        Raises:
+            ValueError: If the specified agent ID is not found. 
         """
         state_values = {}
         all_controls = []

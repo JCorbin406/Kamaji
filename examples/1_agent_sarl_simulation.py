@@ -10,10 +10,9 @@ if __name__ == "__main__":
     with open(config_path, "r") as file:
         config = yaml.safe_load(file)
 
-    def reward_fn(orig_state, action, new_state):
-        # Simple reward: negative distance to goal
-        curr_x, curr_y, goal_x, goal_y = orig_state
-        reward = -((curr_x - goal_x) ** 2 + (curr_y - goal_y) ** 2) ** 0.5
+    def reward_fn(orig_env_state, action, new_env_state):
+        a1_x, a1_y, a1_goal_x, a1_goal_y = orig_env_state["agent_1"]["position_x"], orig_env_state["agent_1"]["position_y"], orig_env_state["agent_1"]["goal_x"], orig_env_state["agent_1"]["goal_y"]
+        reward = -((a1_x - a1_goal_x) ** 2 + (a1_y - a1_goal_y) ** 2) ** 0.5 
         return reward  # Reward is current distance to goal
     
     def termination_fn(orig_env_state, new_env_state):
