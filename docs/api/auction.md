@@ -4,6 +4,6 @@
           show_root_heading: true
           show_source: true
           show_signature: true
-          show_docstring: true
+          show_docstring_warns: true
 
 ---
