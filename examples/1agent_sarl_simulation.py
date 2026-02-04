@@ -19,7 +19,7 @@ if __name__ == "__main__":
         a1_x, a1_y, a1_goal_x, a1_goal_y = orig_env_state["agent_1"]["position_x"], orig_env_state["agent_1"]["position_y"], orig_env_state["agent_1"]["goal_x"], orig_env_state["agent_1"]["goal_y"]
         
         terminate = False
-        reward_term = None
+        reward_term = 0
         if ((a1_x - a1_goal_x) ** 2 + (a1_y - a1_goal_y) ** 2) ** 0.5 < 0.1:
             terminate = True
         return terminate, reward_term

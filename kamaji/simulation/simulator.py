@@ -241,6 +241,10 @@ class Simulator:
         iterator = tqdm(range(self.num_timesteps), desc="Simulating", unit="step") if self.verbose else range(self.num_timesteps)
 
         for step_idx in iterator:
+            if len(self.active_agents) == 0:
+                if self.verbose:
+                    print("[Simulator] No active agents remaining, ending simulation early.")
+                break
             if on_step:
                 on_step(self, step_idx)
             self.step()
@@ -304,12 +308,33 @@ class Simulator:
             agent.step(self.sim_time, agent_control, log=(action is None))
             idx += dim
 
-        # 4. Gather updated state values and update internal gym environments
-        environment_state = {}
-        for agent in self.active_agents:
-            environment_state[agent._id] = agent.state
-        for gym_env in self.gym_envs.values():
-            gym_env.update_state(environment_state)
+        # 4. Check for collisions
+        to_remove = set()
+        for i, agent_a in enumerate(self.active_agents):
+            for j, agent_b in enumerate(self.active_agents):
+                if i >= j:
+                    continue
+                dist = np.linalg.norm(
+                    np.array([
+                        agent_a.state["position_x"] - agent_b.state["position_x"],
+                        agent_a.state["position_y"] - agent_b.state["position_y"]
+                    ])
+                )
+                if dist < (agent_a.radius + agent_b.radius):
+                    to_remove.add(agent_a)
+                    to_remove.add(agent_b)
+        for agent in to_remove:
+            self.remove_agent(agent)
+
+        if self.gym_envs is not None:
+            # 5. Gather updated state values and update internal gym environments
+            environment_state = {}
+            for agent in self.active_agents:
+                environment_state[agent._id] = agent.state
+            for agent in self.inactive_agents:
+                environment_state[agent._id] = None
+            for gym_env in self.gym_envs.values():
+                gym_env.update_state(environment_state)
 
 
     def train_agent_controller(self, agent_id: str, training_steps: int = 10000) -> None:

@@ -13,6 +13,7 @@ class Agent:
             setattr(self, key, value)
 
         self.budget = 1
+        self.radius = .25
 
         self._agent_config = agent_config
         self.manual_control_input = None

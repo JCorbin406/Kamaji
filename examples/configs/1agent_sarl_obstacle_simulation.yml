@@ -1,0 +1,57 @@
+simulation:
+  description: "Core simulation parameters."
+  seed: 42
+  duration: 1
+  time_step: 0.1
+  logging_enabled: true
+  integrator: "RK4"
+  verbose: True
+
+agents:
+  agent_1:
+    type: "agent"
+    initial_state:
+      position_x: -1
+      position_y: -1
+      goal_x: 1.0
+      goal_y: 1.0
+    dynamics_model: "SingleIntegrator2DOF"
+    controller:
+      velocity_x:
+        type: SARLPolicy
+        specs:
+          - state_features: [position_x, goal_x]
+            model: "PPO"
+      velocity_y:
+        type: SARLPolicy
+        specs:
+          - state_features: [position_y, goal_y]
+            model: "PPO"
+
+  agent_2:
+      type: "agent"
+      initial_state:
+        position_x: 0
+        position_y: 0
+      dynamics_model: "SingleIntegrator2DOF"
+      controller:
+        velocity_x:
+          type: Constant
+          specs:
+            - value: 0.0
+        velocity_y:
+          type: Constant
+          specs:
+            - value: 0.0
+
+
+environment:
+  gravity: [0.0, 0.0, 0.0]
+
+logging:
+  enabled: true
+  format: "hdf5"
+  output_directory: "thesis/logs"
+  filename: "sim_dev"
+  compress: false
+  verbose: true

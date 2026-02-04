@@ -21,19 +21,28 @@ class WrapperEnv(Env):
 
     def update_state(self, new_environment_state: dict):
         self.environment_state = new_environment_state
-        self.state = np.array([new_environment_state[self.agent_id][feature] for feature in self.agent.sarl_info["state_features"]])
+        if new_environment_state[self.agent_id] is not None:
+            self.state = np.array([new_environment_state[self.agent_id][feature] for feature in self.agent.sarl_info["state_features"]])
+        else:
+            self.state = None
 
     def step(self, action):
         orig_environment_state = self.environment_state.copy()
         orig_state = self.state.copy()
         self.simulator.step((self.agent_id, action))
-        reward = self.reward_fn(orig_environment_state, action, self.environment_state)
+
+        reward = self.reward_fn(orig_environment_state, action, self.environment_state) if self.state is not None else 0
+
         terminated, reward_term = self.termination_fn(orig_environment_state, self.environment_state)
+        if self.state is None:
+            terminated = True
+        reward += reward_term
         truncated = self.truncation_fn(self.simulator.sim_time)
-        if reward_term is not None:
-            reward += reward_term
+
         return self.state, reward, terminated, truncated, {}
 
     def reset(self, seed=None, options=None):
         self.simulator.reset()
         return self.state, {}
+    
+    
