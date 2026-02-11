@@ -118,4 +118,4 @@ Kamaji adheres to standard Python code style (PEP8). Contributions are welcome!
 
 # License
 
-Kamaji is released under the [MIT License](LICENSE).
+Kamaji is released under the [MIT License](../license.md).

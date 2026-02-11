@@ -1,14 +1,58 @@
-from typing import Callable
+from typing import Any, Callable, Optional
 import pandas as pd
 import numpy as np
-from typing import Optional
 import kamaji.tools.ode_solvers as ode
-from kamaji.dynamics.dynamics import *
-from kamaji.controllers.controllers import *
+from kamaji.dynamics.dynamics import (
+    Dynamics, Unicycle, CruiseControl,
+    SingleIntegrator1DOF, SingleIntegrator2DOF, SingleIntegrator3DOF,
+    DoubleIntegrator1DOF, DoubleIntegrator2DOF, DoubleIntegrator3DOF,
+)
+from kamaji.controllers.controllers import Controls, PID, Constant, SARLPolicy
+import gymnasium as gym
 
 
 class Agent:
-    def __init__(self, agent_config, t=0.0, dt=0.01, **kwargs):
+    """A simulation agent that combines a dynamics model with one or more controllers.
+
+    Each agent owns a dynamics model (defining its equations of motion), a
+    set of per-channel controllers (one per control input), optional RL
+    integration, and logging of state/control history. Agents are typically
+    created by the ``Simulator`` from a YAML configuration dictionary, but
+    can also be constructed programmatically.
+
+    The control pipeline each time step is:
+
+    1. Each controller channel computes its scalar (or vector) output.
+    2. Channel outputs are concatenated into the full control vector ``u``.
+    3. If a ``CBFSystem`` is attached to the simulator, ``u`` is filtered
+       through the safety QP before being applied.
+    4. The dynamics model is integrated forward one step (RK4 by default).
+    5. State and control histories are logged.
+
+    Args:
+        agent_config: Configuration dictionary. Required keys:
+
+            - ``id`` (str): Unique agent identifier.
+            - ``initial_state`` (dict): Maps state variable names to initial values.
+            - ``dynamics_model`` (str): Name of the dynamics class (e.g. ``"SingleIntegrator2DOF"``).
+            - ``controller`` (dict): Per-channel controller specifications.
+
+        t: Initial simulation time.
+        dt: Integration time step.
+        **kwargs: Additional attributes set directly on the agent instance
+            (e.g. custom parameters for auction valuations).
+
+    Attributes:
+        dynamics_model: The ``Dynamics`` subclass instance.
+        control_model: Dictionary mapping control channel names to controller
+            objects or callables.
+        trainable: ``True`` if the agent has an RL (SARL) controller.
+        sarl_policy: The ``SARLPolicy`` instance, if any.
+        radius: Collision radius used by the simulator's pairwise collision check.
+        budget: Resource budget (used by auction mechanisms).
+    """
+
+    def __init__(self, agent_config: dict, t: float = 0.0, dt: float = 0.01, **kwargs: Any):
         for key, value in kwargs.items():
             setattr(self, key, value)
 
@@ -45,6 +89,15 @@ class Agent:
                 )
 
     def assign_dynamics(self):
+        """Instantiate the dynamics model from the agent configuration.
+
+        Reads ``self._agent_config['dynamics_model']`` (a string like
+        ``"SingleIntegrator2DOF"``) and maps it to the corresponding
+        ``Dynamics`` subclass.
+
+        Raises:
+            NotImplementedError: If the dynamics model name is not recognised.
+        """
         model_map = {
             "Unicycle": Unicycle,
             "CruiseControl": CruiseControl,
@@ -61,6 +114,21 @@ class Agent:
         self.dynamics_model = model_map[model_name](self._dt)
 
     def assign_controller(self):
+        """Parse the controller configuration and create per-channel controllers.
+
+        Each key in the ``controller`` config block corresponds to a control
+        channel (e.g. ``velocity_x``). The value specifies the controller
+        ``type`` (``"PID"``, ``"Constant"``, or ``"SARLPolicy"``) and a
+        single-item ``specs`` list with the controller parameters.
+
+        If any channels use ``SARLPolicy``, all SARL channels are aggregated
+        into a single ``SARLPolicy`` instance (one RL model per agent). The
+        agent is then marked as ``trainable``.
+
+        Raises:
+            ValueError: If controller configuration is malformed or
+                multiple different SARL model names are specified.
+        """
         controller_cfg = self._agent_config.get("controller", {})
         if not isinstance(controller_cfg, dict):
             raise ValueError("Controller must be a dictionary of control channels with 'type' and 'specs'.")
@@ -107,7 +175,7 @@ class Agent:
                 SARL_action_outputs.add(ctrl_name)
             else:
                 raise ValueError(f"Unknown controller type '{ctrl_type}' for {ctrl_name}")
-            
+
         if len(SARL_models) > 0:
             if len(SARL_models) != 1:
                 raise ValueError(f"Only one SARL model can be specified per agent. Found: {SARL_models}")
@@ -126,22 +194,38 @@ class Agent:
 
 
     def assign_gym_env(self, env: gym.Env):
+        """Attach a Gymnasium environment and initialise the SARL model.
+
+        Args:
+            env: A ``WrapperEnv`` instance for this agent.
+
+        Raises:
+            ValueError: If the agent has no SARL controller.
+        """
         if self.sarl_policy is None:
             raise ValueError(f"[Agent: {self._id}] Cannot assign gym env without SARL controller. Either no SARL controller is defined, or controller has not yet been assigned.")
         self.sarl_policy.init_model(env)
 
 
-    def compute_control(self, t, rl_action: Optional[np.ndarray] = None) -> np.ndarray:
-        """
-        Compute the full control vector by combining per-channel control outputs.
-        If RL-based action is provided, it overrides the corresponding control channels. Should be used when training an RL agent.
+    def compute_control(self, t: float, rl_action: Optional[np.ndarray] = None) -> np.ndarray:
+        """Compute the full control vector by combining per-channel outputs.
+
+        Iterates over control channels in sorted order, queries each
+        controller, and concatenates the results. If an RL action is
+        provided (during training), it overrides the SARL policy's own
+        prediction for the corresponding channels.
 
         Args:
-            t (float): Current simulation time.
-            rl_action (np.ndarray, optional): RL action 
+            t: Current simulation time.
+            rl_action: Optional externally-provided RL action that overrides
+                the SARL policy prediction (used during training).
 
         Returns:
-            np.ndarray: Control vector of shape (n_controls,)
+            Control vector of shape ``(n_controls,)``.
+
+        Raises:
+            ValueError: If ``rl_action`` is provided but no SARL controller
+                exists.
         """
         current_state = self._state
 
@@ -158,7 +242,7 @@ class Agent:
                     hasSARL = True
                     SARL_model = self.control_model[channel]
                     break
-            
+
             # predict SARL actions if needed
             if rl_action is not None and not hasSARL:
                 raise ValueError("RL actions provided but no SARL controller found.")
@@ -170,7 +254,7 @@ class Agent:
                 else:
                     SARL_pred = SARL_model.update(SARL_state)
                 SARL_control_channels = dict(zip(SARL_model.action_outputs, SARL_pred))
-                
+
             for channel in control_channels:
                 controller = self.control_model[channel]
                 if isinstance(controller, SARLPolicy):
@@ -188,10 +272,30 @@ class Agent:
             return self.control_model.update(t, current_state)
 
 
-    def compute_dynamics(self, t, control_input: np.ndarray) -> np.ndarray:
+    def compute_dynamics(self, t: float, control_input: np.ndarray) -> np.ndarray:
+        """Evaluate the dynamics at the current state (without stepping).
+
+        Args:
+            t: Current simulation time.
+            control_input: Control vector.
+
+        Returns:
+            State derivative vector (dx/dt).
+        """
         return self.dynamics_model.dynamics(t, self._state, control_input)
 
-    def step(self, t: float, control_input: np.ndarray, log=True) -> None:
+    def step(self, t: float, control_input: np.ndarray, log: bool = True) -> None:
+        """Advance the agent one time step using RK4 integration.
+
+        Integrates the dynamics model forward by ``dt`` seconds, updates the
+        internal state dictionary, and (optionally) appends the new state and
+        control input to the history DataFrames.
+
+        Args:
+            t: Current simulation time (before the step).
+            control_input: Control vector to apply during this step.
+            log: If ``True``, record the state and control to history.
+        """
         self.dynamics_state_order = list(self.dynamics_model.state_variables())
         dynamics_state_vec = np.array([self._state[k] for k in self.dynamics_state_order])
 
@@ -218,9 +322,10 @@ class Agent:
     def marginal_valuation(self, x): return self.marginal_valuation_fn(x)
 
     def reset(self, t=0.0):
+        """Reset the agent to its initial state from the config."""
         self._state = self._agent_config['initial_state']
 
-    
+
     @property
     def state(self): return self._state
     @property

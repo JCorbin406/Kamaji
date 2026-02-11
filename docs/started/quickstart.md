@@ -32,4 +32,4 @@ This runs a basic simulation with several agents navigating a 2D environment usi
 - `kamaji/agent/agent.py`: Defines agent behavior and integration
 - `kamaji/controllers/`: Available control models (e.g. PID, CBF)
 
-For more customization, see the [Configuration Guide](configuration.md).
+For more customization, see the [Configuration Guide](../concepts/configuration.md).

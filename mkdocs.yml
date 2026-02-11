@@ -7,25 +7,25 @@ use_directory_urls: true
 nav:
   - Home: index.md
   - Getting Started:
-    # - Overview: index.md
     - Installation: started/installation.md
     - Quickstart: started/quickstart.md
     - Examples: started/examples.md
-  # - Installation: installation.md
-  # - Quickstart: quickstart.md
-  # - Examples: examples.md
   - Concepts:
-    - Configuration Files: concepts/configuration.md
+    - Configuration: concepts/configuration.md
     - Agents: concepts/agents.md
     - Simulator: concepts/simulator.md
     - Controls: concepts/controls.md
     - Dynamics: concepts/dynamics.md
-    - Control Barrier Functions: concepts/cbf.md
-    - Auctions: concepts/auctions.md
-  - Configuration: configuration.md
+    - Environment: concepts/environment.md
   - Methods: methods.md
+  - Examples:
+    - CBF: examples/CBF.md
+    - Auction: examples/auction.md
+    - Sequential: examples/sequential.md
   - About: about.md
+  - License: license.md
   - API Reference:
+      - Overview: api.md
       - Agent: api/agent.md
       - Simulator: api/simulator.md
       - Auction: api/auction.md
@@ -42,22 +42,18 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
-  - pymdownx.arithmatex
+  - pymdownx.arithmatex:
+      generic: true
   - pymdownx.inlinehilite
   - pymdownx.highlight
   - pymdownx.snippets
   - pymdownx.keys
   - pymdownx.tasklist
   - pymdownx.emoji
-  - pymdownx.arithmatex
 
 extra_javascript:
   - js/mathjax_config.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-
-# extra_javascript:
-#   - https://polyfill.io/v3/polyfill.min.js?features=es6
-#   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 # Same as Ardupilot/ROS documentation.
 theme:
@@ -67,66 +63,3 @@ theme:
   collapse_navigation: False
   titles_only: False
   sticky_navigation: True
-
-
-  # features:
-  #   - navigation.instant
-  #   - content.tabs.link
-
-# Less good - prefer cinder.
-# theme:
-#   name: windmill
-#   features:
-#     - navigation.instant
-#     - content.tabs.link
-
-# This one is good. 
-# theme:
-#   name: cinder
-#   features:
-#     - navigation.instant
-#     - content.tabs.link
-
-# Also a good one.
-# theme:
-#   name: terminal
-#   palette: dark
-#   features:
-#     - navigation.instant
-#     - content.tabs.link
-
-# Fun DOS theme.
-# theme:
-#   name: bootstrap386
-#   features:
-#     - navigation.instant
-#     - content.tabs.link
-
-# theme:
-#   name: alabaster
-#   features:
-#     - navigation.instant
-#     - content.tabs.link
-
-# theme:
-#   name: nature
-#   features:
-#     - navigation.instant
-#     - content.tabs.link
-
-# Github theme
-# theme:
-#   name: github
-#   features:
-#     - navigation.instant
-#     - content.tabs.link
-
-# Default mkdocs theme
-# theme:
-#   name: material
-#   palette:
-#     - scheme: default
-#       primary: 'indigo'
-#       accent: 'indigo'
-#   features:
-#     - navigation.instant

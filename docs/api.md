@@ -4,48 +4,8 @@ This section documents the main modules of the Kamaji simulation environment.
 
 ---
 
-<!-- ## Agent -->
+## Modules
 
-???+ info "View `Agent` class"
-    ::: kamaji.agent.Agent
-        options:
-          show_root_heading: true
-          show_source: true
-          show_signature: true
-          show_docstring_warns: true
-
----
-
-<!-- ## Simulator -->
-
-???+ info "View `Simulator` class"
-    ::: kamaji.simulation.simulator.Simulator
-        options:
-          show_root_heading: true
-          show_source: true
-          show_signature: true
-          show_docstring_warns: true
-
----
-
-<!-- ## Auction -->
-
-???+ info "View `Auction` class"
-    ::: kamaji.auctions.resource.Auction
-        options:
-          show_root_heading: true
-          show_source: true
-          show_signature: true
-          show_docstring_warns: true
-
----
-
-<!-- ## PID Controller -->
-<!-- 
-???+ info "View `PIDController` class"
-    ::: kamaji.controllers.pid_control.PIDController
-        options:
-          show_root_heading: false
-          show_source: true
-          show_signature: true
-          show_docstring: true -->
+- **[Agent](api/agent.md)** — Agent class combining dynamics, controllers, and logging
+- **[Simulator](api/simulator.md)** — Core simulation engine and orchestrator
+- **[Auction](api/auction.md)** — Auction-based resource allocation mechanisms

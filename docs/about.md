@@ -72,7 +72,7 @@ Kamaji is an actively developed multi-agent simulation environment intended for 
 
 ## License
 
-Kamaji is released under the MIT License. You are free to use, modify, and distribute this software in accordance with the terms outlined in the [LICENSE](../LICENSE) file.
+Kamaji is released under the MIT License. You are free to use, modify, and distribute this software in accordance with the terms outlined in the [License](license.md) page.
 
 ---
 

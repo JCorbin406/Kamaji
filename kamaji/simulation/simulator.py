@@ -104,7 +104,6 @@ class Simulator:
         self.dt = float(time_step)
         self.duration = float(duration)
         self.num_timesteps = max(1, int(self.duration / self.dt))
-        print(self.num_timesteps)
         self.integrator = integrator
 
 
@@ -286,8 +285,8 @@ class Simulator:
             if action and agent._id == action[0]:
                 forced_actions[agent._id] = action[1]
         for idx, agent in enumerate(self.active_agents):
-            state_values[f"x{idx}"] = agent.state["position_x"]
-            state_values[f"y{idx}"] = agent.state["position_y"]
+            for var_name in agent.dynamics_model.state_variables():
+                state_values[f"{var_name}_{idx}"] = agent.state[var_name]
 
             control = agent.manual_control_input if agent.manual_control_input is not None else agent.compute_control(self.sim_time, forced_actions[agent._id])
             all_controls.append(control)
@@ -297,7 +296,9 @@ class Simulator:
 
         # 2. Filter full control vector using CBF system if available
         if self.cbf_system is not None:
-            u_filtered = self.cbf_system.filter_controls(state_values, u_nom, mode="all")
+            result = self.cbf_system.filter_controls(state_values, u_nom, mode="all")
+            # Support both CBFFilterResult objects and raw arrays (from on_infeasible callbacks)
+            u_filtered = result.control if hasattr(result, 'control') else result
         else:
             u_filtered = u_nom
 
@@ -314,12 +315,14 @@ class Simulator:
             for j, agent_b in enumerate(self.active_agents):
                 if i >= j:
                     continue
-                dist = np.linalg.norm(
-                    np.array([
-                        agent_a.state["position_x"] - agent_b.state["position_x"],
-                        agent_a.state["position_y"] - agent_b.state["position_y"]
-                    ])
-                )
+                # Derive position keys from dynamics model (keys containing "position_")
+                pos_keys_a = [k for k in agent_a.dynamics_model.state_variables() if k.startswith("position_")]
+                pos_keys_b = [k for k in agent_b.dynamics_model.state_variables() if k.startswith("position_")]
+                common_axes = sorted(set(pos_keys_a) & set(pos_keys_b))
+                if not common_axes:
+                    continue
+                diff = np.array([agent_a.state[k] - agent_b.state[k] for k in common_axes])
+                dist = np.linalg.norm(diff)
                 if dist < (agent_a.radius + agent_b.radius):
                     to_remove.add(agent_a)
                     to_remove.add(agent_b)

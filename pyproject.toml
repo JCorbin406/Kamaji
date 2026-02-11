@@ -7,15 +7,37 @@ requires-python = ">=3.11"
 authors = [
   {name = "Johnathan Corbin", email = "jcorbin33@gatech.edu"}
 ]
-# Dependencies managed by environment.yml, so leave this minimal or empty
-dependencies = []
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "sympy",
+    "qpsolvers",
+    "cvxopt",
+    "pandas",
+    "h5py",
+    "networkx",
+    "tqdm",
+    "pyyaml",
+]
 
 [project.optional-dependencies]
+rl = [
+    "gymnasium",
+    "stable-baselines3",
+]
+gui = [
+    "dearpygui",
+    "pyqtgraph",
+]
 doc = [
     "mkdocs",
-    "mkdocstrings[python]", # The fix for your error
-    "pymdown-extensions",   # Required for your pymdownx.* extensions
-    # "mkdocs-material",    # Uncomment this if/when you switch to the Material theme
+    "mkdocstrings[python]",
+    "pymdown-extensions",
+]
+dev = [
+    "pytest",
+    "numba",
 ]
 
 [build-system]
@@ -26,4 +48,4 @@ build-backend = "setuptools.build_meta"
 version_scheme = "no-guess-dev"
 
 [tool.setuptools.packages.find]
-include = ["kamaji"]
+include = ["kamaji*"]

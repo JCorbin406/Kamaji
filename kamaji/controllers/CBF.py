@@ -1,14 +1,72 @@
+import logging
 import numpy as np
 from sympy import Matrix, lambdify, simplify
 import matplotlib.pyplot as plt
 import networkx as nx
 from qpsolvers import solve_qp
 
+logger = logging.getLogger(__name__)
+
+
+class QPInfeasibleError(RuntimeError):
+    """Raised when the CBF safety QP is infeasible."""
+    pass
+
+
+class CBFFilterResult:
+    """Result of a CBF control filtering operation.
+
+    Attributes:
+        control: The filtered control vector (u_nom if QP was infeasible and fallback used).
+        feasible: Whether the QP was feasible.
+    """
+    __slots__ = ("control", "feasible")
+
+    def __init__(self, control: np.ndarray, feasible: bool):
+        self.control = control
+        self.feasible = feasible
+
 
 class CBFSystem:
-    def __init__(self, cbf_dict=None):
+    """Control Barrier Function (CBF) safety filter system.
+
+    Manages a collection of CBF constraints and enforces them on nominal
+    control inputs via a Quadratic Program (QP). The pipeline is:
+
+    1. **Define constraints** — Call ``add_cbf()`` with symbolic SymPy
+       expressions for the barrier function *h*, drift *f*, actuation *g*,
+       and an extended class-K function *alpha*.
+    2. **Symbolic differentiation** — ``add_cbf()`` automatically computes
+       the Lie derivatives L_f h and L_g h, then lambdifies them for fast
+       numerical evaluation.
+    3. **Evaluate & filter** — ``filter_controls()`` evaluates all
+       constraints at the current state, assembles the QP, and solves for
+       the minimally-modified safe control:
+
+       .. math::
+
+           u^* = \\arg\\min_u \\|u - u_{nom}\\|^2
+           \\quad \\text{s.t.} \\quad L_f h + L_g h \\, u + \\alpha(h) \\geq 0
+
+    Args:
+        cbf_dict: Optional dictionary of CBF specifications to add at
+            construction. Each value must contain keys ``agents``,
+            ``state_vars``, ``h_expr``, ``f_expr``, ``g_expr``,
+            ``alpha_func``.
+        on_infeasible: Optional callback invoked when the QP is infeasible.
+            Signature: ``(state_values, u_nom) -> CBFFilterResult``.
+            If ``None``, falls back to returning ``u_nom`` with a warning.
+
+    Attributes:
+        cbf_terms: Dictionary mapping CBF IDs to their symbolic/numeric data.
+        agent_index: Dictionary mapping agent IDs to the list of CBF IDs
+            that involve that agent.
+    """
+
+    def __init__(self, cbf_dict=None, on_infeasible=None):
         self.cbf_terms = {}
         self.agent_index = {}
+        self.on_infeasible = on_infeasible
 
         if cbf_dict:
             for cbf_id, spec in cbf_dict.items():
@@ -23,6 +81,29 @@ class CBFSystem:
                 )
 
     def add_cbf(self, cbf_id, agents, state_vars, h_expr, f_expr, g_expr, alpha_func):
+        """Register a new CBF constraint.
+
+        Performs symbolic differentiation to compute grad(h), L_f h, and
+        L_g h, then stores lambdified (numerical) versions for fast
+        evaluation during simulation.
+
+        Args:
+            cbf_id: Unique string identifier for this constraint
+                (e.g. ``"cbf_01"``).
+            agents: List of agent IDs involved in this constraint.
+            state_vars: Ordered list of SymPy symbols representing the
+                state variables that appear in h, f, and g (e.g.
+                ``[x0, y0, x1, y1]``).
+            h_expr: SymPy scalar expression for the barrier function h(x).
+                Must be positive in the safe set.
+            f_expr: SymPy column Matrix for the drift dynamics f(x)
+                (dimension must match ``state_vars``).
+            g_expr: SymPy Matrix for the actuation matrix g(x)
+                (rows = len(state_vars), cols = total control dimension).
+            alpha_func: Extended class-K function applied to h. Must be a
+                callable ``alpha(h_val) -> float`` (e.g.
+                ``lambda h: 2.0 * h`` for a linear class-K function).
+        """
         grad_h = h_expr.diff(Matrix(state_vars)).T.doit()
         LfH = (grad_h * f_expr).doit().as_mutable()
         LgH = (grad_h * g_expr).doit().as_mutable()
@@ -49,6 +130,22 @@ class CBFSystem:
             self.agent_index.setdefault(aid, []).append(cbf_id)
 
     def evaluate_single_constraint(self, cbf_id, state_values):
+        """Evaluate one CBF constraint at the given state.
+
+        Computes the constraint row for the QP inequality ``-L_g h * u <= L_f h + alpha(h)``.
+
+        Args:
+            cbf_id: ID of the CBF constraint to evaluate.
+            state_values: Dictionary mapping state variable *names* (strings)
+                to their current numerical values.
+
+        Returns:
+            Tuple of ``(A_row, b_elem, h_val)`` where:
+
+            - ``A_row`` — shape ``(1, n_controls)``, the ``-L_g h`` row for the QP.
+            - ``b_elem`` — scalar, the ``-(L_f h + alpha(h))`` right-hand side.
+            - ``h_val`` — scalar, current value of the barrier function.
+        """
         term = self.cbf_terms[cbf_id]
         vals = [state_values[str(v)] for v in term['vars']]
         h_val = term['h'](*vals)
@@ -58,6 +155,16 @@ class CBFSystem:
         return LgH_val, -LfH_val - alpha_val, h_val
 
     def evaluate_constraints(self, state_values):
+        """Evaluate all CBF constraints and stack them into QP matrices.
+
+        Args:
+            state_values: Dictionary mapping state variable names to values.
+
+        Returns:
+            Tuple of ``(A, b)`` where ``A`` has shape ``(n_constraints, n_controls)``
+            and ``b`` has shape ``(n_constraints,)``, representing the inequality
+            ``-A u <= b`` (equivalently ``A u + b >= 0``).
+        """
         A_list, b_list = [], []
         for cbf_id in self.cbf_terms:
             A, b, _ = self.evaluate_single_constraint(cbf_id, state_values)
@@ -66,6 +173,27 @@ class CBFSystem:
         return np.vstack(A_list), np.hstack(b_list)
 
     def filter_controls(self, state_values, u_nom, u_bounds=None, mode="all"):
+        """Filter nominal controls through CBF safety constraints via QP.
+
+        Solves the min-norm QP:
+
+            min_u  ||u - u_nom||^2
+            s.t.   L_f h + L_g h * u + alpha(h) >= 0   (for each CBF)
+
+        Args:
+            state_values: Dict mapping state variable names to current values.
+            u_nom: Nominal (desired) control vector.
+            u_bounds: Optional ``(lb, ub)`` tuple for element-wise control bounds.
+            mode: Constraint evaluation mode.
+
+        Returns:
+            CBFFilterResult with the (possibly filtered) control and feasibility flag.
+
+        Raises:
+            QPInfeasibleError: If the QP is infeasible and no on_infeasible callback
+                is set and no fallback behavior is desired. By default, falls back
+                to u_nom with a warning.
+        """
         A, b = self.evaluate_constraints(state_values)
         H = np.eye(len(u_nom))
         f = -u_nom
@@ -74,11 +202,18 @@ class CBFSystem:
             lb, ub = u_bounds
         u_star = solve_qp(H, f, G=-A, h=-b, lb=lb, ub=ub, solver="cvxopt")
         if u_star is None:
-            print("Warning: QP infeasible — returning nominal control.")
-            return u_nom
-        return u_star
+            logger.warning("CBF QP infeasible — safety constraint cannot be satisfied.")
+            if self.on_infeasible is not None:
+                return self.on_infeasible(state_values, u_nom)
+            return CBFFilterResult(control=u_nom, feasible=False)
+        return CBFFilterResult(control=u_star, feasible=True)
 
     def visualize_agent_links(self):
+        """Display a graph of which agents share CBF constraints.
+
+        Draws an undirected graph where nodes are agents and edges connect
+        agent pairs that share at least one pairwise CBF constraint.
+        """
         G = nx.Graph()
         for cbf in self.cbf_terms.values():
             agents = cbf['agents']

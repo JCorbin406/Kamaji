@@ -1,3 +1,4 @@
+from typing import Optional
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize_scalar
@@ -27,15 +28,15 @@ class Auction:
         self.bids = bids
         self.history = [self.bids.copy()]  # Log of all bids over time
 
-    def valuation(self, n, x):
+    def valuation(self, n: int, x: float) -> float:
         """Returns the valuation u_n(x) of agent n at allocation x."""
         return self.agents[n].valuation(x)
 
-    def marginal_valuation(self, n, x):
+    def marginal_valuation(self, n: int, x: float) -> float:
         """Returns the marginal valuation u_n'(x) of agent n at allocation x."""
         return self.agents[n].marginal_valuation(x)
 
-    def allocation(self, bids):
+    def allocation(self, bids) -> np.ndarray:
         """
         Computes allocation vector from current bids using descending sort of β with random tie-breaking.
 
@@ -57,7 +58,7 @@ class Auction:
                 break
         return x
 
-    def payment(self, bids, n):
+    def payment(self, bids, n) -> float:
         """
         Computes VCG payment for agent n using Clarke pivot rule.
 
@@ -73,7 +74,7 @@ class Auction:
         x_without = self.allocation(b_without_n)
         return sum(bids[m][0] * (x_without[m] - self.x[m]) for m in range(self.N) if m != n)
 
-    def payoff(self, n, bids):
+    def payoff(self, n, bids) -> float:
         """
         Computes payoff for agent n given current bids.
 
@@ -88,7 +89,7 @@ class Auction:
         τ = self.payment(bids, n)
         return self.valuation(n, x[n]) - τ
 
-    def constrained_demand(self, n, bids):
+    def constrained_demand(self, n, bids) -> float:
         """
         Computes upper bound for agent n's demand based on dynamic constraints.
 
@@ -108,7 +109,7 @@ class Auction:
         upper_bound = self.x[n] + min(dm + Γc, self.alpha * Φ, (2 / self.rho_bar) * βn)
         return upper_bound
 
-    def find_m(self, n, bids):
+    def find_m(self, n, bids) -> Optional[int]:
         """
         Finds the lowest priced winning agent (other than agent n).
 
@@ -130,7 +131,7 @@ class Auction:
                 idx = i
         return idx
 
-    def best_response(self, n, bids):
+    def best_response(self, n, bids) -> tuple[float, float]:
         """
         Computes agent n's best response by optimizing payoff w.r.t. demand.
 
@@ -215,7 +216,7 @@ class Auction:
 
     #     return (scaled_beta, best_d)
 
-    def compute_payments_from_delta(self, S):
+    def compute_payments_from_delta(self, S) -> list[float]:
         """
         Computes VCG payments based on the avoidance effort (Delta) using each agent's
         actual valuation function.
@@ -265,7 +266,7 @@ class Auction:
 
         return payments
 
-    def select_next_player(self):
+    def select_next_player(self) -> int:
         """
         Selects the next agent to update their bid based on allocation status.
 
@@ -282,7 +283,7 @@ class Auction:
                 return i
         return max(range(self.N), key=lambda i: self.bids[i][0])
 
-    def run(self, max_steps=10000):
+    def run(self, max_steps=10000) -> tuple[list[tuple[float, float]], np.ndarray]:
         """
         Runs the auction process until convergence or max iterations.
 
@@ -342,7 +343,7 @@ class Auction:
 
     #     return payments
 
-    def compute_payments(self):
+    def compute_payments(self) -> list[float]:
         """
         Computes VCG payments for each agent using Clarke pivot rule with full reallocation.
         Assumes agents will reoptimize demand if another agent exits, so all Γ is consumed.
@@ -385,7 +386,7 @@ class Auction:
 
 
 
-    def compute_payments_vcg(self):
+    def compute_payments_vcg(self) -> list[float]:
         """
         Computes externality-based VCG-style payments by re-running auction without each agent.
 
@@ -412,7 +413,7 @@ class Auction:
         self.history = [self.bids.copy()]
         self.x = np.zeros(self.N)
 
-    def run_without_agent(self, remove_index):
+    def run_without_agent(self, remove_index) -> np.ndarray:
         """
         Runs auction without a specific agent, used for computing VCG payments.
 

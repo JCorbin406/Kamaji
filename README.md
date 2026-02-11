@@ -1,14 +1,57 @@
 # Kamaji
 
-Kamaji is a multi-agent simulation package designed for modeling and running complex agent-based simulations. This guide will walk you through the steps to install the package and set up the environment using Conda.
+![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
+![License: MIT](https://img.shields.io/badge/license-MIT-green)
+
+Kamaji is a multi-agent simulation framework for modeling, controlling, and training agent-based systems. It supports configurable dynamics models, per-channel controllers (PID, constant, RL), Control Barrier Function (CBF) safety filters, and Gymnasium-based reinforcement learning — all driven by YAML configuration files.
+
+## Quick Example
+
+```python
+import yaml
+from kamaji.simulation.simulator import Simulator
+
+# Load a config and run
+with open("examples/configs/basic_simulation.yml") as f:
+    config = yaml.safe_load(f)
+
+sim = Simulator(config)
+sim.simulate()
+
+# Plot results
+sim.plot.trajectories_2d()
+```
+
+Or build a simulation programmatically:
+
+```python
+from kamaji.simulation.simulator import Simulator
+
+sim = Simulator()
+sim.set_sim_params({"time_step": 0.01, "duration": 10.0, "integrator": "RK4"})
+
+sim.add_agents({
+    "agent_1": {
+        "type": "agent",
+        "initial_state": {"position_x": 0.0, "position_y": 0.0},
+        "dynamics_model": "SingleIntegrator2DOF",
+        "controller": {
+            "velocity_x": {"type": "PID", "specs": [{"state": "position_x", "goal": 5.0, "kp": 1.0, "ki": 0.0, "kd": 0.1}]},
+            "velocity_y": {"type": "PID", "specs": [{"state": "position_y", "goal": 3.0, "kp": 1.0, "ki": 0.0, "kd": 0.1}]},
+        }
+    }
+})
+
+sim.simulate()
+```
 
 ## Installation Guide
 
 ### Prerequisites
 
 - **Conda**: You will need Conda (or Miniconda) installed on your machine. You can download Conda from [Anaconda's website](https://www.anaconda.com/products/distribution).
-  
-- **Python 3.8+**: This package is compatible with Python 3.8 and above.
+
+- **Python 3.11+**: This package requires Python 3.11 or above.
 
 ### Step 1: Clone the Repository
 
@@ -31,11 +74,11 @@ Run the following command in the repository directory to create the Conda enviro
 conda env create -f environment.yml
 ```
 
-This will create a new Conda environment named kamaji with all the dependencies listed in the environment.yml file. 
+This will create a new Conda environment named kamaji with all the dependencies listed in the environment.yml file.
 
 #### Step 2.2: Activate the Environment
 
-Activate the environmnet using the following command:
+Activate the environment using the following command:
 
 ```bash
 conda activate kamaji
@@ -63,11 +106,26 @@ To verify that Kamaji has been installed correctly, you can run the following co
 python -c "import kamaji; print(kamaji.__version__)"
 ```
 
-If Kamaji is installed correctly, you should see the version number printed in the terminal. 
+If Kamaji is installed correctly, you should see the version number printed in the terminal.
 
 ### Step 5: Running Kamaji
 
-TBD 
+The simplest way to run a simulation is with one of the example configs:
+
+```bash
+python -c "
+import yaml
+from kamaji.simulation.simulator import Simulator
+
+with open('examples/configs/basic_simulation.yml') as f:
+    config = yaml.safe_load(f)
+
+sim = Simulator(config)
+sim.simulate()
+"
+```
+
+See `examples/configs/` for more configuration examples, including CBF safety filtering and RL-based controllers. For the full YAML configuration reference, see the [documentation](docs/concepts/configuration.md).
 
 ### Step 6: Deactivate the Conda Environment
 
@@ -85,12 +143,27 @@ To update the Conda environment and its dependencies, you can run:
 conda env update -f environment.yml
 ```
 
-This will update the environment with any new dependencies that have been added to the environment.yml file. 
+This will update the environment with any new dependencies that have been added to the environment.yml file.
 
-## Development 
+## Documentation
+
+Build and serve the docs locally:
+
+```bash
+mkdocs serve
+```
+
+Then open `http://127.0.0.1:8000` in your browser. Key pages:
+
+- [Dynamics Models](docs/concepts/dynamics.md) — available dynamics and how to create custom ones
+- [Controllers](docs/concepts/controls.md) — PID, CBF safety filters, RL policies
+- [Environment & Simulation](docs/concepts/environment.md) — the simulation loop, collision detection, Gym integration
+- [Configuration](docs/concepts/configuration.md) — YAML config reference
+
+## Development
 
 If you'd like to contribute to the Kamaji project, please fork the repository and create a pull request with your changes. Ensure that you follow the code style and include appropriate tests for new features or bug fixes.
 
-## License 
+## License
 
 Kamaji is licensed under the MIT License. See the LICENSE file for more details.
