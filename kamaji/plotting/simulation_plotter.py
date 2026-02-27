@@ -9,9 +9,23 @@ class SimulationPlotter:
         self.radius = radius
         self.colors = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
 
+    def _draw_obstacles(self, ax):
+        if self.sim.obstacles:
+            for obs in self.sim.obstacles:
+                if obs['type'] == 'circle':
+                    obstacle_circle = Circle(
+                        (obs['position_x'], obs['position_y']),
+                        radius=obs['radius'],
+                        color='gray',
+                        alpha=0.3
+                    )
+                    ax.add_patch(obstacle_circle)
+
     def trajectories(self, show=True, initial_conditions=False):
         agents = self.sim.inactive_agents if self.sim.inactive_agents else self.sim.active_agents
         fig, ax = plt.subplots()
+        self._draw_obstacles(ax)
+
         x_all, y_all = [], []
 
         for idx, agent in enumerate(agents):
@@ -74,6 +88,9 @@ class SimulationPlotter:
     def animate_trajectories(self):
         agents = self.sim.inactive_agents if self.sim.inactive_agents else self.sim.active_agents
         fig, ax = plt.subplots()
+
+        self._draw_obstacles(ax)
+
         lines, points, circles = [], [], []
         x_all, y_all = [], []
 

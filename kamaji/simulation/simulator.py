@@ -156,7 +156,13 @@ class Simulator:
         Args:
             env_params (dict): Environment configuration dictionary.
         """
-        self.obstacles = env_params['obstacles'] if 'obstacles' in env_params else None
+        if 'obstacles' in env_params:
+            self.obstacles = []
+            for obs in env_params['obstacles']:
+                if obs['type'] == 'circle':
+                    self.obstacles.append(obs)
+                else:
+                    raise NotImplementedError(f"Obstacle type '{obs['type']}' not supported. Only 'circle' is currently implemented.")
         return env_params
 
     def add_agents(self, agents) -> None:
@@ -337,15 +343,19 @@ class Simulator:
                 if dist < (agent_a.radius + agent_b.radius):
                     to_remove.add(agent_a)
                     to_remove.add(agent_b)
-            # for j, obstacle in enumerate(self.obstacles):
-            #     dist = np.linalg.norm(
-            #         np.array([
-            #             agent_a.state["position_x"] - obstacle["position_x"],
-            #             agent_a.state["position_y"] - obstacle["position_y"]
-            #         ])
-            #     )
-            #     if dist < (agent_a.radius + obstacle["radius"]):
-            #         to_remove.add(agent_a)
+
+            #Check for collisions with obstacles. Currently only supports circular obstacles defined by "position_x", "position_y", and "radius". Can be extended in the future to support more complex shapes and 3D environments.
+            for obstacle in self.obstacles:
+                if obstacle['type'] == 'circle':
+                    dist = np.linalg.norm(
+                        np.array([
+                            agent_a.state["position_x"] - obstacle["position_x"],
+                            agent_a.state["position_y"] - obstacle["position_y"]
+                        ])
+                    )
+                    if dist < (agent_a.radius + obstacle["radius"]):
+                        to_remove.add(agent_a)
+                        print("Collision detected between agent '{}' and obstacle '{}'".format(agent_a._id, obstacle['id']))
         for agent in to_remove:
             self.remove_agent(agent)
 
