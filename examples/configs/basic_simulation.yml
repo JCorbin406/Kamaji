@@ -132,7 +132,8 @@ environment:
   obstacles:
     - id: obstacle_1
       type: "circle"
-      position: [0.0, 0.0]
+      position_x: 0.0
+      position_y: 0.0
       radius: 1.0
   gravity: [0.0, 0.0, 0.0]
 

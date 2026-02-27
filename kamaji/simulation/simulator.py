@@ -45,6 +45,7 @@ class Simulator:
         self.logger = SimulationLogger(self)
         self.cbf_system = None  # Will be set later, if needed
         self.gym_envs = None
+        self.obstacles = None
 
         if config is not None:
             self.load_from_config(config)
@@ -145,8 +146,18 @@ class Simulator:
         """
         self.set_sim_params(config.get('simulation', {}))
         self.add_agents(config.get('agents', {}))
-        self.env_params = config.get('environment', {})
+        self.env_params = self.setup_environment(config.get('environment', {}))
         self.logging_params = config.get('logging', {})
+
+    def setup_environment(self, env_params: dict) -> None:
+        """
+        Setup the simulation environment based on provided configuration.
+
+        Args:
+            env_params (dict): Environment configuration dictionary.
+        """
+        self.obstacles = env_params['obstacles'] if 'obstacles' in env_params else None
+        return env_params
 
     def add_agents(self, agents) -> None:
         """
@@ -326,6 +337,15 @@ class Simulator:
                 if dist < (agent_a.radius + agent_b.radius):
                     to_remove.add(agent_a)
                     to_remove.add(agent_b)
+            # for j, obstacle in enumerate(self.obstacles):
+            #     dist = np.linalg.norm(
+            #         np.array([
+            #             agent_a.state["position_x"] - obstacle["position_x"],
+            #             agent_a.state["position_y"] - obstacle["position_y"]
+            #         ])
+            #     )
+            #     if dist < (agent_a.radius + obstacle["radius"]):
+            #         to_remove.add(agent_a)
         for agent in to_remove:
             self.remove_agent(agent)
 

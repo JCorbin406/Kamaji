@@ -1,4 +1,4 @@
-# Agent
+# Agent Guide
 
 The `Agent` class represents a single autonomous entity in the Kamaji simulation framework.  
 An agent combines dynamics, controllers (including support for reinforcement learning policies), and simulation bookkeeping into a unified abstraction.
