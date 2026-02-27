@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://jcorbin406.github.io/Kamaji/concepts/environment/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Environment - Kamaji Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Environment";
+        var mkdocs_page_input_path = "concepts/environment.md";
+        var mkdocs_page_url = "/Kamaji/concepts/environment/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../..">
+          <img src="../../img/KamajiLogo.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../started/installation/">Installation</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-1-clone-the-repository">Step 1: Clone the Repository</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-2-create-the-conda-environment">Step 2: Create the Conda Environment</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/installation/#21-create-the-environment">2.1 Create the Environment</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/installation/#22-activate-the-environment">2.2 Activate the Environment</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-3-install-the-kamaji-package">Step 3: Install the Kamaji Package</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-4-verify-installation">Step 4: Verify Installation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-5-running-kamaji">Step 5: Running Kamaji</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-6-deactivate-the-environment">Step 6: Deactivate the Environment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-7-updating-the-environment">Step 7: Updating the Environment</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../started/quickstart/">Quickstart</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/quickstart/#run-your-first-simulation">Run Your First Simulation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/quickstart/#what-it-does">What It Does</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/quickstart/#relevant-files">Relevant Files</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../started/examples/">Examples</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#basic-simulation">Basic Simulation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#pid-controlled-navigation">PID-Controlled Navigation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#auction-based-collision-avoidance">Auction-Based Collision Avoidance</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#urban-air-mobility-scenario-3d">Urban Air Mobility Scenario (3D)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#symbolic-cbf-based-collision-avoidance">Symbolic CBF-Based Collision Avoidance</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/examples/#key-steps">Key Steps</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/examples/#how-make_cbf_system-works">How make_cbf_system() Works</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="../../started/examples/#breakdown">Breakdown</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/examples/#highlight-symbolic-cbf-definition">Highlight: Symbolic CBF Definition</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#visualization">Visualization</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Concepts</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">Configuration</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../configuration/#structure">Structure</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../configuration/#key-fields">Key Fields</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../agents/">Agents</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#responsibilities">Responsibilities</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#initialization">Initialization</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../agents/#parameters">Parameters</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../agents/#initialization-workflow">Initialization workflow</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#state-representation">State Representation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#dynamics-models">Dynamics Models</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#controllers">Controllers</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../agents/#constant-controller">Constant Controller</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#control-computation">Control Computation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#simulation-step">Simulation Step</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#logging">Logging</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#valuation-functions">Valuation Functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#resetting">Resetting</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../simulator/">Simulator</a>
+    <ul>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../controls/">Controls</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../controls/#architecture-overview">Architecture Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../controls/#built-in-controllers">Built-in Controllers</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../controls/#constant">Constant</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../controls/#pid">PID</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../controls/#cbf-safety-filter">CBF Safety Filter</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../controls/#sarl-reinforcement-learning-policy">SARL (Reinforcement Learning Policy)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../controls/#creating-a-custom-controller">Creating a Custom Controller</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dynamics/">Dynamics</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../dynamics/#available-models">Available Models</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../dynamics/#model-details">Model Details</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../dynamics/#single-integrator">Single Integrator</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../dynamics/#double-integrator">Double Integrator</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../dynamics/#unicycle">Unicycle</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../dynamics/#cruise-control">Cruise Control</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../dynamics/#choosing-a-model">Choosing a Model</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../dynamics/#creating-a-custom-model">Creating a Custom Model</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Environment</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#simulation-loop">Simulation Loop</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#step-by-step-details">Step-by-Step Details</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#running-a-simulation">Running a Simulation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#from-yaml-config">From YAML config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#programmatic-setup">Programmatic setup</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-callback">Step callback</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#collision-detection">Collision Detection</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#gymnasium-integration">Gymnasium Integration</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#setup">Setup</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-wrapperenv-works">How WrapperEnv Works</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#key-design-points">Key design points</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../methods/">Methods</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#control-barrier-functions-cbfs">🛡 Control Barrier Functions (CBFs)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#auction-based-fairness">Auction-Based Fairness</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#nominal-control-correction">Nominal Control &amp; Correction</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#applications">Applications</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Examples</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../examples/CBF/">CBF</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/CBF/#scenario-setup">Scenario Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/CBF/#agent-definitions">Agent Definitions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/CBF/#nominal-controls">Nominal Controls</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../examples/auction/">Auction</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/auction/#scenario-setup">Scenario Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/auction/#agent-definitions">Agent Definitions</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../examples/sequential/">Sequential</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/sequential/#scenario-setup">Scenario Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/sequential/#agent-definitions">Agent Definitions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/sequential/#nominal-controls">Nominal Controls</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#development">Development</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#how-to-contribute">How to Contribute</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#code-guidelines">Code Guidelines</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#license">License</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#contact">Contact</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#bug-reports-and-questions">Bug Reports and Questions</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#citation">Citation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#related-publications">Related Publications</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#how-to-include-this-in-latex">How to Include This in LaTeX</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../license/">License</a>
+    <ul>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/">Overview</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/#modules">Modules</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/agent/">Agent</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.assign_controller">assign_controller</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.assign_dynamics">assign_dynamics</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.assign_gym_env">assign_gym_env</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.compute_control">compute_control</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.compute_dynamics">compute_dynamics</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.reset">reset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.step">step</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/simulator/">Simulator</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.__init__">__init__</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.add_agents">add_agents</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.clear_manual_control">clear_manual_control</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.create_gym_envs">create_gym_envs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.load_from_config">load_from_config</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.remove_agent">remove_agent</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.reset">reset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.set_cbf_system">set_cbf_system</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.set_manual_control">set_manual_control</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.set_sim_params">set_sim_params</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.setup_environment">setup_environment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.simulate">simulate</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.step">step</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.train_agent_controller">train_agent_controller</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/auction/">Auction</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.__init__">__init__</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.allocation">allocation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.best_response">best_response</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.compute_payments">compute_payments</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.compute_payments_from_delta">compute_payments_from_delta</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.compute_payments_vcg">compute_payments_vcg</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.constrained_demand">constrained_demand</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.find_m">find_m</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.marginal_valuation">marginal_valuation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.payment">payment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.payoff">payoff</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.plot_bid_demand_over_time">plot_bid_demand_over_time</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.plot_bid_price_over_time">plot_bid_price_over_time</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.reset">reset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.run">run</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.run_without_agent">run_without_agent</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.select_next_player">select_next_player</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.valuation">valuation</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Kamaji Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Concepts</li>
+      <li class="breadcrumb-item active">Environment</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/JCorbin406/kamaji/edit/master/docs/concepts/environment.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="environment-simulation-loop">Environment &amp; Simulation Loop</h1>
+<p>The <code>Simulator</code> class is the central orchestrator in Kamaji. It manages agents, runs the simulation loop, handles CBF safety filtering, detects collisions, and optionally integrates with Gymnasium for reinforcement learning.</p>
+<h2 id="simulation-loop">Simulation Loop</h2>
+<p>Each call to <code>simulator.step()</code> advances the simulation by one time step (<span class="arithmatex">\(\Delta t\)</span>). The full pipeline is:</p>
+<div class="highlight"><pre><span></span><code>┌─────────────────────────────────────┐
+│  1. Gather state from all agents    │
+│     → build global state_values     │
+├─────────────────────────────────────┤
+│  2. Compute nominal control         │
+│     → each agent&#39;s controllers      │
+│     → concatenate into u_nom        │
+├─────────────────────────────────────┤
+│  3. CBF safety filter (if active)   │
+│     → solve QP: min ||u - u_nom||²  │
+│       s.t. CBF constraints          │
+│     → u_filtered                    │
+├─────────────────────────────────────┤
+│  4. Slice controls back to agents   │
+│     → each agent gets its portion   │
+│     → integrate dynamics (RK4)      │
+│     → update agent state            │
+├─────────────────────────────────────┤
+│  5. Collision detection             │
+│     → pairwise distance check       │
+│     → remove colliding agents       │
+├─────────────────────────────────────┤
+│  6. Update Gym environments         │
+│     → push new states to WrapperEnv │
+└─────────────────────────────────────┘
+</code></pre></div>
+<h3 id="step-by-step-details">Step-by-Step Details</h3>
+<p><strong>1. Gather state.</strong> The simulator reads each agent's current state dictionary and builds a flat <code>state_values</code> dictionary with indexed keys (e.g. <code>position_x_0</code>, <code>position_y_0</code> for agent 0, <code>position_x_1</code>, <code>position_y_1</code> for agent 1). This global view is needed by the CBF system, which operates on the joint state of all agents.</p>
+<p><strong>2. Compute nominal control.</strong> Each agent calls <code>compute_control(t)</code>, which iterates over its control channels in sorted order, queries each controller (PID, Constant, or SARL), and concatenates the results. All per-agent control vectors are then concatenated into a single <code>u_nom</code> vector.</p>
+<p><strong>3. CBF safety filter.</strong> If a <code>CBFSystem</code> has been attached via <code>simulator.set_cbf_system()</code>, the concatenated <code>u_nom</code> is filtered through the safety QP. The result is <code>u_filtered</code> — the minimally-modified control vector that satisfies all barrier function constraints. If no CBF system is set, <code>u_filtered = u_nom</code>.</p>
+<p><strong>4. Slice and integrate.</strong> The filtered control vector is sliced back into per-agent portions (based on each agent's control dimension). Each agent then integrates its dynamics forward by <span class="arithmatex">\(\Delta t\)</span> using the RK4 solver and updates its internal state.</p>
+<p><strong>5. Collision detection.</strong> The simulator checks all pairs of active agents for collisions. For each pair, it extracts position state variables (those starting with <code>position_</code>), computes the Euclidean distance between the two agents, and compares it against the sum of their collision radii (default 0.25 each). Colliding agents are moved to the inactive list.</p>
+<p><strong>6. Gym update.</strong> If Gymnasium environments have been created, the simulator pushes the updated state to each <code>WrapperEnv</code> so that RL agents can observe the new state.</p>
+<h2 id="running-a-simulation">Running a Simulation</h2>
+<h3 id="from-yaml-config">From YAML config</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">kamaji.simulation.simulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulator</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;my_config.yml&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="programmatic-setup">Programmatic setup</h3>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">kamaji.simulation.simulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Simulator</span>
+
+<span class="n">sim</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">()</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">set_sim_params</span><span class="p">({</span>
+    <span class="s2">&quot;time_step&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="s2">&quot;duration&quot;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
+    <span class="s2">&quot;integrator&quot;</span><span class="p">:</span> <span class="s2">&quot;RK4&quot;</span>
+<span class="p">})</span>
+
+<span class="n">agent_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;default&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;initial_state&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;position_x&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;position_y&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
+    <span class="s2">&quot;dynamics_model&quot;</span><span class="p">:</span> <span class="s2">&quot;SingleIntegrator2DOF&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;controller&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;velocity_x&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Constant&quot;</span><span class="p">,</span> <span class="s2">&quot;specs&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}]},</span>
+        <span class="s2">&quot;velocity_y&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;PID&quot;</span><span class="p">,</span> <span class="s2">&quot;specs&quot;</span><span class="p">:</span> <span class="p">[{</span>
+            <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;position_y&quot;</span><span class="p">,</span> <span class="s2">&quot;goal&quot;</span><span class="p">:</span> <span class="mf">5.0</span><span class="p">,</span>
+            <span class="s2">&quot;kp&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s2">&quot;ki&quot;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s2">&quot;kd&quot;</span><span class="p">:</span> <span class="mf">0.1</span>
+        <span class="p">}]}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">add_agents</span><span class="p">(</span><span class="n">agent_config</span><span class="p">)</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="step-callback">Step callback</h3>
+<p>You can inject custom logic at each time step using the <code>on_step</code> callback:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">my_callback</span><span class="p">(</span><span class="n">simulator</span><span class="p">,</span> <span class="n">step_idx</span><span class="p">):</span>
+    <span class="c1"># Example: update PID goal halfway through</span>
+    <span class="k">if</span> <span class="n">step_idx</span> <span class="o">==</span> <span class="n">simulator</span><span class="o">.</span><span class="n">num_timesteps</span> <span class="o">//</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">agent</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">active_agents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">agent</span><span class="o">.</span><span class="n">control_model</span><span class="p">[</span><span class="s2">&quot;velocity_y&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">set_goal</span><span class="p">([</span><span class="mf">10.0</span><span class="p">])</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">(</span><span class="n">on_step</span><span class="o">=</span><span class="n">my_callback</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="collision-detection">Collision Detection</h2>
+<p>Collision detection runs automatically at the end of each time step. The algorithm:</p>
+<ol>
+<li>For each pair of active agents <span class="arithmatex">\((i, j)\)</span>, find the common position axes (state variables whose names start with <code>position_</code>).</li>
+<li>Compute the Euclidean distance: <span class="arithmatex">\(d_{ij} = \| p_i - p_j \|_2\)</span>.</li>
+<li>If <span class="arithmatex">\(d_{ij} &lt; r_i + r_j\)</span> (where <span class="arithmatex">\(r\)</span> is the agent's <code>radius</code> attribute, default 0.25), both agents are flagged for removal.</li>
+<li>Flagged agents are moved from the active list to the inactive list. Their state/control history is preserved.</li>
+</ol>
+<p>If all agents are removed, the simulation ends early.</p>
+<h2 id="gymnasium-integration">Gymnasium Integration</h2>
+<p>Kamaji supports training RL agents via the <a href="https://stable-baselines3.readthedocs.io/">Stable-Baselines3</a> library. The integration works through <code>WrapperEnv</code>, a Gymnasium-compatible environment that wraps the Kamaji simulator.</p>
+<h3 id="setup">Setup</h3>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">reward_fn</span><span class="p">(</span><span class="n">prev_env_state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">new_env_state</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute step reward from environment transition.&quot;&quot;&quot;</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">new_env_state</span><span class="p">[</span><span class="s2">&quot;agent_1&quot;</span><span class="p">][</span><span class="s2">&quot;position_x&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="o">-</span><span class="nb">abs</span><span class="p">(</span><span class="n">pos</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">)</span>  <span class="c1"># reward proximity to goal</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">termination_fn</span><span class="p">(</span><span class="n">prev_env_state</span><span class="p">,</span> <span class="n">new_env_state</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if episode should terminate. Returns (terminated, bonus_reward).&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">new_env_state</span><span class="p">[</span><span class="s2">&quot;agent_1&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># agent was removed (collision)</span>
+        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="o">-</span><span class="mf">100.0</span>
+    <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="mf">0.0</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">truncation_fn</span><span class="p">(</span><span class="n">sim_time</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if episode should be truncated (e.g. time limit).&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">sim_time</span> <span class="o">&gt;=</span> <span class="mf">10.0</span>
+
+<span class="n">sim</span><span class="o">.</span><span class="n">create_gym_envs</span><span class="p">(</span>
+    <span class="n">agent_ids</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;agent_1&quot;</span><span class="p">],</span>
+    <span class="n">reward_fns</span><span class="o">=</span><span class="p">[</span><span class="n">reward_fn</span><span class="p">],</span>
+    <span class="n">termination_fns</span><span class="o">=</span><span class="p">[</span><span class="n">termination_fn</span><span class="p">],</span>
+    <span class="n">truncation_fns</span><span class="o">=</span><span class="p">[</span><span class="n">truncation_fn</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="c1"># Train</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">train_agent_controller</span><span class="p">(</span><span class="s2">&quot;agent_1&quot;</span><span class="p">,</span> <span class="n">training_steps</span><span class="o">=</span><span class="mi">50000</span><span class="p">)</span>
+
+<span class="c1"># Run trained policy</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">simulate</span><span class="p">()</span>
+</code></pre></div>
+<h3 id="how-wrapperenv-works">How WrapperEnv Works</h3>
+<p>Each <code>WrapperEnv</code> instance:</p>
+<ul>
+<li><strong>Observation space:</strong> A <code>Box</code> with dimension equal to the number of <code>state_features</code> defined in the SARL controller config. Values are extracted from the agent's state dictionary.</li>
+<li><strong>Action space:</strong> A <code>Box</code> with dimension equal to the number of SARL-controlled channels. Default bounds are <span class="arithmatex">\([-10, 10]\)</span>.</li>
+<li><strong>Step:</strong> Calls <code>simulator.step((agent_id, action))</code>, which advances <em>all</em> agents by one time step (the provided action overrides the SARL prediction for this agent, while other agents use their normal controllers).</li>
+<li><strong>Reset:</strong> Calls <code>simulator.reset()</code>, restoring all agents to their initial states.</li>
+</ul>
+<h3 id="key-design-points">Key design points</h3>
+<ul>
+<li>The simulator is <strong>shared</strong> — when one RL agent steps, all agents advance. This means multi-agent interactions are captured naturally.</li>
+<li>Reward, termination, and truncation are <strong>callback-based</strong>, giving you full flexibility to define the learning objective.</li>
+<li>An agent whose state becomes <code>None</code> in the environment state (due to collision removal) triggers automatic termination.</li>
+</ul>
+<h2 id="configuration">Configuration</h2>
+<p>For details on the YAML configuration format (simulation parameters, agent specs, logging), see <a href="../configuration/">Configuration</a>.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../dynamics/" class="btn btn-neutral float-left" title="Dynamics"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../methods/" class="btn btn-neutral float-right" title="Methods">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/JCorbin406/kamaji" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../dynamics/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../methods/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../js/mathjax_config.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

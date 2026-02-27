@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://jcorbin406.github.io/Kamaji/concepts/controls/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Controls - Kamaji Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Controls";
+        var mkdocs_page_input_path = "concepts/controls.md";
+        var mkdocs_page_url = "/Kamaji/concepts/controls/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../..">
+          <img src="../../img/KamajiLogo.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../started/installation/">Installation</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-1-clone-the-repository">Step 1: Clone the Repository</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-2-create-the-conda-environment">Step 2: Create the Conda Environment</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/installation/#21-create-the-environment">2.1 Create the Environment</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/installation/#22-activate-the-environment">2.2 Activate the Environment</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-3-install-the-kamaji-package">Step 3: Install the Kamaji Package</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-4-verify-installation">Step 4: Verify Installation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-5-running-kamaji">Step 5: Running Kamaji</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-6-deactivate-the-environment">Step 6: Deactivate the Environment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-7-updating-the-environment">Step 7: Updating the Environment</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../started/quickstart/">Quickstart</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/quickstart/#run-your-first-simulation">Run Your First Simulation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/quickstart/#what-it-does">What It Does</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/quickstart/#relevant-files">Relevant Files</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../started/examples/">Examples</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#basic-simulation">Basic Simulation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#pid-controlled-navigation">PID-Controlled Navigation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#auction-based-collision-avoidance">Auction-Based Collision Avoidance</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#urban-air-mobility-scenario-3d">Urban Air Mobility Scenario (3D)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#symbolic-cbf-based-collision-avoidance">Symbolic CBF-Based Collision Avoidance</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/examples/#key-steps">Key Steps</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/examples/#how-make_cbf_system-works">How make_cbf_system() Works</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="../../started/examples/#breakdown">Breakdown</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/examples/#highlight-symbolic-cbf-definition">Highlight: Symbolic CBF Definition</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#visualization">Visualization</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Concepts</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../configuration/">Configuration</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../configuration/#structure">Structure</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../configuration/#key-fields">Key Fields</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../agents/">Agents</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#responsibilities">Responsibilities</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#initialization">Initialization</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../agents/#parameters">Parameters</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../agents/#initialization-workflow">Initialization workflow</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#state-representation">State Representation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#dynamics-models">Dynamics Models</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#controllers">Controllers</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../agents/#constant-controller">Constant Controller</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#control-computation">Control Computation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#simulation-step">Simulation Step</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#logging">Logging</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#valuation-functions">Valuation Functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../agents/#resetting">Resetting</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../simulator/">Simulator</a>
+    <ul>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Controls</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#architecture-overview">Architecture Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#built-in-controllers">Built-in Controllers</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#constant">Constant</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pid">PID</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cbf-safety-filter">CBF Safety Filter</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sarl-reinforcement-learning-policy">SARL (Reinforcement Learning Policy)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#creating-a-custom-controller">Creating a Custom Controller</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../dynamics/">Dynamics</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../dynamics/#available-models">Available Models</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../dynamics/#model-details">Model Details</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../dynamics/#single-integrator">Single Integrator</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../dynamics/#double-integrator">Double Integrator</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../dynamics/#unicycle">Unicycle</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../dynamics/#cruise-control">Cruise Control</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../dynamics/#choosing-a-model">Choosing a Model</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../dynamics/#creating-a-custom-model">Creating a Custom Model</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../environment/">Environment</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../environment/#simulation-loop">Simulation Loop</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../environment/#step-by-step-details">Step-by-Step Details</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../environment/#running-a-simulation">Running a Simulation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../environment/#from-yaml-config">From YAML config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../environment/#programmatic-setup">Programmatic setup</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../environment/#step-callback">Step callback</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../environment/#collision-detection">Collision Detection</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../environment/#gymnasium-integration">Gymnasium Integration</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../environment/#setup">Setup</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../environment/#how-wrapperenv-works">How WrapperEnv Works</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../environment/#key-design-points">Key design points</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../environment/#configuration">Configuration</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../methods/">Methods</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#control-barrier-functions-cbfs">🛡 Control Barrier Functions (CBFs)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#auction-based-fairness">Auction-Based Fairness</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#nominal-control-correction">Nominal Control &amp; Correction</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#applications">Applications</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Examples</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../examples/CBF/">CBF</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/CBF/#scenario-setup">Scenario Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/CBF/#agent-definitions">Agent Definitions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/CBF/#nominal-controls">Nominal Controls</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../examples/auction/">Auction</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/auction/#scenario-setup">Scenario Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/auction/#agent-definitions">Agent Definitions</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../examples/sequential/">Sequential</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/sequential/#scenario-setup">Scenario Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/sequential/#agent-definitions">Agent Definitions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/sequential/#nominal-controls">Nominal Controls</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#development">Development</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#how-to-contribute">How to Contribute</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#code-guidelines">Code Guidelines</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#license">License</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#contact">Contact</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#bug-reports-and-questions">Bug Reports and Questions</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#citation">Citation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#related-publications">Related Publications</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#how-to-include-this-in-latex">How to Include This in LaTeX</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../license/">License</a>
+    <ul>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/">Overview</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/#modules">Modules</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/agent/">Agent</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.assign_controller">assign_controller</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.assign_dynamics">assign_dynamics</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.assign_gym_env">assign_gym_env</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.compute_control">compute_control</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.compute_dynamics">compute_dynamics</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.reset">reset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/agent/#kamaji.agent.Agent.step">step</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/simulator/">Simulator</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.__init__">__init__</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.add_agents">add_agents</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.clear_manual_control">clear_manual_control</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.create_gym_envs">create_gym_envs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.load_from_config">load_from_config</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.remove_agent">remove_agent</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.reset">reset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.set_cbf_system">set_cbf_system</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.set_manual_control">set_manual_control</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.set_sim_params">set_sim_params</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.setup_environment">setup_environment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.simulate">simulate</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.step">step</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/simulator/#kamaji.simulation.simulator.Simulator.train_agent_controller">train_agent_controller</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../api/auction/">Auction</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.__init__">__init__</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.allocation">allocation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.best_response">best_response</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.compute_payments">compute_payments</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.compute_payments_from_delta">compute_payments_from_delta</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.compute_payments_vcg">compute_payments_vcg</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.constrained_demand">constrained_demand</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.find_m">find_m</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.marginal_valuation">marginal_valuation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.payment">payment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.payoff">payoff</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.plot_bid_demand_over_time">plot_bid_demand_over_time</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.plot_bid_price_over_time">plot_bid_price_over_time</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.reset">reset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.run">run</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.run_without_agent">run_without_agent</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.select_next_player">select_next_player</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../api/auction/#kamaji.auctions.resource.Auction.valuation">valuation</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Kamaji Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Concepts</li>
+      <li class="breadcrumb-item active">Controls</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/JCorbin406/kamaji/edit/master/docs/concepts/controls.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="controllers">Controllers</h1>
+<p>Controllers in Kamaji compute control inputs for each agent at every time step. Kamaji uses a <strong>per-channel</strong> controller architecture: each control variable (e.g. <code>velocity_x</code>, <code>velocity_y</code>) is assigned its own controller in the YAML configuration. The outputs are concatenated into the full control vector before being passed to the dynamics model.</p>
+<h2 id="architecture-overview">Architecture Overview</h2>
+<div class="highlight"><pre><span></span><code>Agent Config (YAML)
+  └── controller:
+        ├── velocity_x:  { type: PID, specs: [...] }
+        └── velocity_y:  { type: PID, specs: [...] }
+                ↓
+        Per-channel outputs concatenated
+                ↓
+            u = [u_x, u_y]
+                ↓
+        (Optional) CBF safety filter
+                ↓
+            Dynamics model
+</code></pre></div>
+<p>Control channels are sorted alphabetically by name, so the ordering of the concatenated control vector is deterministic and matches the dynamics model's <code>control_variables()</code> list.</p>
+<h2 id="built-in-controllers">Built-in Controllers</h2>
+<h3 id="constant">Constant</h3>
+<p>Returns a fixed value every time step. Useful for open-loop testing or stationary agents.</p>
+<p><strong>YAML example:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">velocity_x</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Constant</span>
+<span class="w">  </span><span class="nt">specs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+</code></pre></div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>value</code></td>
+<td>float</td>
+<td>The constant control output</td>
+</tr>
+</tbody>
+</table>
+<h3 id="pid">PID</h3>
+<p>A Proportional-Integral-Derivative controller with anti-windup and derivative smoothing.</p>
+<div class="arithmatex">\[u = K_p \, e + K_i \int e \, dt + K_d \, \dot{e}\]</div>
+<p>where <span class="arithmatex">\(e = \text{goal} - \text{state}\)</span>.</p>
+<p><strong>YAML example:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">velocity_x</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PID</span>
+<span class="w">  </span><span class="nt">specs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">position_x</span>
+<span class="w">      </span><span class="nt">goal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
+<span class="w">      </span><span class="nt">kp</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">      </span><span class="nt">ki</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span>
+<span class="w">      </span><span class="nt">kd</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
+</code></pre></div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>state</code></td>
+<td>string</td>
+<td>Name of the state variable to track</td>
+</tr>
+<tr>
+<td><code>goal</code></td>
+<td>float</td>
+<td>Target setpoint</td>
+</tr>
+<tr>
+<td><code>kp</code></td>
+<td>float</td>
+<td>Proportional gain</td>
+</tr>
+<tr>
+<td><code>ki</code></td>
+<td>float</td>
+<td>Integral gain</td>
+</tr>
+<tr>
+<td><code>kd</code></td>
+<td>float</td>
+<td>Derivative gain</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Implementation details:</strong></p>
+<ul>
+<li><strong>Anti-windup:</strong> The integral term is clamped to <span class="arithmatex">\([-10, 10]\)</span> to prevent integral windup during sustained error.</li>
+<li><strong>Derivative smoothing:</strong> The raw derivative is passed through an exponential moving average filter with coefficient <span class="arithmatex">\(\alpha = 0.1\)</span> (configurable). This reduces noise amplification from the derivative term.</li>
+<li><strong>Output saturation:</strong> Optional <code>lower_limit</code> and <code>upper_limit</code> can be set programmatically to clip the control output.</li>
+</ul>
+<p><strong>Gain tuning tips:</strong></p>
+<ol>
+<li>Start with only <span class="arithmatex">\(K_p\)</span> (set <span class="arithmatex">\(K_i = K_d = 0\)</span>). Increase until the response is fast but not oscillating.</li>
+<li>Add <span class="arithmatex">\(K_d\)</span> to dampen overshoot.</li>
+<li>Add <span class="arithmatex">\(K_i\)</span> last if you need zero steady-state error. Keep it small — large <span class="arithmatex">\(K_i\)</span> causes windup and oscillation.</li>
+</ol>
+<p>The goal can be updated at runtime by calling <code>set_goal()</code> on the PID controller instance.</p>
+<h3 id="cbf-safety-filter">CBF Safety Filter</h3>
+<p>The CBF (Control Barrier Function) safety filter is not a standalone controller — it is a <strong>post-processing layer</strong> applied to the nominal control vector computed by the per-channel controllers. It solves a Quadratic Program that finds the closest safe control to the nominal:</p>
+<div class="arithmatex">\[u^* = \arg\min_u \| u - u_{\text{nom}} \|^2 \quad \text{s.t.} \quad L_f h + L_g h \, u + \alpha(h) \geq 0\]</div>
+<p>for each registered CBF constraint.</p>
+<p><strong>Setup (programmatic):</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">sympy</span><span class="w"> </span><span class="kn">import</span> <span class="n">symbols</span><span class="p">,</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">Matrix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">kamaji.controllers.CBF</span><span class="w"> </span><span class="kn">import</span> <span class="n">CBFSystem</span>
+
+<span class="c1"># Define symbolic state variables</span>
+<span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x0 y0 x1 y1&#39;</span><span class="p">)</span>
+<span class="n">state_vars</span> <span class="o">=</span> <span class="p">[</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">]</span>
+
+<span class="c1"># Barrier function: inter-agent distance &gt;= safety radius</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">((</span><span class="n">x0</span> <span class="o">-</span> <span class="n">x1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y0</span> <span class="o">-</span> <span class="n">y1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span>
+
+<span class="c1"># Drift and actuation (single-integrator: f=0, g=I)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">Matrix</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># Class-K function</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">h_val</span><span class="p">:</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">h_val</span>
+
+<span class="c1"># Create system and add constraint</span>
+<span class="n">cbf</span> <span class="o">=</span> <span class="n">CBFSystem</span><span class="p">()</span>
+<span class="n">cbf</span><span class="o">.</span><span class="n">add_cbf</span><span class="p">(</span><span class="s2">&quot;collision_01&quot;</span><span class="p">,</span> <span class="n">agents</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">state_vars</span><span class="o">=</span><span class="n">state_vars</span><span class="p">,</span> <span class="n">h_expr</span><span class="o">=</span><span class="n">h</span><span class="p">,</span>
+            <span class="n">f_expr</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">g_expr</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">alpha_func</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+
+<span class="c1"># Attach to simulator</span>
+<span class="n">sim</span><span class="o">.</span><span class="n">set_cbf_system</span><span class="p">(</span><span class="n">cbf</span><span class="p">)</span>
+</code></pre></div>
+<p>The symbolic pipeline automatically computes Lie derivatives (<span class="arithmatex">\(L_f h\)</span>, <span class="arithmatex">\(L_g h\)</span>) via SymPy and lambdifies them for fast numerical evaluation.</p>
+<p><strong>Infeasibility handling:</strong></p>
+<p>If the QP has no feasible solution (constraints cannot all be satisfied simultaneously), the default behavior is to fall back to the nominal control with a warning. You can override this by passing an <code>on_infeasible</code> callback to <code>CBFSystem</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">my_fallback</span><span class="p">(</span><span class="n">state_values</span><span class="p">,</span> <span class="n">u_nom</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">CBFFilterResult</span><span class="p">(</span><span class="n">control</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">u_nom</span><span class="p">),</span> <span class="n">feasible</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">cbf</span> <span class="o">=</span> <span class="n">CBFSystem</span><span class="p">(</span><span class="n">on_infeasible</span><span class="o">=</span><span class="n">my_fallback</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="sarl-reinforcement-learning-policy">SARL (Reinforcement Learning Policy)</h3>
+<p>The <code>SARLPolicy</code> controller wraps a Stable-Baselines3 RL model. It observes a subset of state features and outputs actions for one or more control channels.</p>
+<p><strong>YAML example:</strong></p>
+<div class="highlight"><pre><span></span><code><span class="nt">velocity_x</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SARLPolicy</span>
+<span class="w">  </span><span class="nt">specs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">state_features</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">position_x</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">goal_x</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PPO</span>
+<span class="nt">velocity_y</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SARLPolicy</span>
+<span class="w">  </span><span class="nt">specs</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">state_features</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">position_y</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">goal_y</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PPO</span>
+</code></pre></div>
+<p><strong>Supported algorithms:</strong> PPO, SAC, DDPG, A2C, TD3</p>
+<p><strong>Lifecycle:</strong></p>
+<ol>
+<li><strong>Configuration</strong> — The YAML specifies <code>state_features</code> and <code>model</code> for each RL-controlled channel.</li>
+<li><strong>Aggregation</strong> — All SARL channels on one agent are combined into a single <code>SARLPolicy</code> instance (one model per agent). State features are unioned; action outputs are the channel names.</li>
+<li><strong>Gym environment</strong> — Call <code>simulator.create_gym_envs()</code> with reward, termination, and truncation callbacks to create a <code>WrapperEnv</code> for the agent.</li>
+<li><strong>Training</strong> — Call <code>simulator.train_agent_controller(agent_id, training_steps)</code> to train via SB3's <code>.learn()</code>.</li>
+<li><strong>Inference</strong> — During simulation, the policy's <code>.predict()</code> is called each step to produce actions.</li>
+</ol>
+<p><strong>Important:</strong> Only one RL model name can be specified per agent. All SARL channels must use the same algorithm.</p>
+<h2 id="creating-a-custom-controller">Creating a Custom Controller</h2>
+<p>Subclass <code>Controls</code> and implement the <code>update()</code> method:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">kamaji.controllers.controllers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Controls</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BangBang</span><span class="p">(</span><span class="n">Controls</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple bang-bang controller that switches between two values.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_name</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">u_high</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">u_low</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_name</span> <span class="o">=</span> <span class="n">state_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">goal</span> <span class="o">=</span> <span class="n">goal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">u_high</span> <span class="o">=</span> <span class="n">u_high</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">u_low</span> <span class="o">=</span> <span class="n">u_low</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">):</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">goal</span> <span class="o">-</span> <span class="n">state_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">state_name</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">u_high</span> <span class="k">if</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">u_low</span><span class="p">])</span>
+</code></pre></div>
+<p>To use it in YAML configs, add an <code>elif</code> branch for your new type in <code>Agent.assign_controller()</code>.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../simulator/" class="btn btn-neutral float-left" title="Simulator"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../dynamics/" class="btn btn-neutral float-right" title="Dynamics">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/JCorbin406/kamaji" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../simulator/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../dynamics/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../js/mathjax_config.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

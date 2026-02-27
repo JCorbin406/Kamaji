@@ -1,0 +1,2204 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://jcorbin406.github.io/Kamaji/api/agent/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Agent - Kamaji Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../assets/_mkdocstrings.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Agent";
+        var mkdocs_page_input_path = "api/agent.md";
+        var mkdocs_page_url = "/Kamaji/api/agent/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../..">
+          <img src="../../img/KamajiLogo.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../started/installation/">Installation</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#prerequisites">Prerequisites</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-1-clone-the-repository">Step 1: Clone the Repository</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-2-create-the-conda-environment">Step 2: Create the Conda Environment</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/installation/#21-create-the-environment">2.1 Create the Environment</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/installation/#22-activate-the-environment">2.2 Activate the Environment</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-3-install-the-kamaji-package">Step 3: Install the Kamaji Package</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-4-verify-installation">Step 4: Verify Installation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-5-running-kamaji">Step 5: Running Kamaji</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-6-deactivate-the-environment">Step 6: Deactivate the Environment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/installation/#step-7-updating-the-environment">Step 7: Updating the Environment</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../started/quickstart/">Quickstart</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/quickstart/#run-your-first-simulation">Run Your First Simulation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/quickstart/#what-it-does">What It Does</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/quickstart/#relevant-files">Relevant Files</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../started/examples/">Examples</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#basic-simulation">Basic Simulation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#pid-controlled-navigation">PID-Controlled Navigation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#auction-based-collision-avoidance">Auction-Based Collision Avoidance</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#urban-air-mobility-scenario-3d">Urban Air Mobility Scenario (3D)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#symbolic-cbf-based-collision-avoidance">Symbolic CBF-Based Collision Avoidance</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/examples/#key-steps">Key Steps</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/examples/#how-make_cbf_system-works">How make_cbf_system() Works</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="../../started/examples/#breakdown">Breakdown</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../started/examples/#highlight-symbolic-cbf-definition">Highlight: Symbolic CBF Definition</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../started/examples/#visualization">Visualization</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Concepts</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../concepts/configuration/">Configuration</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/configuration/#structure">Structure</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/configuration/#key-fields">Key Fields</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../concepts/agents/">Agents</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/agents/#responsibilities">Responsibilities</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/agents/#initialization">Initialization</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/agents/#parameters">Parameters</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/agents/#initialization-workflow">Initialization workflow</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/agents/#state-representation">State Representation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/agents/#dynamics-models">Dynamics Models</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/agents/#controllers">Controllers</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/agents/#constant-controller">Constant Controller</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/agents/#control-computation">Control Computation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/agents/#simulation-step">Simulation Step</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/agents/#logging">Logging</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/agents/#valuation-functions">Valuation Functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/agents/#resetting">Resetting</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../concepts/simulator/">Simulator</a>
+    <ul>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../concepts/controls/">Controls</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/controls/#architecture-overview">Architecture Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/controls/#built-in-controllers">Built-in Controllers</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/controls/#constant">Constant</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/controls/#pid">PID</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/controls/#cbf-safety-filter">CBF Safety Filter</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/controls/#sarl-reinforcement-learning-policy">SARL (Reinforcement Learning Policy)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/controls/#creating-a-custom-controller">Creating a Custom Controller</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../concepts/dynamics/">Dynamics</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/dynamics/#available-models">Available Models</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/dynamics/#model-details">Model Details</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/dynamics/#single-integrator">Single Integrator</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/dynamics/#double-integrator">Double Integrator</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/dynamics/#unicycle">Unicycle</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/dynamics/#cruise-control">Cruise Control</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/dynamics/#choosing-a-model">Choosing a Model</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/dynamics/#creating-a-custom-model">Creating a Custom Model</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../concepts/environment/">Environment</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/environment/#simulation-loop">Simulation Loop</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/environment/#step-by-step-details">Step-by-Step Details</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/environment/#running-a-simulation">Running a Simulation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/environment/#from-yaml-config">From YAML config</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/environment/#programmatic-setup">Programmatic setup</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/environment/#step-callback">Step callback</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/environment/#collision-detection">Collision Detection</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/environment/#gymnasium-integration">Gymnasium Integration</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/environment/#setup">Setup</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/environment/#how-wrapperenv-works">How WrapperEnv Works</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../concepts/environment/#key-design-points">Key design points</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../concepts/environment/#configuration">Configuration</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../methods/">Methods</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#control-barrier-functions-cbfs">🛡 Control Barrier Functions (CBFs)</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#auction-based-fairness">Auction-Based Fairness</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#nominal-control-correction">Nominal Control &amp; Correction</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../methods/#applications">Applications</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Examples</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../examples/CBF/">CBF</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/CBF/#scenario-setup">Scenario Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/CBF/#agent-definitions">Agent Definitions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/CBF/#nominal-controls">Nominal Controls</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../examples/auction/">Auction</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/auction/#scenario-setup">Scenario Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/auction/#agent-definitions">Agent Definitions</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../examples/sequential/">Sequential</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/sequential/#scenario-setup">Scenario Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/sequential/#agent-definitions">Agent Definitions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../examples/sequential/#nominal-controls">Nominal Controls</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#development">Development</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#how-to-contribute">How to Contribute</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#code-guidelines">Code Guidelines</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#license">License</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#contact">Contact</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#bug-reports-and-questions">Bug Reports and Questions</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../../about/#citation">Citation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#related-publications">Related Publications</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="../../about/#how-to-include-this-in-latex">How to Include This in LaTeX</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../license/">License</a>
+    <ul>
+    </ul>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">API Reference</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../">Overview</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../#modules">Modules</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Agent</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#kamaji.agent.Agent.assign_controller">assign_controller</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#kamaji.agent.Agent.assign_dynamics">assign_dynamics</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#kamaji.agent.Agent.assign_gym_env">assign_gym_env</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#kamaji.agent.Agent.compute_control">compute_control</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#kamaji.agent.Agent.compute_dynamics">compute_dynamics</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#kamaji.agent.Agent.reset">reset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#kamaji.agent.Agent.step">step</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../simulator/">Simulator</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../simulator/#kamaji.simulation.simulator.Simulator.__init__">__init__</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../simulator/#kamaji.simulation.simulator.Simulator.add_agents">add_agents</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../simulator/#kamaji.simulation.simulator.Simulator.clear_manual_control">clear_manual_control</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../simulator/#kamaji.simulation.simulator.Simulator.create_gym_envs">create_gym_envs</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../simulator/#kamaji.simulation.simulator.Simulator.load_from_config">load_from_config</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../simulator/#kamaji.simulation.simulator.Simulator.remove_agent">remove_agent</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../simulator/#kamaji.simulation.simulator.Simulator.reset">reset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../simulator/#kamaji.simulation.simulator.Simulator.set_cbf_system">set_cbf_system</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../simulator/#kamaji.simulation.simulator.Simulator.set_manual_control">set_manual_control</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../simulator/#kamaji.simulation.simulator.Simulator.set_sim_params">set_sim_params</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../simulator/#kamaji.simulation.simulator.Simulator.setup_environment">setup_environment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../simulator/#kamaji.simulation.simulator.Simulator.simulate">simulate</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../simulator/#kamaji.simulation.simulator.Simulator.step">step</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../simulator/#kamaji.simulation.simulator.Simulator.train_agent_controller">train_agent_controller</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../auction/">Auction</a>
+    <ul>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.__init__">__init__</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.allocation">allocation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.best_response">best_response</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.compute_payments">compute_payments</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.compute_payments_from_delta">compute_payments_from_delta</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.compute_payments_vcg">compute_payments_vcg</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.constrained_demand">constrained_demand</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.find_m">find_m</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.marginal_valuation">marginal_valuation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.payment">payment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.payoff">payoff</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.plot_bid_demand_over_time">plot_bid_demand_over_time</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.plot_bid_price_over_time">plot_bid_price_over_time</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.reset">reset</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.run">run</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.run_without_agent">run_without_agent</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.select_next_player">select_next_player</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="../auction/#kamaji.auctions.resource.Auction.valuation">valuation</a>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Kamaji Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">API Reference</li>
+      <li class="breadcrumb-item active">Agent</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/JCorbin406/kamaji/edit/master/docs/api/agent.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <details class="info" open="open">
+<summary>View <code>Agent</code> class</summary>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="kamaji.agent.Agent" class="doc doc-heading">
+            <code>kamaji.agent.Agent</code>
+
+
+</h2>
+
+
+    <div class="doc doc-contents first">
+
+
+
+        <p>A simulation agent that combines a dynamics model with one or more controllers.</p>
+<p>Each agent owns a dynamics model (defining its equations of motion), a
+set of per-channel controllers (one per control input), optional RL
+integration, and logging of state/control history. Agents are typically
+created by the <code>Simulator</code> from a YAML configuration dictionary, but
+can also be constructed programmatically.</p>
+<p>The control pipeline each time step is:</p>
+<ol>
+<li>Each controller channel computes its scalar (or vector) output.</li>
+<li>Channel outputs are concatenated into the full control vector <code>u</code>.</li>
+<li>If a <code>CBFSystem</code> is attached to the simulator, <code>u</code> is filtered
+   through the safety QP before being applied.</li>
+<li>The dynamics model is integrated forward one step (RK4 by default).</li>
+<li>State and control histories are logged.</li>
+</ol>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>agent_config</code></b>
+                  (<code><span title="dict">dict</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Configuration dictionary. Required keys:</p>
+<ul>
+<li><code>id</code> (str): Unique agent identifier.</li>
+<li><code>initial_state</code> (dict): Maps state variable names to initial values.</li>
+<li><code>dynamics_model</code> (str): Name of the dynamics class (e.g. <code>"SingleIntegrator2DOF"</code>).</li>
+<li><code>controller</code> (dict): Per-channel controller specifications.</li>
+</ul>
+              </div>
+            </li>
+            <li>
+              <b><code>t</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.0</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Initial simulation time.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>dt</code></b>
+                  (<code><span title="float">float</span></code>, default:
+                      <code>0.01</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Integration time step.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>**kwargs</code></b>
+                  (<code><span title="typing.Any">Any</span></code>, default:
+                      <code>{}</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Additional attributes set directly on the agent instance
+(e.g. custom parameters for auction valuations).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Attributes:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>dynamics_model</code></b>
+              –
+              <div class="doc-md-description">
+                <p>The <code>Dynamics</code> subclass instance.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>control_model</code></b>
+              –
+              <div class="doc-md-description">
+                <p>Dictionary mapping control channel names to controller
+objects or callables.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>trainable</code></b>
+              –
+              <div class="doc-md-description">
+                <p><code>True</code> if the agent has an RL (SARL) controller.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>sarl_policy</code></b>
+              –
+              <div class="doc-md-description">
+                <p>The <code>SARLPolicy</code> instance, if any.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>radius</code></b>
+              –
+              <div class="doc-md-description">
+                <p>Collision radius used by the simulator's pairwise collision check.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>budget</code></b>
+              –
+              <div class="doc-md-description">
+                <p>Resource budget (used by auction mechanisms).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>kamaji/agent/agent.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 14</span>
+<span class="normal"> 15</span>
+<span class="normal"> 16</span>
+<span class="normal"> 17</span>
+<span class="normal"> 18</span>
+<span class="normal"> 19</span>
+<span class="normal"> 20</span>
+<span class="normal"> 21</span>
+<span class="normal"> 22</span>
+<span class="normal"> 23</span>
+<span class="normal"> 24</span>
+<span class="normal"> 25</span>
+<span class="normal"> 26</span>
+<span class="normal"> 27</span>
+<span class="normal"> 28</span>
+<span class="normal"> 29</span>
+<span class="normal"> 30</span>
+<span class="normal"> 31</span>
+<span class="normal"> 32</span>
+<span class="normal"> 33</span>
+<span class="normal"> 34</span>
+<span class="normal"> 35</span>
+<span class="normal"> 36</span>
+<span class="normal"> 37</span>
+<span class="normal"> 38</span>
+<span class="normal"> 39</span>
+<span class="normal"> 40</span>
+<span class="normal"> 41</span>
+<span class="normal"> 42</span>
+<span class="normal"> 43</span>
+<span class="normal"> 44</span>
+<span class="normal"> 45</span>
+<span class="normal"> 46</span>
+<span class="normal"> 47</span>
+<span class="normal"> 48</span>
+<span class="normal"> 49</span>
+<span class="normal"> 50</span>
+<span class="normal"> 51</span>
+<span class="normal"> 52</span>
+<span class="normal"> 53</span>
+<span class="normal"> 54</span>
+<span class="normal"> 55</span>
+<span class="normal"> 56</span>
+<span class="normal"> 57</span>
+<span class="normal"> 58</span>
+<span class="normal"> 59</span>
+<span class="normal"> 60</span>
+<span class="normal"> 61</span>
+<span class="normal"> 62</span>
+<span class="normal"> 63</span>
+<span class="normal"> 64</span>
+<span class="normal"> 65</span>
+<span class="normal"> 66</span>
+<span class="normal"> 67</span>
+<span class="normal"> 68</span>
+<span class="normal"> 69</span>
+<span class="normal"> 70</span>
+<span class="normal"> 71</span>
+<span class="normal"> 72</span>
+<span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
+<span class="normal"> 79</span>
+<span class="normal"> 80</span>
+<span class="normal"> 81</span>
+<span class="normal"> 82</span>
+<span class="normal"> 83</span>
+<span class="normal"> 84</span>
+<span class="normal"> 85</span>
+<span class="normal"> 86</span>
+<span class="normal"> 87</span>
+<span class="normal"> 88</span>
+<span class="normal"> 89</span>
+<span class="normal"> 90</span>
+<span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span>
+<span class="normal">318</span>
+<span class="normal">319</span>
+<span class="normal">320</span>
+<span class="normal">321</span>
+<span class="normal">322</span>
+<span class="normal">323</span>
+<span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span>
+<span class="normal">327</span>
+<span class="normal">328</span>
+<span class="normal">329</span>
+<span class="normal">330</span>
+<span class="normal">331</span>
+<span class="normal">332</span>
+<span class="normal">333</span>
+<span class="normal">334</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Agent</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A simulation agent that combines a dynamics model with one or more controllers.</span>
+
+<span class="sd">    Each agent owns a dynamics model (defining its equations of motion), a</span>
+<span class="sd">    set of per-channel controllers (one per control input), optional RL</span>
+<span class="sd">    integration, and logging of state/control history. Agents are typically</span>
+<span class="sd">    created by the ``Simulator`` from a YAML configuration dictionary, but</span>
+<span class="sd">    can also be constructed programmatically.</span>
+
+<span class="sd">    The control pipeline each time step is:</span>
+
+<span class="sd">    1. Each controller channel computes its scalar (or vector) output.</span>
+<span class="sd">    2. Channel outputs are concatenated into the full control vector ``u``.</span>
+<span class="sd">    3. If a ``CBFSystem`` is attached to the simulator, ``u`` is filtered</span>
+<span class="sd">       through the safety QP before being applied.</span>
+<span class="sd">    4. The dynamics model is integrated forward one step (RK4 by default).</span>
+<span class="sd">    5. State and control histories are logged.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        agent_config: Configuration dictionary. Required keys:</span>
+
+<span class="sd">            - ``id`` (str): Unique agent identifier.</span>
+<span class="sd">            - ``initial_state`` (dict): Maps state variable names to initial values.</span>
+<span class="sd">            - ``dynamics_model`` (str): Name of the dynamics class (e.g. ``&quot;SingleIntegrator2DOF&quot;``).</span>
+<span class="sd">            - ``controller`` (dict): Per-channel controller specifications.</span>
+
+<span class="sd">        t: Initial simulation time.</span>
+<span class="sd">        dt: Integration time step.</span>
+<span class="sd">        **kwargs: Additional attributes set directly on the agent instance</span>
+<span class="sd">            (e.g. custom parameters for auction valuations).</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        dynamics_model: The ``Dynamics`` subclass instance.</span>
+<span class="sd">        control_model: Dictionary mapping control channel names to controller</span>
+<span class="sd">            objects or callables.</span>
+<span class="sd">        trainable: ``True`` if the agent has an RL (SARL) controller.</span>
+<span class="sd">        sarl_policy: The ``SARLPolicy`` instance, if any.</span>
+<span class="sd">        radius: Collision radius used by the simulator&#39;s pairwise collision check.</span>
+<span class="sd">        budget: Resource budget (used by auction mechanisms).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">budget</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="mf">.25</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_agent_config</span> <span class="o">=</span> <span class="n">agent_config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manual_control_input</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dt</span> <span class="o">=</span> <span class="n">dt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">agent_config</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sarl_info</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sarl_policy</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">agent_config</span><span class="p">[</span><span class="s1">&#39;initial_state&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_history</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_history</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_history</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">}</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assign_dynamics</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assign_controller</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_control_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics_model</span><span class="o">.</span><span class="n">control_variables</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_control_history</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_list</span><span class="p">)</span>
+
+        <span class="c1"># Validate control alignment</span>
+        <span class="n">required_controls</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_control_list</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;control_model&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">provided</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">required_controls</span> <span class="o">!=</span> <span class="n">provided</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;[Agent: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2">] Control mismatch: dynamics model expects </span><span class="si">{</span><span class="n">required_controls</span><span class="si">}</span><span class="s2"> controls &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;but controller provides </span><span class="si">{</span><span class="n">provided</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">assign_dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate the dynamics model from the agent configuration.</span>
+
+<span class="sd">        Reads ``self._agent_config[&#39;dynamics_model&#39;]`` (a string like</span>
+<span class="sd">        ``&quot;SingleIntegrator2DOF&quot;``) and maps it to the corresponding</span>
+<span class="sd">        ``Dynamics`` subclass.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NotImplementedError: If the dynamics model name is not recognised.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">model_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;Unicycle&quot;</span><span class="p">:</span> <span class="n">Unicycle</span><span class="p">,</span>
+            <span class="s2">&quot;CruiseControl&quot;</span><span class="p">:</span> <span class="n">CruiseControl</span><span class="p">,</span>
+            <span class="s2">&quot;SingleIntegrator1DOF&quot;</span><span class="p">:</span> <span class="n">SingleIntegrator1DOF</span><span class="p">,</span>
+            <span class="s2">&quot;SingleIntegrator2DOF&quot;</span><span class="p">:</span> <span class="n">SingleIntegrator2DOF</span><span class="p">,</span>
+            <span class="s2">&quot;SingleIntegrator3DOF&quot;</span><span class="p">:</span> <span class="n">SingleIntegrator3DOF</span><span class="p">,</span>
+            <span class="s2">&quot;DoubleIntegrator1DOF&quot;</span><span class="p">:</span> <span class="n">DoubleIntegrator1DOF</span><span class="p">,</span>
+            <span class="s2">&quot;DoubleIntegrator2DOF&quot;</span><span class="p">:</span> <span class="n">DoubleIntegrator2DOF</span><span class="p">,</span>
+            <span class="s2">&quot;DoubleIntegrator3DOF&quot;</span><span class="p">:</span> <span class="n">DoubleIntegrator3DOF</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">model_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_agent_config</span><span class="p">[</span><span class="s1">&#39;dynamics_model&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">model_map</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2"> is not a valid dynamics model.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamics_model</span> <span class="o">=</span> <span class="n">model_map</span><span class="p">[</span><span class="n">model_name</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">_dt</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">assign_controller</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the controller configuration and create per-channel controllers.</span>
+
+<span class="sd">        Each key in the ``controller`` config block corresponds to a control</span>
+<span class="sd">        channel (e.g. ``velocity_x``). The value specifies the controller</span>
+<span class="sd">        ``type`` (``&quot;PID&quot;``, ``&quot;Constant&quot;``, or ``&quot;SARLPolicy&quot;``) and a</span>
+<span class="sd">        single-item ``specs`` list with the controller parameters.</span>
+
+<span class="sd">        If any channels use ``SARLPolicy``, all SARL channels are aggregated</span>
+<span class="sd">        into a single ``SARLPolicy`` instance (one RL model per agent). The</span>
+<span class="sd">        agent is then marked as ``trainable``.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If controller configuration is malformed or</span>
+<span class="sd">                multiple different SARL model names are specified.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">controller_cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_agent_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;controller&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">controller_cfg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Controller must be a dictionary of control channels with &#39;type&#39; and &#39;specs&#39;.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_model</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">SARL_state_features</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">SARL_action_outputs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">SARL_models</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">ctrl_name</span><span class="p">,</span> <span class="n">ctrl_data</span> <span class="ow">in</span> <span class="n">controller_cfg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">ctrl_type</span> <span class="o">=</span> <span class="n">ctrl_data</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+            <span class="n">specs</span> <span class="o">=</span> <span class="n">ctrl_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;specs&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">specs</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">specs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Agent: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2">] Controller &#39;</span><span class="si">{</span><span class="n">ctrl_name</span><span class="si">}</span><span class="s2">&#39; must have a single-item specs list.&quot;</span><span class="p">)</span>
+
+            <span class="n">spec</span> <span class="o">=</span> <span class="n">specs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">ctrl_type</span> <span class="o">==</span> <span class="s2">&quot;Constant&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">spec</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Constant controller for &#39;</span><span class="si">{</span><span class="n">ctrl_name</span><span class="si">}</span><span class="s2">&#39; must specify &#39;value&#39;&quot;</span><span class="p">)</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">[</span><span class="n">ctrl_name</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">val</span><span class="p">:</span> <span class="n">v</span>
+
+            <span class="k">elif</span> <span class="n">ctrl_type</span> <span class="o">==</span> <span class="s2">&quot;PID&quot;</span><span class="p">:</span>
+                <span class="n">required_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">,</span> <span class="s2">&quot;goal&quot;</span><span class="p">,</span> <span class="s2">&quot;kp&quot;</span><span class="p">,</span> <span class="s2">&quot;ki&quot;</span><span class="p">,</span> <span class="s2">&quot;kd&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="n">spec</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PID controller for &#39;</span><span class="si">{</span><span class="n">ctrl_name</span><span class="si">}</span><span class="s2">&#39; must contain </span><span class="si">{</span><span class="n">required_keys</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">[</span><span class="n">ctrl_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">PID</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]],</span>
+                    <span class="p">[</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;goal&quot;</span><span class="p">]],</span>
+                    <span class="p">[</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;kp&quot;</span><span class="p">]],</span>
+                    <span class="p">[</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;ki&quot;</span><span class="p">]],</span>
+                    <span class="p">[</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;kd&quot;</span><span class="p">]],</span>
+                    <span class="n">dt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dt</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">ctrl_type</span> <span class="o">==</span> <span class="s2">&quot;SARLPolicy&quot;</span><span class="p">:</span>
+                <span class="n">required_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;state_features&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="n">spec</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SARL controller for &#39;</span><span class="si">{</span><span class="n">ctrl_name</span><span class="si">}</span><span class="s2">&#39; must contain </span><span class="si">{</span><span class="n">required_keys</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;state_features&quot;</span><span class="p">]:</span>
+                    <span class="n">SARL_state_features</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
+                <span class="n">SARL_models</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">])</span>
+                <span class="n">SARL_action_outputs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ctrl_name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown controller type &#39;</span><span class="si">{</span><span class="n">ctrl_type</span><span class="si">}</span><span class="s2">&#39; for </span><span class="si">{</span><span class="n">ctrl_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">SARL_models</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">SARL_models</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Only one SARL model can be specified per agent. Found: </span><span class="si">{</span><span class="n">SARL_models</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sarl_policy</span> <span class="o">=</span> <span class="n">SARLPolicy</span><span class="p">(</span>
+                <span class="n">state_inputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">SARL_state_features</span><span class="p">),</span>
+                <span class="n">action_outputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">SARL_action_outputs</span><span class="p">),</span>
+                <span class="n">model_name</span><span class="o">=</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">ctrl_name</span> <span class="ow">in</span> <span class="n">SARL_action_outputs</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">[</span><span class="n">ctrl_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sarl_policy</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sarl_info</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;state_features&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">SARL_state_features</span><span class="p">),</span>
+                <span class="s2">&quot;action_outputs&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">SARL_action_outputs</span><span class="p">)</span>
+            <span class="p">}</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">assign_gym_env</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Attach a Gymnasium environment and initialise the SARL model.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            env: A ``WrapperEnv`` instance for this agent.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the agent has no SARL controller.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sarl_policy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Agent: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2">] Cannot assign gym env without SARL controller. Either no SARL controller is defined, or controller has not yet been assigned.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sarl_policy</span><span class="o">.</span><span class="n">init_model</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_control</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">rl_action</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the full control vector by combining per-channel outputs.</span>
+
+<span class="sd">        Iterates over control channels in sorted order, queries each</span>
+<span class="sd">        controller, and concatenates the results. If an RL action is</span>
+<span class="sd">        provided (during training), it overrides the SARL policy&#39;s own</span>
+<span class="sd">        prediction for the corresponding channels.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            t: Current simulation time.</span>
+<span class="sd">            rl_action: Optional externally-provided RL action that overrides</span>
+<span class="sd">                the SARL policy prediction (used during training).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Control vector of shape ``(n_controls,)``.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If ``rl_action`` is provided but no SARL controller</span>
+<span class="sd">                exists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span>
+
+        <span class="c1"># For backward compatibility, support legacy controller format</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">control_channels</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="n">control_vector</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1"># Get SARL model if exists</span>
+            <span class="n">hasSARL</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">SARL_model</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">control_channels</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">[</span><span class="n">channel</span><span class="p">],</span> <span class="n">SARLPolicy</span><span class="p">):</span>
+                    <span class="n">hasSARL</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">SARL_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span>
+                    <span class="k">break</span>
+
+            <span class="c1"># predict SARL actions if needed</span>
+            <span class="k">if</span> <span class="n">rl_action</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">hasSARL</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;RL actions provided but no SARL controller found.&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">hasSARL</span><span class="p">:</span>
+                <span class="n">SARL_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">current_state</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sarl_info</span><span class="p">[</span><span class="s2">&quot;state_features&quot;</span><span class="p">]])</span>
+                <span class="c1"># Use provided rl_action rather than direct model prediction, allowing for proper handling of actions during training</span>
+                <span class="k">if</span> <span class="n">rl_action</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">SARL_pred</span> <span class="o">=</span> <span class="n">rl_action</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">SARL_pred</span> <span class="o">=</span> <span class="n">SARL_model</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">SARL_state</span><span class="p">)</span>
+                <span class="n">SARL_control_channels</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">SARL_model</span><span class="o">.</span><span class="n">action_outputs</span><span class="p">,</span> <span class="n">SARL_pred</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">control_channels</span><span class="p">:</span>
+                <span class="n">controller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">controller</span><span class="p">,</span> <span class="n">SARLPolicy</span><span class="p">):</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="n">SARL_control_channels</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">val</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">current_state</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">controller</span><span class="p">,</span> <span class="s2">&quot;update&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">controller</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">current_state</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+                    <span class="n">control_vector</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">control_vector</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">control_vector</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Fallback for legacy single controller</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">current_state</span><span class="p">)</span>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">control_input</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate the dynamics at the current state (without stepping).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            t: Current simulation time.</span>
+<span class="sd">            control_input: Control vector.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            State derivative vector (dx/dt).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics_model</span><span class="o">.</span><span class="n">dynamics</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">,</span> <span class="n">control_input</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">control_input</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Advance the agent one time step using RK4 integration.</span>
+
+<span class="sd">        Integrates the dynamics model forward by ``dt`` seconds, updates the</span>
+<span class="sd">        internal state dictionary, and (optionally) appends the new state and</span>
+<span class="sd">        control input to the history DataFrames.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            t: Current simulation time (before the step).</span>
+<span class="sd">            control_input: Control vector to apply during this step.</span>
+<span class="sd">            log: If ``True``, record the state and control to history.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamics_state_order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamics_model</span><span class="o">.</span><span class="n">state_variables</span><span class="p">())</span>
+        <span class="n">dynamics_state_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics_state_order</span><span class="p">])</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">compute_dynamics</span><span class="p">(</span><span class="n">t_local</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics_model</span><span class="o">.</span><span class="n">dynamics</span><span class="p">(</span><span class="n">t_local</span><span class="p">,</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamics_state_order</span><span class="p">)},</span> <span class="n">u</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">new_state_vec</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">rk4_step</span><span class="p">(</span><span class="n">compute_dynamics</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">dynamics_state_vec</span><span class="p">,</span> <span class="n">control_input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dt</span><span class="p">)</span>
+        <span class="n">dynamics_new_state_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">new_state_vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamics_state_order</span><span class="p">)}</span>
+        <span class="n">new_state_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">new_state_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dynamics_new_state_dict</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">new_state_dict</span>
+        <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state_history</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_history</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">}</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span>
+
+        <span class="n">control_row</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">}</span>
+        <span class="n">control_row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">control_input</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_control_list</span><span class="p">)})</span>
+        <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_control_history</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_control_history</span><span class="p">)]</span> <span class="o">=</span> <span class="n">control_row</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_valuation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">valuation_fn</span> <span class="o">=</span> <span class="n">fn</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_marginal_valuation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">marginal_valuation_fn</span> <span class="o">=</span> <span class="n">fn</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">valuation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">valuation_fn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">marginal_valuation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">marginal_valuation_fn</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the agent to its initial state from the config.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_agent_config</span><span class="p">[</span><span class="s1">&#39;initial_state&#39;</span><span class="p">]</span>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state_log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_history</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">control_log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_control_history</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="kamaji.agent.Agent.assign_controller" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">assign_controller</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Parse the controller configuration and create per-channel controllers.</p>
+<p>Each key in the <code>controller</code> config block corresponds to a control
+channel (e.g. <code>velocity_x</code>). The value specifies the controller
+<code>type</code> (<code>"PID"</code>, <code>"Constant"</code>, or <code>"SARLPolicy"</code>) and a
+single-item <code>specs</code> list with the controller parameters.</p>
+<p>If any channels use <code>SARLPolicy</code>, all SARL channels are aggregated
+into a single <code>SARLPolicy</code> instance (one RL model per agent). The
+agent is then marked as <code>trainable</code>.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>If controller configuration is malformed or
+multiple different SARL model names are specified.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>kamaji/agent/agent.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">assign_controller</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse the controller configuration and create per-channel controllers.</span>
+
+<span class="sd">    Each key in the ``controller`` config block corresponds to a control</span>
+<span class="sd">    channel (e.g. ``velocity_x``). The value specifies the controller</span>
+<span class="sd">    ``type`` (``&quot;PID&quot;``, ``&quot;Constant&quot;``, or ``&quot;SARLPolicy&quot;``) and a</span>
+<span class="sd">    single-item ``specs`` list with the controller parameters.</span>
+
+<span class="sd">    If any channels use ``SARLPolicy``, all SARL channels are aggregated</span>
+<span class="sd">    into a single ``SARLPolicy`` instance (one RL model per agent). The</span>
+<span class="sd">    agent is then marked as ``trainable``.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If controller configuration is malformed or</span>
+<span class="sd">            multiple different SARL model names are specified.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">controller_cfg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_agent_config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;controller&quot;</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">controller_cfg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Controller must be a dictionary of control channels with &#39;type&#39; and &#39;specs&#39;.&quot;</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">control_model</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">SARL_state_features</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">SARL_action_outputs</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">SARL_models</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">ctrl_name</span><span class="p">,</span> <span class="n">ctrl_data</span> <span class="ow">in</span> <span class="n">controller_cfg</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">ctrl_type</span> <span class="o">=</span> <span class="n">ctrl_data</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span>
+        <span class="n">specs</span> <span class="o">=</span> <span class="n">ctrl_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;specs&quot;</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">specs</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">specs</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Agent: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2">] Controller &#39;</span><span class="si">{</span><span class="n">ctrl_name</span><span class="si">}</span><span class="s2">&#39; must have a single-item specs list.&quot;</span><span class="p">)</span>
+
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">specs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">ctrl_type</span> <span class="o">==</span> <span class="s2">&quot;Constant&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">spec</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Constant controller for &#39;</span><span class="si">{</span><span class="n">ctrl_name</span><span class="si">}</span><span class="s2">&#39; must specify &#39;value&#39;&quot;</span><span class="p">)</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">[</span><span class="n">ctrl_name</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">val</span><span class="p">:</span> <span class="n">v</span>
+
+        <span class="k">elif</span> <span class="n">ctrl_type</span> <span class="o">==</span> <span class="s2">&quot;PID&quot;</span><span class="p">:</span>
+            <span class="n">required_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">,</span> <span class="s2">&quot;goal&quot;</span><span class="p">,</span> <span class="s2">&quot;kp&quot;</span><span class="p">,</span> <span class="s2">&quot;ki&quot;</span><span class="p">,</span> <span class="s2">&quot;kd&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="n">spec</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;PID controller for &#39;</span><span class="si">{</span><span class="n">ctrl_name</span><span class="si">}</span><span class="s2">&#39; must contain </span><span class="si">{</span><span class="n">required_keys</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">[</span><span class="n">ctrl_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">PID</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;state&quot;</span><span class="p">]],</span>
+                <span class="p">[</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;goal&quot;</span><span class="p">]],</span>
+                <span class="p">[</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;kp&quot;</span><span class="p">]],</span>
+                <span class="p">[</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;ki&quot;</span><span class="p">]],</span>
+                <span class="p">[</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;kd&quot;</span><span class="p">]],</span>
+                <span class="n">dt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dt</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ctrl_type</span> <span class="o">==</span> <span class="s2">&quot;SARLPolicy&quot;</span><span class="p">:</span>
+            <span class="n">required_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;state_features&quot;</span><span class="p">,</span> <span class="s2">&quot;model&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">k</span> <span class="ow">in</span> <span class="n">spec</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SARL controller for &#39;</span><span class="si">{</span><span class="n">ctrl_name</span><span class="si">}</span><span class="s2">&#39; must contain </span><span class="si">{</span><span class="n">required_keys</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">spec</span><span class="p">[</span><span class="s2">&quot;state_features&quot;</span><span class="p">]:</span>
+                <span class="n">SARL_state_features</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
+            <span class="n">SARL_models</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">])</span>
+            <span class="n">SARL_action_outputs</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ctrl_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown controller type &#39;</span><span class="si">{</span><span class="n">ctrl_type</span><span class="si">}</span><span class="s2">&#39; for </span><span class="si">{</span><span class="n">ctrl_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">SARL_models</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">SARL_models</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Only one SARL model can be specified per agent. Found: </span><span class="si">{</span><span class="n">SARL_models</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sarl_policy</span> <span class="o">=</span> <span class="n">SARLPolicy</span><span class="p">(</span>
+            <span class="n">state_inputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">SARL_state_features</span><span class="p">),</span>
+            <span class="n">action_outputs</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">SARL_action_outputs</span><span class="p">),</span>
+            <span class="n">model_name</span><span class="o">=</span><span class="n">spec</span><span class="p">[</span><span class="s2">&quot;model&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">ctrl_name</span> <span class="ow">in</span> <span class="n">SARL_action_outputs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">[</span><span class="n">ctrl_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sarl_policy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trainable</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sarl_info</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;state_features&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">SARL_state_features</span><span class="p">),</span>
+            <span class="s2">&quot;action_outputs&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">SARL_action_outputs</span><span class="p">)</span>
+        <span class="p">}</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="kamaji.agent.Agent.assign_dynamics" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">assign_dynamics</span><span class="p">()</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Instantiate the dynamics model from the agent configuration.</p>
+<p>Reads <code>self._agent_config['dynamics_model']</code> (a string like
+<code>"SingleIntegrator2DOF"</code>) and maps it to the corresponding
+<code>Dynamics</code> subclass.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="NotImplementedError">NotImplementedError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>If the dynamics model name is not recognised.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>kamaji/agent/agent.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 91</span>
+<span class="normal"> 92</span>
+<span class="normal"> 93</span>
+<span class="normal"> 94</span>
+<span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">assign_dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Instantiate the dynamics model from the agent configuration.</span>
+
+<span class="sd">    Reads ``self._agent_config[&#39;dynamics_model&#39;]`` (a string like</span>
+<span class="sd">    ``&quot;SingleIntegrator2DOF&quot;``) and maps it to the corresponding</span>
+<span class="sd">    ``Dynamics`` subclass.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        NotImplementedError: If the dynamics model name is not recognised.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model_map</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;Unicycle&quot;</span><span class="p">:</span> <span class="n">Unicycle</span><span class="p">,</span>
+        <span class="s2">&quot;CruiseControl&quot;</span><span class="p">:</span> <span class="n">CruiseControl</span><span class="p">,</span>
+        <span class="s2">&quot;SingleIntegrator1DOF&quot;</span><span class="p">:</span> <span class="n">SingleIntegrator1DOF</span><span class="p">,</span>
+        <span class="s2">&quot;SingleIntegrator2DOF&quot;</span><span class="p">:</span> <span class="n">SingleIntegrator2DOF</span><span class="p">,</span>
+        <span class="s2">&quot;SingleIntegrator3DOF&quot;</span><span class="p">:</span> <span class="n">SingleIntegrator3DOF</span><span class="p">,</span>
+        <span class="s2">&quot;DoubleIntegrator1DOF&quot;</span><span class="p">:</span> <span class="n">DoubleIntegrator1DOF</span><span class="p">,</span>
+        <span class="s2">&quot;DoubleIntegrator2DOF&quot;</span><span class="p">:</span> <span class="n">DoubleIntegrator2DOF</span><span class="p">,</span>
+        <span class="s2">&quot;DoubleIntegrator3DOF&quot;</span><span class="p">:</span> <span class="n">DoubleIntegrator3DOF</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">model_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_agent_config</span><span class="p">[</span><span class="s1">&#39;dynamics_model&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">model_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">model_map</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2"> is not a valid dynamics model.&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">dynamics_model</span> <span class="o">=</span> <span class="n">model_map</span><span class="p">[</span><span class="n">model_name</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">_dt</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="kamaji.agent.Agent.assign_gym_env" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">assign_gym_env</span><span class="p">(</span><span class="n">env</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Attach a Gymnasium environment and initialise the SARL model.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>env</code></b>
+                  (<code><span title="gymnasium.Env">Env</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>A <code>WrapperEnv</code> instance for this agent.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>If the agent has no SARL controller.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>kamaji/agent/agent.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">assign_gym_env</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="n">gym</span><span class="o">.</span><span class="n">Env</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Attach a Gymnasium environment and initialise the SARL model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        env: A ``WrapperEnv`` instance for this agent.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If the agent has no SARL controller.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sarl_policy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[Agent: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="si">}</span><span class="s2">] Cannot assign gym env without SARL controller. Either no SARL controller is defined, or controller has not yet been assigned.&quot;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sarl_policy</span><span class="o">.</span><span class="n">init_model</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="kamaji.agent.Agent.compute_control" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">compute_control</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">rl_action</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Compute the full control vector by combining per-channel outputs.</p>
+<p>Iterates over control channels in sorted order, queries each
+controller, and concatenates the results. If an RL action is
+provided (during training), it overrides the SARL policy's own
+prediction for the corresponding channels.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>t</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Current simulation time.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>rl_action</code></b>
+                  (<code><span title="typing.Optional">Optional</span>[<span title="numpy.ndarray">ndarray</span>]</code>, default:
+                      <code>None</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>Optional externally-provided RL action that overrides
+the SARL policy prediction (used during training).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="numpy.ndarray">ndarray</span></code>
+              –
+              <div class="doc-md-description">
+                <p>Control vector of shape <code>(n_controls,)</code>.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Raises:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="ValueError">ValueError</span></code>
+              –
+              <div class="doc-md-description">
+                <p>If <code>rl_action</code> is provided but no SARL controller
+exists.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>kamaji/agent/agent.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span>
+<span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_control</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">rl_action</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the full control vector by combining per-channel outputs.</span>
+
+<span class="sd">    Iterates over control channels in sorted order, queries each</span>
+<span class="sd">    controller, and concatenates the results. If an RL action is</span>
+<span class="sd">    provided (during training), it overrides the SARL policy&#39;s own</span>
+<span class="sd">    prediction for the corresponding channels.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        t: Current simulation time.</span>
+<span class="sd">        rl_action: Optional externally-provided RL action that overrides</span>
+<span class="sd">            the SARL policy prediction (used during training).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Control vector of shape ``(n_controls,)``.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If ``rl_action`` is provided but no SARL controller</span>
+<span class="sd">            exists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span>
+
+    <span class="c1"># For backward compatibility, support legacy controller format</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">control_channels</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">control_vector</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Get SARL model if exists</span>
+        <span class="n">hasSARL</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">SARL_model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">control_channels</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">[</span><span class="n">channel</span><span class="p">],</span> <span class="n">SARLPolicy</span><span class="p">):</span>
+                <span class="n">hasSARL</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">SARL_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span>
+                <span class="k">break</span>
+
+        <span class="c1"># predict SARL actions if needed</span>
+        <span class="k">if</span> <span class="n">rl_action</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">hasSARL</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;RL actions provided but no SARL controller found.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">hasSARL</span><span class="p">:</span>
+            <span class="n">SARL_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">current_state</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sarl_info</span><span class="p">[</span><span class="s2">&quot;state_features&quot;</span><span class="p">]])</span>
+            <span class="c1"># Use provided rl_action rather than direct model prediction, allowing for proper handling of actions during training</span>
+            <span class="k">if</span> <span class="n">rl_action</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">SARL_pred</span> <span class="o">=</span> <span class="n">rl_action</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">SARL_pred</span> <span class="o">=</span> <span class="n">SARL_model</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">SARL_state</span><span class="p">)</span>
+            <span class="n">SARL_control_channels</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">SARL_model</span><span class="o">.</span><span class="n">action_outputs</span><span class="p">,</span> <span class="n">SARL_pred</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">control_channels</span><span class="p">:</span>
+            <span class="n">controller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">controller</span><span class="p">,</span> <span class="n">SARLPolicy</span><span class="p">):</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">SARL_control_channels</span><span class="p">[</span><span class="n">channel</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">val</span> <span class="o">=</span> <span class="n">controller</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">current_state</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">controller</span><span class="p">,</span> <span class="s2">&quot;update&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">controller</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">current_state</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+                <span class="n">control_vector</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">control_vector</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">control_vector</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Fallback for legacy single controller</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_model</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">current_state</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="kamaji.agent.Agent.compute_dynamics" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">compute_dynamics</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">control_input</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Evaluate the dynamics at the current state (without stepping).</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>t</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Current simulation time.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>control_input</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Control vector.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Returns:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+                  <code><span title="numpy.ndarray">ndarray</span></code>
+              –
+              <div class="doc-md-description">
+                <p>State derivative vector (dx/dt).</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>kamaji/agent/agent.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">compute_dynamics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">control_input</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate the dynamics at the current state (without stepping).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        t: Current simulation time.</span>
+<span class="sd">        control_input: Control vector.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        State derivative vector (dx/dt).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics_model</span><span class="o">.</span><span class="n">dynamics</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">,</span> <span class="n">control_input</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="kamaji.agent.Agent.reset" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">reset</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Reset the agent to its initial state from the config.</p>
+
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>kamaji/agent/agent.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">324</span>
+<span class="normal">325</span>
+<span class="normal">326</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Reset the agent to its initial state from the config.&quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_agent_config</span><span class="p">[</span><span class="s1">&#39;initial_state&#39;</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="kamaji.agent.Agent.step" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">step</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">control_input</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></code>
+
+</h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Advance the agent one time step using RK4 integration.</p>
+<p>Integrates the dynamics model forward by <code>dt</code> seconds, updates the
+internal state dictionary, and (optionally) appends the new state and
+control input to the history DataFrames.</p>
+
+
+<table class="field-list">
+  <colgroup>
+    <col class="field-name" />
+    <col class="field-body" />
+  </colgroup>
+  <tbody valign="top">
+    <tr class="field">
+      <th class="field-name">Parameters:</th>
+      <td class="field-body">
+        <ul class="first simple">
+            <li>
+              <b><code>t</code></b>
+                  (<code><span title="float">float</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Current simulation time (before the step).</p>
+              </div>
+            </li>
+            <li>
+              <b><code>control_input</code></b>
+                  (<code><span title="numpy.ndarray">ndarray</span></code>)
+              –
+              <div class="doc-md-description">
+                <p>Control vector to apply during this step.</p>
+              </div>
+            </li>
+            <li>
+              <b><code>log</code></b>
+                  (<code><span title="bool">bool</span></code>, default:
+                      <code>True</code>
+)
+              –
+              <div class="doc-md-description">
+                <p>If <code>True</code>, record the state and control to history.</p>
+              </div>
+            </li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+            <details class="mkdocstrings-source">
+              <summary>Source code in <code>kamaji/agent/agent.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span>
+<span class="normal">293</span>
+<span class="normal">294</span>
+<span class="normal">295</span>
+<span class="normal">296</span>
+<span class="normal">297</span>
+<span class="normal">298</span>
+<span class="normal">299</span>
+<span class="normal">300</span>
+<span class="normal">301</span>
+<span class="normal">302</span>
+<span class="normal">303</span>
+<span class="normal">304</span>
+<span class="normal">305</span>
+<span class="normal">306</span>
+<span class="normal">307</span>
+<span class="normal">308</span>
+<span class="normal">309</span>
+<span class="normal">310</span>
+<span class="normal">311</span>
+<span class="normal">312</span>
+<span class="normal">313</span>
+<span class="normal">314</span>
+<span class="normal">315</span>
+<span class="normal">316</span>
+<span class="normal">317</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">control_input</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">log</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Advance the agent one time step using RK4 integration.</span>
+
+<span class="sd">    Integrates the dynamics model forward by ``dt`` seconds, updates the</span>
+<span class="sd">    internal state dictionary, and (optionally) appends the new state and</span>
+<span class="sd">    control input to the history DataFrames.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        t: Current simulation time (before the step).</span>
+<span class="sd">        control_input: Control vector to apply during this step.</span>
+<span class="sd">        log: If ``True``, record the state and control to history.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">dynamics_state_order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamics_model</span><span class="o">.</span><span class="n">state_variables</span><span class="p">())</span>
+    <span class="n">dynamics_state_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics_state_order</span><span class="p">])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_dynamics</span><span class="p">(</span><span class="n">t_local</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dynamics_model</span><span class="o">.</span><span class="n">dynamics</span><span class="p">(</span><span class="n">t_local</span><span class="p">,</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamics_state_order</span><span class="p">)},</span> <span class="n">u</span><span class="p">)</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">new_state_vec</span> <span class="o">=</span> <span class="n">ode</span><span class="o">.</span><span class="n">rk4_step</span><span class="p">(</span><span class="n">compute_dynamics</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">dynamics_state_vec</span><span class="p">,</span> <span class="n">control_input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dt</span><span class="p">)</span>
+    <span class="n">dynamics_new_state_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">new_state_vec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dynamics_state_order</span><span class="p">)}</span>
+    <span class="n">new_state_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">new_state_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">dynamics_new_state_dict</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">new_state_dict</span>
+    <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_history</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_history</span><span class="p">)]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">}</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span>
+
+    <span class="n">control_row</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">}</span>
+    <span class="n">control_row</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">control_input</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_control_list</span><span class="p">)})</span>
+    <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_control_history</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_control_history</span><span class="p">)]</span> <span class="o">=</span> <span class="n">control_row</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+
+</div></details>
+<hr />
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../" class="btn btn-neutral float-left" title="Overview"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../simulator/" class="btn btn-neutral float-right" title="Simulator">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/JCorbin406/kamaji" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../simulator/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../js/mathjax_config.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
